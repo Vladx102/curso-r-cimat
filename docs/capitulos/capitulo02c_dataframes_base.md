@@ -188,8 +188,8 @@ Vale la pena quedarse con esta comparación en la cabeza: `tapply()` resuelve en
 
 ## Ejercicios
 
-2. Usando `empleados`, calcula qué porcentaje de la compensación total de la empresa corresponde a cada departamento (usa `tapply()` y `sum()`).
-3. **Reto:** agrega una columna `antiguedad` (años en la empresa, inventa valores) a `empleados`. Usando `order()` con **dos** criterios (ver `?order`), ordena primero por departamento y luego por salario descendente dentro de cada departamento.
+2. Crea un `data.frame` `ventas_tienda` con columnas vendedor, sucursal y monto (al menos 6 filas, 2-3 sucursales distintas). Usando `tapply()` y `sum()`, calcula qué porcentaje del total vendido corresponde a cada sucursal.
+3. **Reto:** agrega una columna `anios_experiencia` a `ventas_tienda`. Usando `order()` con **dos** criterios (ver `?order`), ordénalo primero por sucursal y luego por monto descendente dentro de cada sucursal.
 
 ---
 
