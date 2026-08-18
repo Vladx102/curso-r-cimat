@@ -3,7 +3,7 @@
 **Sesión 3 · Día 2, mañana · 2 horas**
 Script de práctica: [`sesiones/sesion03_importacion_dplyr.R`](../../sesiones/sesion03_importacion_dplyr.R)
 
-[← Capítulo 2](capitulo02_funciones_apply.md) · [Índice](../../README.md) · [Capítulo 4 →](capitulo04_agregacion_tidyr_ggplot2.md)
+[← Capítulo 2c](capitulo02c_dataframes_base.md) · [Índice](../../README.md) · [Capítulo 4 →](capitulo04_agregacion_tidyr_ggplot2.md)
 
 ## Objetivo
 
@@ -106,4 +106,4 @@ Cada línea del pipeline se lee como un paso independiente — esto hace que el 
 
 ---
 
-[← Capítulo 2](capitulo02_funciones_apply.md) · [Índice](../../README.md) · [Capítulo 4 →](capitulo04_agregacion_tidyr_ggplot2.md)
+[← Capítulo 2c](capitulo02c_dataframes_base.md) · [Índice](../../README.md) · [Capítulo 4 →](capitulo04_agregacion_tidyr_ggplot2.md)

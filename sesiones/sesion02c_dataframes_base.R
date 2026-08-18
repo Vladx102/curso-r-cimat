@@ -1,0 +1,106 @@
+# =============================================================================
+# Sesión 2c — Data Frames en base R
+# Curso de nivelación en R — CIMAT Aguascalientes
+# =============================================================================
+#
+# Objetivo de la sesión (2h):
+#   Crear data frames con las herramientas de base R (sin tidyverse),
+#   explorar los datasets de ejemplo incluidos en R, seleccionar y ordenar
+#   filas/columnas, exportar e importar CSV, y operar por fila o columna.
+#   La sesión 3 retoma todo esto con tibble/dplyr, mucho más cómodo para
+#   trabajo diario — pero vale la pena conocer primero la base sobre la
+#   que está construido el tidyverse.
+
+# -----------------------------------------------------------------------------
+# 1. Crear nuestro primer Data Frame
+# -----------------------------------------------------------------------------
+# Un data.frame es una tabla: cada columna es un vector (todas del mismo
+# largo), y las columnas pueden ser de tipos distintos entre sí.
+
+estudiantes <- data.frame(
+  nombre = c("Ana", "Luis", "Carla", "Diego"),
+  edad = c(23, 25, 22, 24),
+  promedio = c(8.5, 7.2, 9.1, 6.8),
+  becado = c(TRUE, FALSE, TRUE, FALSE)
+)
+estudiantes
+
+str(estudiantes)     # estructura: tipo de cada columna
+summary(estudiantes)  # resumen estadístico de cada columna
+nrow(estudiantes)
+ncol(estudiantes)
+dim(estudiantes)
+
+# -----------------------------------------------------------------------------
+# 2. Conjuntos de datos de ejemplo en RStudio
+# -----------------------------------------------------------------------------
+# R (y muchos paquetes) traen datasets incluidos, útiles para practicar sin
+# necesidad de archivos externos.
+
+data()                    # lista todos los datasets disponibles (se abre
+                           # en el visor); library(help = "datasets") es
+                           # el equivalente en texto plano
+
+head(mtcars)               # primeras 6 filas
+head(iris, 3)               # primeras 3 filas
+?mtcars                     # documentación del dataset: qué significa cada columna
+
+# -----------------------------------------------------------------------------
+# 3. Selección y ordenación de Data Frames
+# -----------------------------------------------------------------------------
+
+estudiantes$nombre               # una columna, como vector
+estudiantes[, "nombre"]           # equivalente
+estudiantes[["promedio"]]         # también equivalente
+
+estudiantes[1, ]                  # primera fila (todas las columnas)
+estudiantes[1:2, c("nombre", "edad")]   # sub-tabla: filas 1-2, columnas elegidas
+estudiantes[estudiantes$becado, ]        # filas donde becado es TRUE
+
+# Ordenar con order(): regresa las POSICIONES ordenadas, no los valores
+orden <- order(estudiantes$promedio, decreasing = TRUE)
+estudiantes[orden, ]
+
+# -----------------------------------------------------------------------------
+# 4. Exportar e importar ficheros de tipo CSV
+# -----------------------------------------------------------------------------
+
+# write.csv(estudiantes, "estudiantes.csv", row.names = FALSE)
+# estudiantes_leidos <- read.csv("estudiantes.csv")
+
+# row.names = FALSE evita que R agregue una columna extra con el número de
+# fila al exportar (un error muy común la primera vez que se usa write.csv).
+
+# -----------------------------------------------------------------------------
+# 5. Operaciones por filas
+# -----------------------------------------------------------------------------
+# apply(datos, MARGIN, funcion): MARGIN = 1 aplica la función a cada FILA.
+
+notas <- estudiantes[, c("edad", "promedio")]
+apply(notas, 1, sum)          # suma de cada fila
+apply(notas, 1, mean)          # promedio de cada fila
+
+# -----------------------------------------------------------------------------
+# 6. Operaciones por columnas
+# -----------------------------------------------------------------------------
+# MARGIN = 2 aplica la función a cada COLUMNA (equivalente a sapply()
+# sobre el data frame, que ya usamos en la sesión 2).
+
+apply(notas, 2, mean)
+apply(notas, 2, sd)
+
+colSums(notas)     # atajo para sumas por columna (más rápido que apply)
+colMeans(notas)     # atajo para promedios por columna
+
+# =============================================================================
+# EJERCICIO
+# =============================================================================
+
+# Usando el dataset incluido `mtcars`:
+#   a) crea un sub-data.frame `autos_eficientes` con los autos cuyo mpg
+#      (millas por galón) sea mayor a 20
+#   b) ordénalo de mayor a menor mpg
+#   c) calcula, con apply(), el promedio de las columnas mpg, hp y wt
+#      sobre TODO mtcars (no solo autos_eficientes)
+#   d) exporta autos_eficientes a un archivo CSV llamado "autos_eficientes.csv"
+#      sin la columna de nombres de fila

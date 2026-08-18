@@ -1,0 +1,115 @@
+# Capítulo 2c — Data Frames en base R
+
+**Sesión 2c · 2 horas**
+Script de práctica: [`sesiones/sesion02c_dataframes_base.R`](../../sesiones/sesion02c_dataframes_base.R)
+
+[← Capítulo 2b](capitulo02b_matrices.md) · [Índice](../../README.md) · [Capítulo 3 →](capitulo03_importacion_dplyr.md)
+
+## Objetivo
+
+Crear data frames con las herramientas de base R (sin tidyverse), explorar los datasets de ejemplo incluidos en R, seleccionar y ordenar filas/columnas, exportar e importar CSV, y operar por fila o columna. El [capítulo 3](capitulo03_importacion_dplyr.md) retoma todo esto con `tibble`/dplyr — mucho más cómodo para el trabajo diario — pero vale la pena conocer primero la base sobre la que está construido el tidyverse.
+
+## 1. Crear nuestro primer Data Frame
+
+Un `data.frame` es una tabla: cada columna es un vector (todas del mismo largo), y las columnas pueden ser de tipos distintos entre sí — a diferencia de una matriz, donde todo tiene que ser del mismo tipo.
+
+```r
+estudiantes <- data.frame(
+  nombre = c("Ana", "Luis", "Carla", "Diego"),
+  edad = c(23, 25, 22, 24),
+  promedio = c(8.5, 7.2, 9.1, 6.8),
+  becado = c(TRUE, FALSE, TRUE, FALSE)
+)
+estudiantes
+
+str(estudiantes)     # estructura: tipo de cada columna
+summary(estudiantes)  # resumen estadístico de cada columna
+nrow(estudiantes)
+ncol(estudiantes)
+dim(estudiantes)
+```
+
+## 2. Conjuntos de datos de ejemplo en RStudio
+
+R y muchos paquetes traen datasets incluidos, útiles para practicar sin necesidad de archivos externos — el curso entero los usa (`mpg`, `mtcars`, `warpbreaks`) precisamente para que puedas correr cada script sin depender de datos propios.
+
+```r
+data()                    # lista todos los datasets disponibles (se abre
+                           # en el visor); library(help = "datasets") es
+                           # el equivalente en texto plano
+
+head(mtcars)               # primeras 6 filas
+head(iris, 3)               # primeras 3 filas
+?mtcars                     # documentación del dataset: qué significa cada columna
+```
+
+## 3. Selección y ordenación de Data Frames
+
+En base R (sin dplyr) hay varias formas equivalentes de extraer una columna:
+
+```r
+estudiantes$nombre               # una columna, como vector
+estudiantes[, "nombre"]           # equivalente
+estudiantes[["promedio"]]         # también equivalente
+```
+
+Y el mismo patrón `[fila, columna]` de las matrices funciona para data frames:
+
+```r
+estudiantes[1, ]                  # primera fila (todas las columnas)
+estudiantes[1:2, c("nombre", "edad")]   # sub-tabla: filas 1-2, columnas elegidas
+estudiantes[estudiantes$becado, ]        # filas donde becado es TRUE
+```
+
+Para ordenar, `order()` no reordena los valores directamente — regresa las **posiciones** que los ordenarían, y esas posiciones se usan para indexar el data frame:
+
+```r
+orden <- order(estudiantes$promedio, decreasing = TRUE)
+estudiantes[orden, ]
+```
+
+## 4. Exportar e importar ficheros de tipo CSV
+
+```r
+write.csv(estudiantes, "estudiantes.csv", row.names = FALSE)
+estudiantes_leidos <- read.csv("estudiantes.csv")
+```
+
+`row.names = FALSE` evita que R agregue una columna extra con el número de fila al exportar — es un olvido muy común la primera vez que se usa `write.csv()`, y produce un CSV con una columna `X` fea al importarlo de vuelta.
+
+## 5. Operaciones por filas
+
+`apply(datos, MARGIN, funcion)` aplica una función por fila (`MARGIN = 1`) o por columna (`MARGIN = 2`).
+
+```r
+notas <- estudiantes[, c("edad", "promedio")]
+apply(notas, 1, sum)          # suma de cada fila
+apply(notas, 1, mean)          # promedio de cada fila
+```
+
+## 6. Operaciones por columnas
+
+```r
+apply(notas, 2, mean)
+apply(notas, 2, sd)
+```
+
+Para sumas y promedios por columna específicamente, R trae atajos más rápidos que `apply()` (ya los usamos con matrices en el capítulo 2b):
+
+```r
+colSums(notas)
+colMeans(notas)
+```
+
+## Ejercicio
+
+Usando el dataset incluido `mtcars`:
+
+a. crea un sub-data.frame `autos_eficientes` con los autos cuyo `mpg` (millas por galón) sea mayor a 20
+b. ordénalo de mayor a menor `mpg`
+c. calcula, con `apply()`, el promedio de las columnas `mpg`, `hp` y `wt` sobre **todo** `mtcars` (no solo `autos_eficientes`)
+d. exporta `autos_eficientes` a un archivo CSV llamado `autos_eficientes.csv` sin la columna de nombres de fila
+
+---
+
+[← Capítulo 2b](capitulo02b_matrices.md) · [Índice](../../README.md) · [Capítulo 3 →](capitulo03_importacion_dplyr.md)

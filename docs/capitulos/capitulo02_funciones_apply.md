@@ -3,7 +3,7 @@
 **Sesión 2 · Día 1, tarde · 2 horas**
 Script de práctica: [`sesiones/sesion02_funciones_apply.R`](../../sesiones/sesion02_funciones_apply.R)
 
-[← Capítulo 1](capitulo01_vectores_tipos.md) · [Índice](../../README.md) · [Capítulo 3 →](capitulo03_importacion_dplyr.md)
+[← Capítulo 1](capitulo01_vectores_tipos.md) · [Índice](../../README.md) · [Capítulo 2b →](capitulo02b_matrices.md)
 
 ## Objetivo
 
@@ -103,4 +103,4 @@ sapply(mtcars[, c("mpg", "hp", "wt")], mean)
 
 ---
 
-[← Capítulo 1](capitulo01_vectores_tipos.md) · [Índice](../../README.md) · [Capítulo 3 →](capitulo03_importacion_dplyr.md)
+[← Capítulo 1](capitulo01_vectores_tipos.md) · [Índice](../../README.md) · [Capítulo 2b →](capitulo02b_matrices.md)

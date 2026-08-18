@@ -3,7 +3,7 @@
 **Sesión 1 · Día 1, mañana · 2 horas**
 Script de práctica: [`sesiones/sesion01_vectores_tipos.R`](../../sesiones/sesion01_vectores_tipos.R)
 
-[← Índice](../../README.md) · [Capítulo 2 →](capitulo02_funciones_apply.md)
+[← Capítulo 0](capitulo00_fundamentos_r.md) · [Índice](../../README.md) · [Capítulo 2 →](capitulo02_funciones_apply.md)
 
 ## Objetivo
 
@@ -117,4 +117,4 @@ c(1, 2, 3, 4) + c(1, 2)          # se recicla c(1,2) -> c(1,2,1,2)
 
 ---
 
-[← Índice](../../README.md) · [Capítulo 2 →](capitulo02_funciones_apply.md)
+[← Capítulo 0](capitulo00_fundamentos_r.md) · [Índice](../../README.md) · [Capítulo 2 →](capitulo02_funciones_apply.md)
