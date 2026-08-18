@@ -80,10 +80,51 @@ summary(modelo_reducido)
 
 `step()` automatiza la búsqueda de un mejor subconjunto de predictores, pero **no reemplaza el criterio del analista**: siempre hay que revisar que el modelo final tenga sentido sustantivo dentro del problema, no solo un mejor número estadístico.
 
+## Ejemplo elaborado: comparar modelos anidados y predecir escenarios
+
+```r
+modelo_reducido_logit <- glm(traccion_4wd ~ displ, data = datos, family = binomial)
+modelo_completo_logit <- glm(traccion_4wd ~ displ + cyl + hwy, data = datos, family = binomial)
+
+# Prueba de razón de verosimilitudes: el análogo de anova() para modelos
+# lineales (capítulo 8), pero con test = "Chisq" porque los GLM no se
+# comparan con una F como en lm()
+anova(modelo_reducido_logit, modelo_completo_logit, test = "Chisq")
+```
+
+Igual que con `anova()` sobre modelos `lm()` en el capítulo anterior, esto responde: ¿los predictores extra (`cyl`, `hwy`) mejoran el modelo significativamente, o el modelo reducido ya captura lo esencial?
+
+```r
+# Probabilidad estimada de 4WD para tres autos hipotéticos
+autos_hipoteticos <- tibble(
+  displ = c(1.8, 3.0, 5.7),
+  cyl = c(4, 6, 8),
+  hwy = c(35, 26, 18)
+)
+autos_hipoteticos %>%
+  mutate(prob_4wd = predict(modelo_completo_logit, newdata = ., type = "response"))
+```
+
+Y para encontrar un punto de corte concreto — por ejemplo, ¿a partir de qué `displ` la probabilidad estimada de 4WD supera 50%, dejando `cyl` y `hwy` en su promedio — puedes generar una rejilla de valores y filtrar:
+
+```r
+grid_displ <- tibble(
+  displ = seq(min(datos$displ), max(datos$displ), by = 0.1),
+  cyl = mean(datos$cyl),
+  hwy = mean(datos$hwy)
+)
+grid_displ %>%
+  mutate(prob_4wd = predict(modelo_completo_logit, newdata = ., type = "response")) %>%
+  filter(prob_4wd >= 0.5) %>%
+  slice(1)
+```
+
 ## Ejercicios
 
 1. Ajusta un modelo logístico para predecir si un auto es automático o manual usando `mtcars` (variable `am`), con `hp` y `wt` como predictores.
 2. Usando `warpbreaks`, compara por AIC un modelo con interacción `wool*tension` contra el modelo aditivo `wool + tension`. ¿Cuál prefieres?
+3. Usando `modelo_poisson` (`warpbreaks`), predice el número esperado de roturas para `wool = "A"` y `tension = "L"` con `predict(..., type = "response")`.
+4. **Reto:** compara con `anova(..., test = "Chisq")` el `modelo_poisson` contra una versión sin `wool` (`breaks ~ tension`). ¿Aporta `wool` información significativa?
 
 ---
 

@@ -77,3 +77,48 @@ summary(modelo_reducido)
 
 # 2. Usando warpbreaks, compara con AIC un modelo con interacción
 #    wool*tension contra el modelo aditivo wool + tension. ¿Cuál prefieres?
+
+# =============================================================================
+# EJEMPLO ELABORADO: comparar modelos anidados y predecir escenarios
+# =============================================================================
+
+modelo_reducido_logit <- glm(traccion_4wd ~ displ, data = datos, family = binomial)
+modelo_completo_logit <- glm(traccion_4wd ~ displ + cyl + hwy, data = datos, family = binomial)
+
+# Prueba de razón de verosimilitudes: el análogo de anova() para modelos
+# lineales (sesión 8), pero con test = "Chisq" porque los GLM no se
+# comparan con una F como en lm()
+anova(modelo_reducido_logit, modelo_completo_logit, test = "Chisq")
+
+# Probabilidad estimada de 4WD para tres autos hipotéticos
+autos_hipoteticos <- tibble(
+  displ = c(1.8, 3.0, 5.7),
+  cyl = c(4, 6, 8),
+  hwy = c(35, 26, 18)
+)
+autos_hipoteticos %>%
+  mutate(prob_4wd = predict(modelo_completo_logit, newdata = ., type = "response"))
+
+# ¿A partir de qué displ la probabilidad estimada de 4WD supera 50%,
+# manteniendo cyl y hwy en su promedio?
+grid_displ <- tibble(
+  displ = seq(min(datos$displ), max(datos$displ), by = 0.1),
+  cyl = mean(datos$cyl),
+  hwy = mean(datos$hwy)
+)
+grid_displ %>%
+  mutate(prob_4wd = predict(modelo_completo_logit, newdata = ., type = "response")) %>%
+  filter(prob_4wd >= 0.5) %>%
+  slice(1)
+
+# =============================================================================
+# EJERCICIOS ADICIONALES
+# =============================================================================
+
+# 3. Usando modelo_poisson (warpbreaks), predice el número esperado de
+#    roturas para wool = "A" y tension = "L" con
+#    predict(..., type = "response").
+
+# 4. (Reto) Compara con anova(..., test = "Chisq") el modelo_poisson contra
+#    una versión sin wool (breaks ~ tension). ¿Aporta wool información
+#    significativa?
