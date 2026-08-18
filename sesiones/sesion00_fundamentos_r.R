@@ -231,8 +231,12 @@ valor_total
 por_agotarse <- stock < 5 & stock > 0
 producto[por_agotarse]
 
-# ¿Cuál es el producto más caro entre los que tienen stock disponible?
-producto[stock > 0][which.max(precio[stock > 0])]
+# ¿Cuál es el precio más alto entre los productos con stock disponible?
+precio_max_disponible <- max(precio[stock > 0])
+precio_max_disponible
+
+# ¿Qué producto es? (indexación lógica combinando dos condiciones con &)
+producto[stock > 0 & precio == precio_max_disponible]
 
 # Sube el precio 10% a todo excepto a los calcetines (el último producto)
 precio_nuevo <- precio

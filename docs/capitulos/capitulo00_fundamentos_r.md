@@ -243,8 +243,12 @@ valor_total
 por_agotarse <- stock < 5 & stock > 0
 producto[por_agotarse]
 
-# ¿Cuál es el producto más caro entre los que tienen stock disponible?
-producto[stock > 0][which.max(precio[stock > 0])]
+# ¿Cuál es el precio más alto entre los productos con stock disponible?
+precio_max_disponible <- max(precio[stock > 0])
+precio_max_disponible
+
+# ¿Qué producto es? (indexación lógica combinando dos condiciones con &)
+producto[stock > 0 & precio == precio_max_disponible]
 
 # Sube el precio 10% a todo excepto a los calcetines (el último producto)
 precio_nuevo <- precio
@@ -252,7 +256,7 @@ precio_nuevo[-5] <- precio_nuevo[-5] * 1.10
 precio_nuevo
 ```
 
-Nota cómo `producto[stock > 0][which.max(precio[stock > 0])]` encadena dos pasos de indexación: primero te quedas con los productos que tienen stock, y de esos te quedas con la posición del precio más alto. Este tipo de encadenamiento — indexar el resultado de otra indexación — es un patrón muy común una vez que te acostumbras a pensar en vectores en vez de loops.
+Nota cómo `producto[stock > 0 & precio == precio_max_disponible]` combina **dos condiciones** dentro de la misma indexación lógica con `&`: solo te interesan los productos que tienen stock **y** cuyo precio coincide con el máximo encontrado. Combinar condiciones así, en vez de hacerlo en dos pasos separados, es un patrón que vas a usar todo el tiempo.
 
 ## Ejercicios adicionales
 
