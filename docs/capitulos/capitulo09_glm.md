@@ -80,7 +80,7 @@ summary(modelo_reducido)
 
 `step()` automatiza la búsqueda de un mejor subconjunto de predictores, pero **no reemplaza el criterio del analista**: siempre hay que revisar que el modelo final tenga sentido sustantivo dentro del problema, no solo un mejor número estadístico.
 
-## Ejemplo elaborado: comparar modelos anidados y predecir escenarios
+## Ejemplo: comparar modelos anidados y predecir escenarios
 
 ```r
 modelo_reducido_logit <- glm(traccion_4wd ~ displ, data = datos, family = binomial)

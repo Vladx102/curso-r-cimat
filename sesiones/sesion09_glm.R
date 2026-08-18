@@ -79,7 +79,7 @@ summary(modelo_reducido)
 #    wool*tension contra el modelo aditivo wool + tension. ¿Cuál prefieres?
 
 # =============================================================================
-# EJEMPLO ELABORADO: comparar modelos anidados y predecir escenarios
+# EJEMPLO: comparar modelos anidados y predecir escenarios
 # =============================================================================
 
 modelo_reducido_logit <- glm(traccion_4wd ~ displ, data = datos, family = binomial)
@@ -110,10 +110,6 @@ grid_displ %>%
   mutate(prob_4wd = predict(modelo_completo_logit, newdata = ., type = "response")) %>%
   filter(prob_4wd >= 0.5) %>%
   slice(1)
-
-# =============================================================================
-# EJERCICIOS ADICIONALES
-# =============================================================================
 
 # 3. Usando modelo_poisson (warpbreaks), predice el número esperado de
 #    roturas para wool = "A" y tension = "L" con
