@@ -5,10 +5,10 @@
 #
 # Objetivo de la sesión (2h):
 #   Primer contacto con la sintaxis de R: operaciones aritméticas, variables,
-#   tipos de datos, un primer vistazo a vectores, operadores de comparación,
-#   cómo usar la ayuda/documentación integrada, e instalar/cargar librerías
-#   (paquetes). La sesión 1 retoma vectores y tipos de datos con mayor
-#   profundidad y a mayor ritmo.
+#   tipos de datos, un primer vistazo a vectores, operadores de comparación
+#   y lógicos (&, |, &&, ||, xor, any, all), cómo usar la ayuda/documentación
+#   integrada, e instalar/cargar librerías (paquetes). La sesión 1 retoma
+#   vectores y tipos de datos con mayor profundidad y a mayor ritmo.
 
 # -----------------------------------------------------------------------------
 # 1. Operaciones aritméticas
@@ -85,7 +85,7 @@ mean(edades)
 max(edades); min(edades)
 
 # -----------------------------------------------------------------------------
-# 6. Operadores de comparación
+# 6. Operadores de comparación y operadores lógicos
 # -----------------------------------------------------------------------------
 
 5 == 5      # igualdad (no confundir con <-, que es asignación)
@@ -98,8 +98,40 @@ max(edades); min(edades)
 # También se aplican a vectores completos, elemento por elemento:
 edades > 25
 
-# Combinar condiciones: & (y), | (o)
+# Combinar condiciones: & (y), | (o) -- se aplican elemento por elemento
 edades > 22 & edades < 30
+
+# & y | son VECTORIZADOS: comparan posición por posición y regresan un
+# vector completo. && y || son ESCALARES: solo miran el primer elemento
+# de cada lado y regresan un único TRUE/FALSE. Se usan casi siempre dentro
+# de if()/while(), donde necesitas una sola condición, no un vector:
+edad <- 25
+edad > 18 && edad < 65      # un solo TRUE/FALSE -> válido en if()
+# edades > 22 && edades < 30   # ERROR o warning: edades tiene varios elementos
+
+if (edad > 18 && edad < 65) {
+  print("edad válida")
+}
+
+# && y || tienen "corto-circuito": si el primer lado ya decide el resultado,
+# el segundo ni se evalúa. Esto es útil para evitar errores en cadena:
+x <- NULL
+if (!is.null(x) && x > 0) {
+  print("x es positivo")
+}   # is.null(x) es TRUE -> !is.null(x) es FALSE -> nunca se evalúa x > 0
+
+# xor(): "o exclusivo" -- TRUE solo si exactamente una de las dos es TRUE
+xor(TRUE, FALSE)   # TRUE
+xor(TRUE, TRUE)    # FALSE
+
+# any()/all(): reducen un vector lógico a un solo TRUE/FALSE
+any(edades > 28)    # TRUE si AL MENOS UNA edad es mayor a 28
+all(edades > 20)    # TRUE si TODAS las edades son mayores a 20
+
+# isTRUE()/isFALSE(): comprueban que un valor sea EXACTAMENTE TRUE/FALSE
+# (más seguro que == TRUE cuando el valor podría ser NA o no lógico)
+isTRUE(5 > 3)
+isTRUE(NA)          # FALSE, no da error como NA == TRUE
 
 # -----------------------------------------------------------------------------
 # 7. Elementos de un vector

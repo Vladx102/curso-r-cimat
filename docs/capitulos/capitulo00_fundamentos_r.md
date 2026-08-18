@@ -8,7 +8,7 @@ Script de práctica: [`sesiones/sesion00_fundamentos_r.R`](../../sesiones/sesion
 
 ## Objetivo
 
-Este capítulo es el punto de entrada más básico del curso: aritmética, variables, tipos de datos, un primer vistazo a vectores, operadores de comparación, cómo usar la ayuda integrada de R, e instalar/cargar librerías. El [capítulo 1](capitulo01_vectores_tipos.md) retoma vectores y tipos de datos con más profundidad y a mayor ritmo — si ya tienes experiencia programando, puedes avanzar directo a ese capítulo y usar este como referencia.
+Este capítulo es el punto de entrada más básico del curso: aritmética, variables, tipos de datos, un primer vistazo a vectores, operadores de comparación y lógicos, cómo usar la ayuda integrada de R, e instalar/cargar librerías. El [capítulo 1](capitulo01_vectores_tipos.md) retoma vectores y tipos de datos con más profundidad y a mayor ritmo — si ya tienes experiencia programando, puedes avanzar directo a ese capítulo y usar este como referencia.
 
 ## 1. Operaciones aritméticas
 
@@ -92,7 +92,7 @@ mean(edades)
 max(edades); min(edades)
 ```
 
-## 6. Operadores de comparación
+## 6. Operadores de comparación y operadores lógicos
 
 ```r
 5 == 5      # igualdad (no confundir con <-, que es asignación)
@@ -109,6 +109,41 @@ También se aplican a vectores completos, elemento por elemento, y se pueden com
 edades > 25
 edades > 22 & edades < 30
 ```
+
+`&` y `|` son **vectorizados**: comparan posición por posición y regresan un vector completo. `&&` y `||` son **escalares**: solo miran el primer elemento de cada lado y regresan un único `TRUE`/`FALSE`. Se usan casi siempre dentro de `if()`/`while()`, donde necesitas una sola condición, no un vector:
+
+```r
+edad <- 25
+edad > 18 && edad < 65      # un solo TRUE/FALSE -> válido en if()
+
+if (edad > 18 && edad < 65) {
+  print("edad válida")
+}
+```
+
+`&&` y `||` tienen *corto-circuito* (short-circuit): si el primer lado ya decide el resultado, el segundo ni se evalúa. Esto es útil para evitar errores en cadena:
+
+```r
+x <- NULL
+if (!is.null(x) && x > 0) {
+  print("x es positivo")
+}   # is.null(x) es TRUE -> !is.null(x) es FALSE -> nunca se evalúa x > 0
+```
+
+Otras funciones lógicas de uso frecuente:
+
+```r
+xor(TRUE, FALSE)    # "o exclusivo": TRUE solo si exactamente una es TRUE
+xor(TRUE, TRUE)      # FALSE
+
+any(edades > 28)    # TRUE si AL MENOS UNA edad es mayor a 28
+all(edades > 20)    # TRUE si TODAS las edades son mayores a 20
+
+isTRUE(5 > 3)       # comprueba que el valor sea EXACTAMENTE TRUE
+isTRUE(NA)          # FALSE, sin error (a diferencia de NA == TRUE)
+```
+
+`any()`/`all()` son el puente natural entre un vector lógico (resultado de `&`/`|`) y una sola condición usable en `if()` — muy parecido a lo que hace `sum()` sobre un lógico, pero regresando `TRUE`/`FALSE` en vez de un conteo.
 
 ## 7. Elementos de un vector
 
