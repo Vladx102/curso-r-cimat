@@ -184,7 +184,7 @@ sapply(mtcars[, c("mpg", "hp", "wt")], mean)
 #    con tu solución iterativa del ejercicio 4.
 
 # =============================================================================
-# EJEMPLO ELABORADO: procesar varios grupos con una función propia
+# EJEMPLO: procesar varios grupos con una función propia
 # =============================================================================
 # Combina NA, control de flujo, función propia y la familia apply -- el tipo
 # de mini-pipeline que vas a construir seguido.
@@ -225,13 +225,9 @@ for (nombre_grupo in colnames(resultado)) {
 }
 total_aprueban
 
-# =============================================================================
-# EJERCICIOS ADICIONALES
-# =============================================================================
-
-# 9. Agrega grupo_D <- c(NA, NA, NA, 70) a la lista `grupos` del ejemplo
-#    elaborado y vuelve a correr sapply(grupos, resumen_grupo). ¿Qué regresa
-#    para ese grupo? ¿Por qué?
+# 9. Agrega grupo_D <- c(NA, NA, NA, 70) a la lista `grupos` del ejemplo y
+#    vuelve a correr sapply(grupos, resumen_grupo). ¿Qué regresa para ese
+#    grupo? ¿Por qué?
 
 # 10. (Reto) Reescribe resumen_grupo() para que, en vez de un vector con
 #     nombres, regrese una LISTA con un elemento extra "posiciones_na" que
