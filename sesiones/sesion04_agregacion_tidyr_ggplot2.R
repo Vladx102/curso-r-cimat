@@ -125,9 +125,9 @@ ggplot(resumen_completo, aes(x = class, y = hwy_prom, fill = drv)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-# 5. Repite el ejemplo pero agrupando por manufacturer en vez de
-#    class, y quédate solo con los 5 fabricantes con más modelos (n()) en
-#    el dataset.
+# 5. Usando `datos` (mpg), agrupa por manufacturer y drv, calcula el
+#    promedio de cty por grupo, y grafica un gráfico de barras agrupado
+#    (geom_col(position = "dodge")) coloreado por drv.
 
 # 6. (Reto) Usa pivot_longer() sobre mpg para poner cty y hwy en una sola
 #    columna `tipo_millas` con su valor en `millas`, y grafica un boxplot
