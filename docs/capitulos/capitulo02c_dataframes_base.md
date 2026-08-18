@@ -148,6 +148,49 @@ c. calcula, con `apply()`, el promedio de las columnas `mpg`, `hp` y `wt` sobre 
 d. exporta `autos_eficientes` a un archivo CSV llamado `autos_eficientes.csv` sin la columna de nombres de fila
 e. toma `con_nulos` (del punto 5) y crea una versión `con_nulos_completo` donde el `NA` de `promedio` se reemplaza por la media de esa columna, igual que se hizo arriba con `edad`
 
+## Ejemplo elaborado: nómina de una empresa pequeña
+
+```r
+empleados <- data.frame(
+  nombre = c("Ana", "Beto", "Carla", "Daniel", "Elena", "Fer"),
+  departamento = c("Ventas", "IT", "Ventas", "IT", "RH", "Ventas"),
+  salario = c(15000, 22000, 17500, 25000, 16000, 14000),
+  bono = c(1000, NA, 800, 1500, NA, 900)
+)
+empleados
+
+# Salario total y promedio de toda la empresa
+sum(empleados$salario)
+mean(empleados$salario)
+
+# Empleados de IT, ordenados por salario descendente
+empleados_it <- empleados[empleados$departamento == "IT", ]
+empleados_it[order(empleados_it$salario, decreasing = TRUE), ]
+
+# Reemplazar los NA de bono con 0 (asumimos que sin dato = no le tocó bono)
+empleados$bono[is.na(empleados$bono)] <- 0
+empleados
+
+# Compensación total (salario + bono) por fila con apply()
+empleados$compensacion_total <- apply(empleados[, c("salario", "bono")], 1, sum)
+empleados
+```
+
+`tapply(valores, grupo, funcion)` aplica una función **por grupo**, sin necesidad de dplyr todavía — es el equivalente en base R de `group_by()` + `summarize()`, que verás en el [capítulo 3](capitulo03_importacion_dplyr.md):
+
+```r
+promedio_por_depto <- tapply(empleados$compensacion_total, empleados$departamento, mean)
+promedio_por_depto
+names(promedio_por_depto)[which.max(promedio_por_depto)]
+```
+
+Vale la pena quedarse con esta comparación en la cabeza: `tapply()` resuelve en una línea lo que en dplyr se escribe como `group_by(departamento) %>% summarize(mean(compensacion_total))`. Ambos hacen exactamente lo mismo — dplyr solo lo hace más legible cuando encadenas varios pasos.
+
+## Ejercicios adicionales
+
+2. Usando `empleados`, calcula qué porcentaje de la compensación total de la empresa corresponde a cada departamento (usa `tapply()` y `sum()`).
+3. **Reto:** agrega una columna `antiguedad` (años en la empresa, inventa valores) a `empleados`. Usando `order()` con **dos** criterios (ver `?order`), ordena primero por departamento y luego por salario descendente dentro de cada departamento.
+
 ---
 
 [← Capítulo 2b](capitulo02b_matrices.md) · [Índice](../../README.md) · [Capítulo 3 →](capitulo03_importacion_dplyr.md)

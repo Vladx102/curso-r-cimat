@@ -138,3 +138,50 @@ colMeans(notas)     # atajo para promedios por columna
 #   e) toma `con_nulos` (del punto 5) y crea una versión `con_nulos_completo`
 #      donde el NA de `promedio` se reemplaza por la media de esa columna,
 #      igual que se hizo arriba con `edad`
+
+# =============================================================================
+# EJEMPLO ELABORADO: nómina de una empresa pequeña
+# =============================================================================
+
+empleados <- data.frame(
+  nombre = c("Ana", "Beto", "Carla", "Daniel", "Elena", "Fer"),
+  departamento = c("Ventas", "IT", "Ventas", "IT", "RH", "Ventas"),
+  salario = c(15000, 22000, 17500, 25000, 16000, 14000),
+  bono = c(1000, NA, 800, 1500, NA, 900)
+)
+empleados
+
+# Salario total y promedio de toda la empresa
+sum(empleados$salario)
+mean(empleados$salario)
+
+# Empleados de IT, ordenados por salario descendente
+empleados_it <- empleados[empleados$departamento == "IT", ]
+empleados_it[order(empleados_it$salario, decreasing = TRUE), ]
+
+# Reemplazar los NA de bono con 0 (asumimos que sin dato = no le tocó bono)
+empleados$bono[is.na(empleados$bono)] <- 0
+empleados
+
+# Compensación total (salario + bono) por fila con apply()
+empleados$compensacion_total <- apply(empleados[, c("salario", "bono")], 1, sum)
+empleados
+
+# tapply(valores, grupo, funcion): aplica una función POR GRUPO, sin
+# necesidad de dplyr todavía -- es el equivalente base R de group_by()+
+# summarize(), que verás en la sesión 3.
+promedio_por_depto <- tapply(empleados$compensacion_total, empleados$departamento, mean)
+promedio_por_depto
+names(promedio_por_depto)[which.max(promedio_por_depto)]
+
+# =============================================================================
+# EJERCICIOS ADICIONALES
+# =============================================================================
+
+# 2. Usando `empleados`, calcula qué porcentaje de la compensación total de
+#    la empresa corresponde a cada departamento (usa tapply() y sum()).
+
+# 3. (Reto) Agrega una columna `antiguedad` (años en la empresa, inventa
+#    valores) a `empleados`. Usando order() con DOS criterios (ver ?order),
+#    ordena primero por departamento y luego por salario descendente dentro
+#    de cada departamento.
