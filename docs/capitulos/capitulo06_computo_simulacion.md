@@ -223,8 +223,8 @@ ggplot(experimento, aes(x = grupo, y = tiempo, fill = grupo)) +
 t.test(tiempo ~ grupo, data = experimento)
 ```
 
-8. Cambia la media de `tiempo_B` a 44 (una diferencia más chica) y repite el `t.test()`. ¿Sigue siendo significativa la diferencia? ¿Qué pasó con el valor p?
-9. **Reto:** repite el experimento completo 500 veces (con `replicate()`) variando los datos simulados cada vez, y calcula en qué proporción de las repeticiones el `t.test()` detectó una diferencia significativa (`p < 0.05`) cuando las medias reales son 45 y 40 — esto es, informalmente, el "poder" de la prueba.
+8. Simula dos muestras normales `grupo_control` y `grupo_tratamiento` (n = 30 cada una) con una diferencia de medias pequeña (p. ej. 50 vs. 52) y usa `t.test()` para ver si la diferencia es significativa. Repite con una diferencia más grande (50 vs. 60): ¿cambia el valor p como esperabas?
+9. **Reto:** usando tus muestras simuladas del ejercicio 8, repite la simulación 500 veces (con `replicate()`) y calcula en qué proporción de las repeticiones el `t.test()` detecta una diferencia significativa (`p < 0.05`) — esto es, informalmente, el "poder" de la prueba.
 
 ---
 
