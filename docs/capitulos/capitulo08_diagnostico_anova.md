@@ -128,8 +128,8 @@ Si los coeficientes cambian poco al quitar las observaciones influyentes, el mod
 
 1. Usando `augment()`, identifica las 3 observaciones con mayor residuo absoluto de `modelo_multi`. ¿Qué tienen en común?
 2. **Reto:** ajusta dos modelos anidados — uno sin interacción (`hwy ~ displ + drv`) y otro con interacción (`hwy ~ displ * drv`). Compáralos con `anova()` y decide, con base en el p-value, si la interacción aporta información significativa.
-3. Usando `aug_multi`, grafica un histograma de los residuos (`.resid`) con ggplot2 y compáralo visualmente contra el resultado de `shapiro.test()`. ¿Coinciden tu impresión visual y la prueba formal?
-4. **Reto:** repite el análisis de observaciones influyentes pero para `modelo_interaccion` en vez de `modelo_multi`. ¿Cambia el número de observaciones influyentes?
+3. Ajusta `modelo_simple <- lm(hwy ~ displ, data = datos)`, corre `augment(modelo_simple)` y grafica un histograma de sus residuos (`.resid`) con ggplot2. Complementa con `shapiro.test()` sobre esos residuos. ¿Coinciden tu impresión visual y la prueba formal?
+4. **Reto:** usando `modelo_interaccion` (definido arriba), calcula `augment(modelo_interaccion)`, identifica las observaciones con distancia de Cook mayor a `4/n`, y ajusta un modelo sin esas observaciones. ¿Cambian mucho los coeficientes?
 
 ---
 

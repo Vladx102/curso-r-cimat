@@ -104,10 +104,12 @@ bind_rows(
   select(modelo, term, estimate) %>%
   pivot_wider(names_from = modelo, values_from = estimate)
 
-# 3. Usando aug_multi, grafica un histograma de los residuos (.resid) con
-#    ggplot2 y compáralo visualmente contra el resultado de shapiro.test().
-#    ¿Coinciden tu impresión visual y la prueba formal?
+# 3. Ajusta modelo_simple <- lm(hwy ~ displ, data = datos), corre
+#    augment(modelo_simple) y grafica un histograma de sus residuos
+#    (.resid) con ggplot2. Complementa con shapiro.test() sobre esos
+#    residuos. ¿Coinciden tu impresión visual y la prueba formal?
 
-# 4. (Reto) Repite el análisis de observaciones influyentes pero para
-#    modelo_interaccion en vez de modelo_multi. ¿Cambia el número de
-#    observaciones influyentes?
+# 4. (Reto) Usando modelo_interaccion (definido arriba), calcula
+#    augment(modelo_interaccion), identifica las observaciones con
+#    distancia de Cook mayor a 4/n, y ajusta un modelo sin esas
+#    observaciones. ¿Cambian mucho los coeficientes?
