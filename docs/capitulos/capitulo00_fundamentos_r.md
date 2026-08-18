@@ -205,23 +205,7 @@ a. la temperatura promedio de la semana
 b. cuántos días la temperatura fue mayor a 25°C
 c. un vector lógico que indique en qué días la temperatura estuvo entre 20°C y 28°C (inclusive)
 
-## Solución al ejercicio
-
-```r
-temperaturas <- c(22, 25, 28, 19, 31, 24, 27)
-
-# a) Temperatura promedio
-promedio <- mean(temperaturas)
-promedio
-
-# b) Días con más de 25°C
-sum(temperaturas > 25)          # sum() sobre un lógico cuenta los TRUE
-
-# c) Días entre 20°C y 28°C (inclusive)
-temperaturas >= 20 & temperaturas <= 28
-```
-
-El truco en el inciso (b) — `sum()` sobre un vector lógico — es un patrón que vas a repetir muchísimo en R: `TRUE` se trata como `1` y `FALSE` como `0`, así que sumar un vector lógico cuenta cuántos `TRUE` hay.
+Pista para el inciso (b): `sum()` sobre un vector lógico es un patrón que vas a repetir muchísimo en R — `TRUE` se trata como `1` y `FALSE` como `0`, así que sumar un vector lógico cuenta cuántos `TRUE` hay.
 
 ## Ejemplo: inventario de una tienda
 

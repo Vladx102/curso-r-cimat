@@ -195,22 +195,6 @@ installed.packages()[, "Package"] |> head(10)
 #      entre 20°C y 28°C (inclusive)
 
 # =============================================================================
-# SOLUCIÓN AL EJERCICIO
-# =============================================================================
-
-temperaturas <- c(22, 25, 28, 19, 31, 24, 27)
-
-# a) Temperatura promedio
-promedio <- mean(temperaturas)
-promedio
-
-# b) Días con más de 25°C
-sum(temperaturas > 25)          # sum() sobre un lógico cuenta los TRUE
-
-# c) Días entre 20°C y 28°C (inclusive)
-temperaturas >= 20 & temperaturas <= 28
-
-# =============================================================================
 # EJEMPLO: inventario de una tienda
 # =============================================================================
 # Combina vectores, aritmética, comparación y operadores lógicos en un solo

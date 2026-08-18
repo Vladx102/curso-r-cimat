@@ -28,3 +28,7 @@ Thumbs.db
 # Editor
 .vscode/
 *.Rproj.user
+
+# Soluciones de ejercicios (solo para el instructor, no se comparte con
+# los alumnos ni se sube al repo público/compartido del curso)
+soluciones/

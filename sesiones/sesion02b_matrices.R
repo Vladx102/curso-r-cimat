@@ -105,27 +105,6 @@ satisfaccion[1] < satisfaccion[2]   # "bajo" < "alto" -> TRUE, gracias al orden
 #      es mayor o igual a 60, y "no" en caso contrario
 
 # =============================================================================
-# SOLUCIÓN AL EJERCICIO
-# =============================================================================
-
-notas <- matrix(
-  c(85, 70, 90, 60, 55, 75, 95, 88, 92, 40, 45, 50),
-  nrow = 4, ncol = 3, byrow = TRUE
-)
-rownames(notas) <- paste0("alumno", 1:4)
-colnames(notas) <- paste0("examen", 1:3)
-notas
-
-promedio_alumno <- rowMeans(notas)
-promedio_alumno
-
-promedio_examen <- colMeans(notas)
-promedio_examen
-
-aprobado <- factor(ifelse(promedio_alumno >= 60, "sí", "no"))
-aprobado
-
-# =============================================================================
 # EJEMPLO: ventas mensuales por sucursal
 # =============================================================================
 
