@@ -76,10 +76,38 @@ tidy(modelo_relevel)
 
 Esto no cambia el ajuste del modelo — solo cambia respecto a qué categoría se interpretan los coeficientes.
 
+## Ejemplo elaborado: predicciones e interpretación completa de un modelo
+
+```r
+modelo_pred <- lm(hwy ~ displ + cyl, data = datos)
+tidy(modelo_pred, conf.int = TRUE)
+
+# Predecir hwy para un auto hipotético: displ = 3.5, cyl = 6
+auto_nuevo <- tibble(displ = 3.5, cyl = 6)
+predict(modelo_pred, newdata = auto_nuevo)
+```
+
+`predict()` con `interval = "confidence"` da el intervalo para el `hwy` **promedio** de autos con esas características; con `interval = "prediction"` da el intervalo para **un** auto individual con esas características — más ancho, porque suma la variabilidad de un auto en particular a la incertidumbre del promedio:
+
+```r
+predict(modelo_pred, newdata = auto_nuevo, interval = "confidence")
+predict(modelo_pred, newdata = auto_nuevo, interval = "prediction")
+```
+
+Y para comparar varios escenarios hipotéticos de un jalón, `newdata` puede ser un data frame de varias filas:
+
+```r
+autos_hipoteticos <- tibble(displ = c(2, 3, 4, 5), cyl = c(4, 6, 6, 8))
+autos_hipoteticos %>%
+  mutate(hwy_estimado = predict(modelo_pred, newdata = .))
+```
+
 ## Ejercicios
 
 1. Ajusta `lm(hwy ~ cty, data = datos)`. Interpreta la pendiente: ¿cuánto cambia `hwy` por cada unidad de `cty`?
 2. Agrega `year` como predictor adicional (como factor) a `modelo_multi`. ¿Es significativo? Revisa su p-value con `tidy()`.
+3. Usando `modelo_pred`, predice `hwy` para un auto con `displ = 6` y `cyl = 8`. Compara el intervalo de confianza y el de predicción — ¿cuál es más ancho? ¿Por qué crees que sea así?
+4. **Reto:** ajusta un modelo `hwy ~ displ + cyl + class` y predice `hwy` para un auto hipotético de clase `"suv"` con `displ = 4` y `cyl = 8`. ¿Cambia mucho la predicción respecto al modelo sin `class`?
 
 ---
 

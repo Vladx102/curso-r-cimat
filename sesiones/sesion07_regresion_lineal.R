@@ -66,3 +66,37 @@ tidy(modelo_relevel)
 
 # 2. Agrega `year` como predictor adicional (como factor) al modelo_multi.
 #    ¿Es significativo? Usa tidy() para revisar su p-value.
+
+# =============================================================================
+# EJEMPLO ELABORADO: predicciones e interpretación completa de un modelo
+# =============================================================================
+
+modelo_pred <- lm(hwy ~ displ + cyl, data = datos)
+tidy(modelo_pred, conf.int = TRUE)
+
+# Predecir hwy para un auto hipotético: displ = 3.5, cyl = 6
+auto_nuevo <- tibble(displ = 3.5, cyl = 6)
+predict(modelo_pred, newdata = auto_nuevo)
+
+# Intervalo de confianza (para el hwy PROMEDIO de autos con esas
+# características) vs. intervalo de predicción (para UN auto individual con
+# esas características, más ancho porque suma la variabilidad individual):
+predict(modelo_pred, newdata = auto_nuevo, interval = "confidence")
+predict(modelo_pred, newdata = auto_nuevo, interval = "prediction")
+
+# Comparar varios autos hipotéticos de un jalón
+autos_hipoteticos <- tibble(displ = c(2, 3, 4, 5), cyl = c(4, 6, 6, 8))
+autos_hipoteticos %>%
+  mutate(hwy_estimado = predict(modelo_pred, newdata = .))
+
+# =============================================================================
+# EJERCICIOS ADICIONALES
+# =============================================================================
+
+# 3. Usando modelo_pred, predice hwy para un auto con displ = 6 y cyl = 8.
+#    Compara el intervalo de confianza y el de predicción -- ¿cuál es más
+#    ancho? ¿Por qué crees que sea así?
+
+# 4. (Reto) Ajusta un modelo hwy ~ displ + cyl + class y predice hwy para
+#    un auto hipotético de clase "suv" con displ = 4 y cyl = 8. ¿Cambia
+#    mucho la predicción respecto al modelo sin class?
