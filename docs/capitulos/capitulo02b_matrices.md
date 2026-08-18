@@ -132,7 +132,7 @@ aprobado <- factor(ifelse(promedio_alumno >= 60, "sí", "no"))
 aprobado
 ```
 
-## Ejemplo elaborado: ventas mensuales por sucursal
+## Ejemplo: ventas mensuales por sucursal
 
 ```r
 ventas <- matrix(
@@ -167,9 +167,9 @@ proporcion <- total_sucursal / sum(ventas)
 round(proporcion * 100, 1)
 ```
 
-## Ejercicios adicionales
+## Ejercicios
 
-2. Usando `ventas` del ejemplo elaborado, calcula qué mes tuvo más ventas combinando **todas** las sucursales (usa `colSums()`).
+2. Usando `ventas` del ejemplo, calcula qué mes tuvo más ventas combinando **todas** las sucursales (usa `colSums()`).
 3. **Reto:** crea una matriz `temperaturas` de 3 ciudades × 4 estaciones del año con valores inventados. Usando `%*%`, multiplícala por un vector de pesos `c(0.25, 0.25, 0.25, 0.25)` para obtener, en una sola operación, el promedio anual ponderado de cada ciudad.
 
 ---

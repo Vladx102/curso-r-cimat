@@ -126,7 +126,7 @@ aprobado <- factor(ifelse(promedio_alumno >= 60, "sí", "no"))
 aprobado
 
 # =============================================================================
-# EJEMPLO ELABORADO: ventas mensuales por sucursal
+# EJEMPLO: ventas mensuales por sucursal
 # =============================================================================
 
 ventas <- matrix(
@@ -157,10 +157,10 @@ proporcion <- total_sucursal / sum(ventas)
 round(proporcion * 100, 1)
 
 # =============================================================================
-# EJERCICIOS ADICIONALES
+# EJERCICIOS
 # =============================================================================
 
-# 2. Usando `ventas` del ejemplo elaborado, calcula qué mes tuvo más ventas
+# 2. Usando `ventas` del ejemplo, calcula qué mes tuvo más ventas
 #    combinando TODAS las sucursales (usa colSums()).
 
 # 3. (Reto) Crea una matriz `temperaturas` de 3 ciudades x 4 estaciones del
