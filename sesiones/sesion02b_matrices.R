@@ -124,3 +124,46 @@ promedio_examen
 
 aprobado <- factor(ifelse(promedio_alumno >= 60, "sí", "no"))
 aprobado
+
+# =============================================================================
+# EJEMPLO ELABORADO: ventas mensuales por sucursal
+# =============================================================================
+
+ventas <- matrix(
+  c(120, 135, 150, 300, 280, 310, 90, 95, 100, 200, 210, 190),
+  nrow = 4, byrow = TRUE
+)
+rownames(ventas) <- c("Centro", "Norte", "Sur", "Poniente")
+colnames(ventas) <- c("Ene", "Feb", "Mar")
+ventas
+
+# Total por sucursal (por fila) y quién vendió más en el trimestre
+total_sucursal <- rowSums(ventas)
+total_sucursal
+rownames(ventas)[which.max(total_sucursal)]
+
+# Crecimiento de enero a marzo, por sucursal, como porcentaje
+crecimiento <- (ventas[, "Mar"] - ventas[, "Ene"]) / ventas[, "Ene"] * 100
+round(crecimiento, 1)
+
+# Clasificar sucursales por desempeño total con un factor ordenado
+desempeno <- ifelse(total_sucursal >= 600, "alta",
+              ifelse(total_sucursal >= 300, "media", "baja"))
+desempeno <- factor(desempeno, levels = c("baja", "media", "alta"), ordered = TRUE)
+data.frame(sucursal = rownames(ventas), total = total_sucursal, desempeno)
+
+# ¿Qué proporción de las ventas totales del trimestre aportó cada sucursal?
+proporcion <- total_sucursal / sum(ventas)
+round(proporcion * 100, 1)
+
+# =============================================================================
+# EJERCICIOS ADICIONALES
+# =============================================================================
+
+# 2. Usando `ventas` del ejemplo elaborado, calcula qué mes tuvo más ventas
+#    combinando TODAS las sucursales (usa colSums()).
+
+# 3. (Reto) Crea una matriz `temperaturas` de 3 ciudades x 4 estaciones del
+#    año con valores inventados. Usando %*%, multiplícala por un vector de
+#    pesos c(0.25, 0.25, 0.25, 0.25) para obtener, en una sola operación,
+#    el promedio anual ponderado de cada ciudad.
