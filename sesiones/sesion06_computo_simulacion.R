@@ -5,9 +5,10 @@
 #
 # Objetivo de la sesión (2h):
 #   Usar la familia d/p/q/r para trabajar con distribuciones, fijar semillas
-#   para reproducibilidad, simular experimentos con Monte Carlo, y generar
-#   datasets ficticios (fechas, categorías, IDs) para practicar sin depender
-#   de datos reales.
+#   para reproducibilidad, simular experimentos con Monte Carlo, generar
+#   datasets ficticios (fechas, categorías, IDs), resumir datos con las
+#   herramientas de estadística descriptiva de R (quantile, IQR, cor, cov),
+#   y dar el primer paso hacia inferencia con t.test().
 
 library(tidyverse)
 
@@ -101,6 +102,47 @@ datos_ficticios <- tibble(
 datos_ficticios
 table(datos_ficticios$categoria)          # verifica que las proporciones cuadran aprox.
 
+# -----------------------------------------------------------------------------
+# 5. Estadística descriptiva: resumen numérico
+# -----------------------------------------------------------------------------
+# Más allá de mean()/sd(), estas son las funciones que vas a usar todo el
+# tiempo para resumir una variable numérica.
+
+x <- mtcars$mpg
+
+summary(x)                            # resumen de 6 números: min, Q1, mediana, media, Q3, max
+quantile(x)                           # cuartiles (0%, 25%, 50%, 75%, 100%)
+quantile(x, probs = c(0.1, 0.9))      # cuantiles arbitrarios
+IQR(x)                                # rango intercuartílico: Q3 - Q1 (dispersión robusta)
+
+# cor()/cov(): relación ENTRE dos variables numéricas
+cor(mtcars$mpg, mtcars$hp)     # correlación de Pearson, entre -1 y 1
+cov(mtcars$mpg, mtcars$hp)     # covarianza (misma idea, sin normalizar a [-1, 1])
+
+# cor() sobre varias columnas a la vez da la matriz de correlaciones
+cor(mtcars[, c("mpg", "hp", "wt")])
+
+# -----------------------------------------------------------------------------
+# 6. Introducción a la inferencia: t.test()
+# -----------------------------------------------------------------------------
+# t.test() hace una prueba t y, de paso, regresa el intervalo de confianza
+# para la media: ya no hace falta calcularlo a mano con error_estandar().
+
+set.seed(2026)
+muestra <- rnorm(30, mean = 100, sd = 15)
+
+prueba <- t.test(muestra, mu = 95)   # H0: la media poblacional es 95
+prueba
+prueba$p.value          # valor p
+prueba$conf.int         # intervalo de confianza (95% por default)
+
+# Comparar dos grupos (dos muestras independientes):
+grupo1 <- rnorm(20, mean = 50, sd = 5)
+grupo2 <- rnorm(20, mean = 53, sd = 5)
+
+t.test(grupo1, grupo2, var.equal = TRUE)    # asumiendo varianzas iguales
+t.test(grupo1, grupo2, var.equal = FALSE)   # prueba de Welch (varianzas distintas; es el default)
+
 # =============================================================================
 # EJERCICIOS
 # =============================================================================
@@ -125,3 +167,12 @@ table(datos_ficticios$categoria)          # verifica que las proporciones cuadra
 #    fecha y una variable categórica) y n = 150 filas. Usa table()/
 #    prop.table() para verificar que las categorías respetan aproximadamente
 #    las probabilidades que definiste en el prob de sample().
+
+# 6. Usando mtcars$wt, calcula el resumen de 5 números (quantile()), el IQR,
+#    y determina si hay valores atípicos con la regla Q1 - 1.5*IQR /
+#    Q3 + 1.5*IQR. ¿Cuál es la correlación entre wt y mpg? ¿Tiene sentido
+#    el signo?
+
+# 7. Simula dos muestras normales con medias distintas (rnorm) y usa t.test()
+#    para probar si la diferencia de medias es significativa. Repite con
+#    medias iguales: ¿cambia el valor p como esperabas?

@@ -41,7 +41,7 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 | 3 | Importación y verbos de dplyr | `data.frame` vs. `tibble`; importación con readr · El pipe `%>%` · dplyr: `filter`, `select`, `mutate`, `arrange` · Manejo de cadenas con stringr (`str_detect`, `str_replace`, `str_split`...) |
 | 4 | Agregación, tidyr y ggplot2 | `group_by()` + `summarize()` · tidyr: `pivot_longer`/`wider`, joins · ggplot2: gramática de gráficos, geoms y facetas |
 | 5 | Proyectos reproducibles | Organización de proyectos y buenas prácticas · Quarto/R Markdown · Documentar y reutilizar funciones propias |
-| 6 | Cómputo estadístico y simulación | Distribuciones en R: familias d/p/q/r · Números aleatorios y semillas (`set.seed`) · Simulación Monte Carlo: ley de grandes números y TLC · Generar datasets ficticios (fechas, categorías, IDs) |
+| 6 | Cómputo estadístico y simulación | Distribuciones en R: familias d/p/q/r · Números aleatorios y semillas (`set.seed`) · Simulación Monte Carlo: ley de grandes números y TLC · Generar datasets ficticios (fechas, categorías, IDs) · Estadística descriptiva (`quantile`, `IQR`, `cor`, `cov`) · Introducción a inferencia con `t.test()` |
 | 7 | Regresión lineal | Fórmulas en R (`y ~ x`) · `lm()`: ajuste, `summary()` y coeficientes · Factores, niveles de referencia y contrastes |
 | 8 | Diagnóstico y ANOVA | Interacciones entre predictores · Diagnóstico de supuestos: residuos, `plot.lm()`, colinealidad · ANOVA y modelos anidados |
 | 9 | Modelos lineales generalizados | `glm()`: regresión logística y de Poisson · Selección de modelos: AIC/BIC, `step()` |

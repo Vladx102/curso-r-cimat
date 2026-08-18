@@ -7,7 +7,7 @@ Script de práctica: [`sesiones/sesion06_computo_simulacion.R`](../../sesiones/s
 
 ## Objetivo
 
-Usar la familia `d`/`p`/`q`/`r` para trabajar con distribuciones de probabilidad, fijar semillas para reproducibilidad, simular experimentos con Monte Carlo, y generar datasets ficticios para practicar sin depender de datos reales.
+Usar la familia `d`/`p`/`q`/`r` para trabajar con distribuciones de probabilidad, fijar semillas para reproducibilidad, simular experimentos con Monte Carlo, generar datasets ficticios, resumir datos con las herramientas de estadística descriptiva de R (`quantile`, `IQR`, `cor`, `cov`), y dar el primer paso hacia inferencia con `t.test()`.
 
 ```r
 library(tidyverse)
@@ -117,6 +117,55 @@ table(datos_ficticios$categoria)          # verifica que las proporciones cuadra
 
 El argumento `prob` de `sample()` controla qué tan probable es cada categoría; sin él, `sample()` asume que todas las opciones son igual de probables. Este mismo patrón — combinar `sample()`, fechas y funciones `r<dist>()` dentro de un `tibble()` — es el que vas a reutilizar más adelante para generar predictores antes de ajustar un modelo (sesiones 7 en adelante).
 
+## 5. Estadística descriptiva: resumen numérico
+
+Más allá de `mean()`/`sd()`, estas son las funciones que vas a usar todo el tiempo para resumir una variable numérica.
+
+```r
+x <- mtcars$mpg
+
+summary(x)                            # resumen de 6 números: min, Q1, mediana, media, Q3, max
+quantile(x)                           # cuartiles (0%, 25%, 50%, 75%, 100%)
+quantile(x, probs = c(0.1, 0.9))      # cuantiles arbitrarios
+IQR(x)                                # rango intercuartílico: Q3 - Q1 (dispersión robusta)
+```
+
+`cor()`/`cov()` describen la relación **entre dos** variables numéricas — covarianza y correlación de Pearson:
+
+```r
+cor(mtcars$mpg, mtcars$hp)     # correlación de Pearson, entre -1 y 1
+cov(mtcars$mpg, mtcars$hp)     # covarianza (misma idea, sin normalizar a [-1, 1])
+
+# cor() sobre varias columnas a la vez da la matriz de correlaciones
+cor(mtcars[, c("mpg", "hp", "wt")])
+```
+
+## 6. Introducción a la inferencia: t.test()
+
+`t.test()` hace una prueba t y, de paso, regresa el intervalo de confianza para la media — ya no hace falta calcularlo a mano con `error_estandar()`.
+
+```r
+set.seed(2026)
+muestra <- rnorm(30, mean = 100, sd = 15)
+
+prueba <- t.test(muestra, mu = 95)   # H0: la media poblacional es 95
+prueba
+prueba$p.value          # valor p
+prueba$conf.int         # intervalo de confianza (95% por default)
+```
+
+También sirve para comparar dos grupos (dos muestras independientes):
+
+```r
+grupo1 <- rnorm(20, mean = 50, sd = 5)
+grupo2 <- rnorm(20, mean = 53, sd = 5)
+
+t.test(grupo1, grupo2, var.equal = TRUE)    # asumiendo varianzas iguales
+t.test(grupo1, grupo2, var.equal = FALSE)   # prueba de Welch (varianzas distintas; es el default)
+```
+
+`var.equal = FALSE` (prueba de Welch) es el default de R porque asumir varianzas iguales cuando no lo son infla el error tipo I — cuando tengas duda, deja el default.
+
 ## Ejercicios
 
 1. Usando `qnorm()`, encuentra el valor crítico de una normal estándar para un intervalo de confianza del 90%.
@@ -124,6 +173,8 @@ El argumento `prob` de `sample()` controla qué tan probable es cada categoría;
 3. Escribe una función `intervalo_confianza_media(x, conf = 0.95)` que reciba un vector y regrese el intervalo de confianza para la media usando la aproximación normal: `media +/- z * error_estandar(x)`.
 4. **Reto:** repite la simulación del CLT del ejemplo 2 pero partiendo de una distribución uniforme (`runif`) y de una binomial con `p = 0.05` (muy asimétrica). ¿Con qué tamaño de muestra `n` empieza a verse razonablemente normal en cada caso?
 5. Genera tu propio dataset ficticio con al menos 4 columnas (incluyendo una fecha y una variable categórica) y `n = 150` filas. Usa `table()`/`prop.table()` para verificar que las categorías respetan aproximadamente las probabilidades que definiste en el `prob` de `sample()`.
+6. Usando `mtcars$wt`, calcula el resumen de 5 números (`quantile()`), el IQR, y determina si hay valores atípicos con la regla `Q1 - 1.5*IQR` / `Q3 + 1.5*IQR`. ¿Cuál es la correlación entre `wt` y `mpg`? ¿Tiene sentido el signo?
+7. Simula dos muestras normales con medias distintas (`rnorm`) y usa `t.test()` para probar si la diferencia de medias es significativa. Repite con medias iguales: ¿cambia el valor p como esperabas?
 
 ---
 
