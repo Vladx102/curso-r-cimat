@@ -116,6 +116,46 @@ La ventaja de este enfoque por capas es que puedes construir gráficos complejos
 3. Usa `pivot_wider()` sobre `datos %>% count(class, drv)` para obtener una tabla con clases como filas y tipos de tracción (`drv`) como columnas.
 4. **Reto:** reproduce con ggplot2 un gráfico de dispersión de `cty` vs. `hwy`, coloreado por `class`, con una línea de tendencia por clase (`geom_smooth(method = "lm")` dentro de `aes(color = class)`).
 
+## Ejemplo elaborado: eficiencia promedio por clase y tipo de tracción
+
+Combina `group_by()` con más de una variable, `pivot_wider()` y un gráfico de barras agrupado — un flujo de análisis exploratorio típico de principio a fin.
+
+```r
+resumen_completo <- datos %>%
+  group_by(class, drv) %>%
+  summarize(hwy_prom = mean(hwy), n = n(), .groups = "drop")
+resumen_completo
+```
+
+Agrupar por dos variables a la vez (`class`, `drv`) da una fila por cada combinación que sí existe en los datos — no todas las clases tienen los tres tipos de tracción, así que el resultado no es una tabla "completa".
+
+```r
+# Tabla ancha: una columna por tipo de tracción, más fácil de leer de un
+# vistazo que la versión larga de arriba
+resumen_completo %>%
+  select(class, drv, hwy_prom) %>%
+  pivot_wider(names_from = drv, values_from = hwy_prom)
+```
+
+```r
+# Gráfico de barras agrupado: una barra por combinación class x drv
+ggplot(resumen_completo, aes(x = class, y = hwy_prom, fill = drv)) +
+  geom_col(position = "dodge") +
+  labs(
+    title = "Eficiencia promedio en carretera por clase y tipo de tracción",
+    x = "Clase", y = "hwy promedio", fill = "Tracción"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+`position = "dodge"` es lo que separa las barras de cada `drv` en vez de apilarlas — el equivalente en ggplot2 de un gráfico de barras agrupado.
+
+## Ejercicios adicionales
+
+5. Repite el ejemplo elaborado pero agrupando por `manufacturer` en vez de `class`, y quédate solo con los 5 fabricantes con más modelos (`n()`) en el dataset.
+6. **Reto:** usa `pivot_longer()` sobre `mpg` para poner `cty` y `hwy` en una sola columna `tipo_millas` con su valor en `millas`, y grafica un boxplot de `millas` por `tipo_millas`, coloreado por esa misma variable.
+
 ---
 
 [← Capítulo 3](capitulo03_importacion_dplyr.md) · [Índice](../../README.md) · [Capítulo 5 →](capitulo05_proyectos_reproducibles.md)

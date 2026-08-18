@@ -96,3 +96,43 @@ ggplot(datos, aes(x = class, y = hwy)) +
 # 4. (Reto) Reproduce con ggplot2 un gráfico de dispersión de cty vs hwy,
 #    coloreado por class, con una línea de tendencia por clase
 #    (geom_smooth(method = "lm") dentro de aes(color = class)).
+
+# =============================================================================
+# EJEMPLO ELABORADO: eficiencia promedio por clase y tipo de tracción
+# =============================================================================
+# Combina group_by con más de una variable, pivot_wider y un gráfico de
+# barras agrupado -- un flujo de análisis exploratorio típico de principio
+# a fin.
+
+resumen_completo <- datos %>%
+  group_by(class, drv) %>%
+  summarize(hwy_prom = mean(hwy), n = n(), .groups = "drop")
+resumen_completo
+
+# Tabla ancha: una columna por tipo de tracción, más fácil de leer de un
+# vistazo que la versión larga de arriba
+resumen_completo %>%
+  select(class, drv, hwy_prom) %>%
+  pivot_wider(names_from = drv, values_from = hwy_prom)
+
+# Gráfico de barras agrupado: una barra por combinación class x drv
+ggplot(resumen_completo, aes(x = class, y = hwy_prom, fill = drv)) +
+  geom_col(position = "dodge") +
+  labs(
+    title = "Eficiencia promedio en carretera por clase y tipo de tracción",
+    x = "Clase", y = "hwy promedio", fill = "Tracción"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# =============================================================================
+# EJERCICIOS ADICIONALES
+# =============================================================================
+
+# 5. Repite el ejemplo elaborado pero agrupando por manufacturer en vez de
+#    class, y quédate solo con los 5 fabricantes con más modelos (n()) en
+#    el dataset.
+
+# 6. (Reto) Usa pivot_longer() sobre mpg para poner cty y hwy en una sola
+#    columna `tipo_millas` con su valor en `millas`, y grafica un boxplot
+#    de `millas` por `tipo_millas`, coloreado por esa misma variable.
