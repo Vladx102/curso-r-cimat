@@ -140,7 +140,7 @@ colMeans(notas)     # atajo para promedios por columna
 #      igual que se hizo arriba con `edad`
 
 # =============================================================================
-# EJEMPLO ELABORADO: nómina de una empresa pequeña
+# EJEMPLO: nómina de una empresa pequeña
 # =============================================================================
 
 empleados <- data.frame(
@@ -175,7 +175,7 @@ promedio_por_depto
 names(promedio_por_depto)[which.max(promedio_por_depto)]
 
 # =============================================================================
-# EJERCICIOS ADICIONALES
+# EJERCICIOS
 # =============================================================================
 
 # 2. Usando `empleados`, calcula qué porcentaje de la compensación total de

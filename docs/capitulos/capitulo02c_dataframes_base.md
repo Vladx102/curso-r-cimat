@@ -148,7 +148,7 @@ c. calcula, con `apply()`, el promedio de las columnas `mpg`, `hp` y `wt` sobre 
 d. exporta `autos_eficientes` a un archivo CSV llamado `autos_eficientes.csv` sin la columna de nombres de fila
 e. toma `con_nulos` (del punto 5) y crea una versión `con_nulos_completo` donde el `NA` de `promedio` se reemplaza por la media de esa columna, igual que se hizo arriba con `edad`
 
-## Ejemplo elaborado: nómina de una empresa pequeña
+## Ejemplo: nómina de una empresa pequeña
 
 ```r
 empleados <- data.frame(
@@ -186,7 +186,7 @@ names(promedio_por_depto)[which.max(promedio_por_depto)]
 
 Vale la pena quedarse con esta comparación en la cabeza: `tapply()` resuelve en una línea lo que en dplyr se escribe como `group_by(departamento) %>% summarize(mean(compensacion_total))`. Ambos hacen exactamente lo mismo — dplyr solo lo hace más legible cuando encadenas varios pasos.
 
-## Ejercicios adicionales
+## Ejercicios
 
 2. Usando `empleados`, calcula qué porcentaje de la compensación total de la empresa corresponde a cada departamento (usa `tapply()` y `sum()`).
 3. **Reto:** agrega una columna `antiguedad` (años en la empresa, inventa valores) a `empleados`. Usando `order()` con **dos** criterios (ver `?order`), ordena primero por departamento y luego por salario descendente dentro de cada departamento.
