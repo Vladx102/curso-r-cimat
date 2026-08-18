@@ -260,7 +260,7 @@ Nota cómo `producto[stock > 0 & precio == precio_max_disponible]` combina **dos
 
 ## Ejercicios
 
-2. Usando los vectores `producto`/`precio`/`stock` del ejemplo de arriba, encuentra qué productos están completamente agotados (`stock == 0`) y calcula qué porcentaje del catálogo representan.
+2. Crea tus propios vectores `articulo` (5 nombres) y `existencias` (5 cantidades, incluyendo al menos un 0) para un puesto de mercado. Encuentra cuántos artículos están agotados (`existencias == 0`) y qué porcentaje del catálogo representan.
 3. **Reto:** crea tus propios vectores `temperatura` (7 días) y `lluvia_mm` (7 días, mm de lluvia). Encuentra en cuántos días llovió (`lluvia_mm > 0`) **y** la temperatura fue menor a 20°C, usando un solo operador lógico.
 
 ---
