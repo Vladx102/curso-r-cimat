@@ -74,11 +74,58 @@ source("R/funciones.R")
 
 Esta función, `error_estandar()`, la vamos a reutilizar tal cual en el capítulo 6.
 
+## Ejemplo elaborado: un mini "kit" de funciones para reportar notas
+
+Buena práctica más allá de documentar: **validar** argumentos y **componer** funciones chicas en vez de escribir una función gigante que hace todo.
+
+```r
+#' Valida que un vector de calificaciones esté en el rango [0, 100]
+#' @param x vector numérico
+#' @return TRUE si es válido; si no, detiene la ejecución con un mensaje claro
+validar_calificaciones <- function(x) {
+  if (!is.numeric(x)) stop("`x` debe ser numérico")
+  if (any(x < 0 | x > 100, na.rm = TRUE)) stop("hay calificaciones fuera de [0, 100]")
+  TRUE
+}
+
+#' Clasifica calificaciones en letra
+#' @param x vector numérico de calificaciones
+#' @return vector de character con la letra correspondiente
+letra_calificacion <- function(x) {
+  validar_calificaciones(x)
+  ifelse(x >= 90, "A", ifelse(x >= 70, "B", ifelse(x >= 60, "C", "F")))
+}
+
+#' Genera un reporte resumido de un vector de calificaciones
+#' @param x vector numérico
+#' @param na.rm si se deben ignorar NAs al calcular el promedio
+#' @return una lista con promedio, letra_promedio y distribución de letras
+reporte_calificaciones <- function(x, na.rm = TRUE) {
+  validar_calificaciones(x)
+  prom <- mean(x, na.rm = na.rm)
+  list(
+    promedio = round(prom, 1),
+    letra_promedio = letra_calificacion(prom),
+    distribucion = table(letra_calificacion(x))
+  )
+}
+
+reporte_calificaciones(c(95, 82, 67, 58, 71, NA))
+```
+
+`reporte_calificaciones()` no repite la lógica de clasificación — la delega en `letra_calificacion()`, que a su vez delega la validación en `validar_calificaciones()`. Si mañana cambian los cortes de letra, solo tocas una función; si necesitas validar en otro lugar del proyecto, ya existe y es reutilizable. Y al usar `stop()`, un dato inválido falla con un mensaje claro en vez de producir un resultado silenciosamente incorrecto:
+
+```r
+# reporte_calificaciones(c(95, 150, 40))   # Error: hay calificaciones fuera de [0, 100]
+```
+
 ## Ejercicios
 
 1. Escribe una función `coef_variacion(x, na.rm = TRUE)` que regrese `sd(x) / mean(x)`, documentada con el mismo estilo que `error_estandar()`.
 2. Crea un archivo `R/funciones.R` con al menos dos funciones propias (puedes reutilizar `estandarizar()` y `resumen()` del capítulo 2) y cárgalas en un script nuevo con `source("R/funciones.R")`.
 3. Crea un proyecto de RStudio (`.Rproj`) con carpetas `data/`, `R/` y `outputs/`, y verifica que `getwd()` apunta a la raíz del proyecto sin usar `setwd()`.
+4. Agrega una función `resumen_texto(reporte)` que reciba la lista que regresa `reporte_calificaciones()` y construya un string legible como `"Promedio: 78.8 (C) -- distribución: A=1, B=1, C=1, F=1"` usando `paste()`.
+5. **Reto:** modifica `validar_calificaciones()` para que, en vez de `stop()`, regrese un vector lógico indicando **cuáles** elementos son inválidos (útil para poder filtrarlos en vez de detener el script por completo).
 
 ---
 

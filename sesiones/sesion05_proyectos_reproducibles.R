@@ -83,3 +83,58 @@ error_estandar(c(1, 2, 3, NA, 5))
 # 3. Crea un proyecto de RStudio (.Rproj) para el curso, con carpetas
 #    data/, R/ y outputs/, y verifica que getwd() apunta a la raíz del
 #    proyecto sin usar setwd().
+
+# =============================================================================
+# EJEMPLO ELABORADO: un mini "kit" de funciones para reportar notas
+# =============================================================================
+# Buena práctica más allá de documentar: VALIDAR argumentos y COMPONER
+# funciones chicas en vez de escribir una función gigante que hace todo.
+
+#' Valida que un vector de calificaciones esté en el rango [0, 100]
+#' @param x vector numérico
+#' @return TRUE si es válido; si no, detiene la ejecución con un mensaje claro
+validar_calificaciones <- function(x) {
+  if (!is.numeric(x)) stop("`x` debe ser numérico")
+  if (any(x < 0 | x > 100, na.rm = TRUE)) stop("hay calificaciones fuera de [0, 100]")
+  TRUE
+}
+
+#' Clasifica calificaciones en letra
+#' @param x vector numérico de calificaciones
+#' @return vector de character con la letra correspondiente
+letra_calificacion <- function(x) {
+  validar_calificaciones(x)
+  ifelse(x >= 90, "A", ifelse(x >= 70, "B", ifelse(x >= 60, "C", "F")))
+}
+
+#' Genera un reporte resumido de un vector de calificaciones
+#' @param x vector numérico
+#' @param na.rm si se deben ignorar NAs al calcular el promedio
+#' @return una lista con promedio, letra_promedio y distribución de letras
+reporte_calificaciones <- function(x, na.rm = TRUE) {
+  validar_calificaciones(x)
+  prom <- mean(x, na.rm = na.rm)
+  list(
+    promedio = round(prom, 1),
+    letra_promedio = letra_calificacion(prom),
+    distribucion = table(letra_calificacion(x))
+  )
+}
+
+reporte_calificaciones(c(95, 82, 67, 58, 71, NA))
+
+# Si le pasamos algo inválido, falla con un mensaje claro en vez de dar un
+# resultado silenciosamente incorrecto:
+# reporte_calificaciones(c(95, 150, 40))   # Error: hay calificaciones fuera de [0, 100]
+
+# =============================================================================
+# EJERCICIOS ADICIONALES
+# =============================================================================
+
+# 4. Agrega una función `resumen_texto(reporte)` que reciba la lista que
+#    regresa reporte_calificaciones() y construya un string legible como
+#    "Promedio: 78.8 (C) -- distribución: A=1, B=1, C=1, F=1" usando paste().
+
+# 5. (Reto) Modifica validar_calificaciones() para que, en vez de stop(),
+#    regrese un vector lógico indicando CUÁLES elementos son inválidos
+#    (útil para poder filtrarlos en vez de detener el script por completo).
