@@ -126,8 +126,8 @@ Extensión sugerida: 3-5 páginas renderizadas. Se evalúa reproducibilidad (el 
 
 1. Calcula la matriz de confusión y la exactitud del modelo del ejercicio 1 del capítulo 9 (`am ~ hp + wt` en `mtcars`), usando todos los datos como entrenamiento.
 2. **Reto:** implementa validación cruzada de 5 folds para ese mismo modelo logístico sobre `mtcars` y reporta la exactitud promedio.
-3. Usa `comparar_modelo_cv()` del ejemplo para evaluar un tercer modelo, `traccion_4wd ~ displ + class`, y decide cuál de los tres modelos (simple, completo, con `class`) tiene mejor exactitud promedio.
-4. **Reto:** modifica `comparar_modelo_cv()` para que además regrese la desviación estándar de las exactitudes entre folds (no solo el promedio) — un modelo con exactitud promedio similar pero menor variación entre folds es, en general, preferible.
+3. Escribe tu propia función `evaluar_cv(formula, datos, folds, k)` (que reciba la fórmula como argumento, para poder reutilizarla) y úsala para comparar tres modelos logísticos sobre `datos`: `traccion_4wd ~ displ`, `traccion_4wd ~ displ + cyl + hwy`, y `traccion_4wd ~ displ + class`. ¿Cuál tiene mejor exactitud promedio?
+4. **Reto:** modifica tu función `evaluar_cv()` para que además regrese la desviación estándar de las exactitudes entre folds (no solo el promedio) — un modelo con exactitud promedio similar pero menor variación entre folds es, en general, preferible.
 
 ## Fin del curso
 
