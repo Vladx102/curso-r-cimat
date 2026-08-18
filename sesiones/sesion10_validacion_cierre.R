@@ -65,6 +65,34 @@ tidy(modelo_final, conf.int = TRUE, exponentiate = TRUE) %>%
   theme_minimal()
 
 # =============================================================================
+# EJEMPLO ELABORADO: comparar dos modelos con validación cruzada
+# =============================================================================
+# La validación cruzada no es solo para reportar un número -- sirve para
+# DECIDIR entre modelos candidatos de forma más confiable que comparar su
+# ajuste sobre los mismos datos con los que se entrenaron.
+
+comparar_modelo_cv <- function(formula, datos, folds, k) {
+  exactitudes <- map_dbl(1:k, function(i) {
+    train_k <- datos[folds != i, ]
+    test_k <- datos[folds == i, ]
+    m <- glm(formula, data = train_k, family = binomial)
+    p <- predict(m, newdata = test_k, type = "response")
+    mean(if_else(p > 0.5, 1, 0) == test_k$traccion_4wd)
+  })
+  mean(exactitudes)
+}
+
+# Reutilizamos los mismos folds del ejemplo anterior para que la comparación
+# sea justa (los dos modelos se evalúan sobre exactamente los mismos splits)
+cv_simple <- comparar_modelo_cv(traccion_4wd ~ displ, datos, folds, k)
+cv_completo <- comparar_modelo_cv(traccion_4wd ~ displ + cyl + hwy + cty, datos, folds, k)
+
+tibble(
+  modelo = c("simple (displ)", "completo (displ+cyl+hwy+cty)"),
+  exactitud_cv = c(cv_simple, cv_completo)
+)
+
+# =============================================================================
 # MINI-PROYECTO INTEGRADOR (entrega del curso)
 # =============================================================================
 #
@@ -95,3 +123,12 @@ tidy(modelo_final, conf.int = TRUE, exponentiate = TRUE) %>%
 
 # 2. (Reto) Implementa validación cruzada de 5 folds para ese mismo modelo
 #    logístico sobre mtcars y reporta la exactitud promedio.
+
+# 3. Usa comparar_modelo_cv() del ejemplo elaborado para evaluar un tercer
+#    modelo, traccion_4wd ~ displ + class, y decide cuál de los tres
+#    modelos (simple, completo, con class) tiene mejor exactitud promedio.
+
+# 4. (Reto) Modifica comparar_modelo_cv() para que además regrese la
+#    desviación estándar de las exactitudes entre folds (no solo el
+#    promedio) -- un modelo con exactitud promedio similar pero menor
+#    variación entre folds es, en general, preferible.
