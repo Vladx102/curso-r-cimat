@@ -8,6 +8,26 @@ Esta guía es material de preparación, **no una sesión del curso**: complétal
 
 R y RStudio son **dos programas distintos**: R es el motor que ejecuta el código; RStudio es la interfaz que lo hace agradable de usar. Necesitas instalar ambos, en ese orden.
 
+### Un poco de historia
+
+R nació en 1993 en el Departamento de Estadística de la Universidad de Auckland, Nueva Zelanda, como un proyecto de los profesores **Ross Ihaka** y **Robert Gentleman** para enseñar estadística introductoria. El nombre "R" tiene doble origen: es un guiño al lenguaje que lo inspiró, **S** (desarrollado en los Laboratorios Bell en los años 70, y del cual R heredó gran parte de su sintaxis), y a la vez la inicial compartida por los nombres de sus creadores, Ross y Robert.
+
+Unos años más tarde, en 1995, R se liberó bajo la licencia GNU GPL como software libre, lo que permitió que cualquier persona pudiera revisar, modificar y redistribuir su código fuente. En 1997 se formó el **R Core Team** (el grupo que mantiene el lenguaje hasta hoy) y se creó **CRAN** (*Comprehensive R Archive Network*), el repositorio central de paquetes de R que sigue en uso. La versión 1.0 se publicó en el año 2000, y en 2003 se fundó la **R Foundation for Statistical Computing** para darle soporte institucional al proyecto.
+
+Desde entonces, R pasó de ser una herramienta académica de nicho a un estándar de facto en estadística aplicada, con un ecosistema que incluye el [tidyverse](https://www.tidyverse.org/) (el conjunto de paquetes que usamos en buena parte de este curso), RStudio/Posit como entorno de desarrollo, y herramientas de reportes reproducibles como R Markdown y Quarto.
+
+### ¿Por qué R? Su utilidad hoy
+
+A diferencia de un lenguaje de propósito general, R se diseñó desde el inicio *para hacer estadística* — eso se nota en detalles como que los vectores y las pruebas de hipótesis son ciudadanos de primera clase del lenguaje, no algo que hay que añadir con una librería externa. Algunas razones por las que sigue siendo relevante:
+
+- **El ecosistema de paquetes más grande del mundo para estadística.** CRAN aloja miles de paquetes revisados por pares para prácticamente cualquier técnica estadística que exista, desde modelos lineales hasta series de tiempo, análisis espacial o supervivencia.
+- **Estándar en investigación académica y bioestadística.** La mayoría de los artículos científicos con análisis estadístico reportan haber usado R; el proyecto [Bioconductor](https://www.bioconductor.org/) lo convirtió también en el estándar de facto en genómica y bioinformática.
+- **Visualización de datos de calidad de publicación.** ggplot2 (parte del tidyverse) es, para muchos, el estándar de facto para producir gráficos estadísticos claros y reproducibles.
+- **Reproducibilidad integrada.** R Markdown y Quarto permiten combinar código, resultados y texto en un solo documento que se regenera automáticamente — exactamente el flujo de trabajo que vas a practicar en la [sesión 5](capitulos/capitulo05_proyectos_reproducibles.md) de este curso.
+- **Uso en la industria además de la academia.** Bancos, farmacéuticas, aseguradoras y agencias de estadística oficial (incluido el INEGI en México) usan R para modelación estadística, junto con Python como las dos herramientas más comunes en ciencia de datos.
+
+Para el curso de Modelación Estadística que sigue a este, este último punto es la razón práctica: buena parte de la literatura y las herramientas de modelación estadística clásica (regresión, ANOVA, GLM, series de tiempo) siguen documentándose primero — o únicamente — en R.
+
 ## Instalación de R
 
 1. Ve a [cran.r-project.org](https://cran.r-project.org/).
