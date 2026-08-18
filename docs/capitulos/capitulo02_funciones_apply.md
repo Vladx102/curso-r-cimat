@@ -181,6 +181,54 @@ Aplicado a un data frame, obtienes una función por columna:
 sapply(mtcars[, c("mpg", "hp", "wt")], mean)
 ```
 
+## Ejemplo elaborado: procesar varios grupos con una función propia
+
+Un ejemplo que combina `NA`, control de flujo, función propia y la familia `apply` — el tipo de mini-pipeline que vas a construir seguido.
+
+```r
+grupo_A <- c(78, 92, NA, 55, 88)
+grupo_B <- c(60, NA, NA, 71, 45)
+grupo_C <- c(95, 89, 91, 84, 99)
+grupos <- list(A = grupo_A, B = grupo_B, C = grupo_C)
+
+# Función propia que resume un grupo: cuántos NA tiene, el promedio (sin
+# NA) y si el grupo "aprueba" en general (promedio >= 60). Si más de la
+# mitad del grupo son NA, no tiene sentido calcular un promedio confiable.
+resumen_grupo <- function(x) {
+  n_na <- sum(is.na(x))
+  prom <- mean(x, na.rm = TRUE)
+
+  if (n_na > length(x) / 2) {
+    return(c(n_na = n_na, promedio = NA, aprueba = NA))
+  }
+
+  aprueba <- if (prom >= 60) 1 else 0
+  c(n_na = n_na, promedio = round(prom, 1), aprueba = aprueba)
+}
+
+# Aplicar la función a cada grupo con sapply() -> una matriz, un grupo por columna
+resultado <- sapply(grupos, resumen_grupo)
+resultado
+```
+
+`sapply()` sobre una lista de vectores, donde cada llamada regresa un vector con nombres, simplifica el resultado a una **matriz** (una columna por grupo, una fila por estadístico) — es un patrón muy común para resumir varios conjuntos de datos de una sola vez.
+
+```r
+# ¿Cuántos grupos aprueban en total? (recorriendo el resultado con un for,
+# a propósito, para practicar control de flujo -- en la práctica usarías
+# sum() directamente sobre la fila "aprueba")
+total_aprueban <- 0
+for (nombre_grupo in colnames(resultado)) {
+  if (!is.na(resultado["aprueba", nombre_grupo]) &&
+      resultado["aprueba", nombre_grupo] == 1) {
+    total_aprueban <- total_aprueban + 1
+  }
+}
+total_aprueban
+```
+
+Nota el uso de `!is.na(...) && ...` en la condición del `if`: es exactamente el patrón de corto-circuito que viste en el capítulo 0 — si el primer resultado es `NA`, ni siquiera se evalúa la comparación `== 1`, evitando un error.
+
 ## Ejercicios
 
 1. Crea un vector `edades` con al menos 8 valores numéricos, incluyendo un `NA`. Calcula la media y la desviación estándar ignorando el `NA`.
@@ -191,6 +239,8 @@ sapply(mtcars[, c("mpg", "hp", "wt")], mean)
 6. Escribe una función `es_par(x)` que regrese `TRUE`/`FALSE` usando `return()` dentro de un `if`/`else` (en vez de dejar el retorno implícito).
 7. Reescribe el ejercicio 6 como función anónima con `\(x) ...` y úsala directamente dentro de un `sapply()` sobre el vector `1:10`.
 8. Escribe una función recursiva `fibonacci(n)` que regrese el n-ésimo número de Fibonacci (`fibonacci(1) = 1`, `fibonacci(2) = 1`, `fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)`). Compara el resultado con tu solución iterativa del ejercicio 4.
+9. Agrega `grupo_D <- c(NA, NA, NA, 70)` a la lista `grupos` del ejemplo elaborado y vuelve a correr `sapply(grupos, resumen_grupo)`. ¿Qué regresa para ese grupo? ¿Por qué?
+10. **Reto:** reescribe `resumen_grupo()` para que, en vez de un vector con nombres, regrese una **lista** con un elemento extra `posiciones_na` que sea el vector de posiciones (`which()`) donde hay `NA` en ese grupo.
 
 ---
 
