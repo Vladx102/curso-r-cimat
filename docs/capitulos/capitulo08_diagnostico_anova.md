@@ -87,7 +87,7 @@ modelo_anova <- lm(hwy ~ class, data = datos)
 anova(modelo_anova)
 ```
 
-## Ejemplo elaborado: diagnóstico completo y decisión informada
+## Ejemplo: diagnóstico completo y decisión informada
 
 ```r
 aug_multi <- augment(modelo_multi)

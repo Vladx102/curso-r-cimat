@@ -78,7 +78,7 @@ anova(modelo_anova)
 #    interacción aporta información significativa.
 
 # =============================================================================
-# EJEMPLO ELABORADO: diagnóstico completo y decisión informada
+# EJEMPLO: diagnóstico completo y decisión informada
 # =============================================================================
 
 aug_multi <- augment(modelo_multi)
@@ -103,10 +103,6 @@ bind_rows(
 ) %>%
   select(modelo, term, estimate) %>%
   pivot_wider(names_from = modelo, values_from = estimate)
-
-# =============================================================================
-# EJERCICIOS ADICIONALES
-# =============================================================================
 
 # 3. Usando aug_multi, grafica un histograma de los residuos (.resid) con
 #    ggplot2 y compáralo visualmente contra el resultado de shapiro.test().
