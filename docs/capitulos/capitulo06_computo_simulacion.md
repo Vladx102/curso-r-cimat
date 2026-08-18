@@ -183,7 +183,7 @@ t.test(grupo1, grupo2, var.equal = FALSE)   # prueba de Welch (varianzas distint
 6. Usando `mtcars$wt`, calcula el resumen de 5 números (`quantile()`), el IQR, y determina si hay valores atípicos con la regla `Q1 - 1.5*IQR` / `Q3 + 1.5*IQR`. ¿Cuál es la correlación entre `wt` y `mpg`? ¿Tiene sentido el signo?
 7. Simula dos muestras normales con medias distintas (`rnorm`) y usa `t.test()` para probar si la diferencia de medias es significativa. Repite con medias iguales: ¿cambia el valor p como esperabas?
 
-## Ejemplo elaborado: simular y analizar un experimento A/B
+## Ejemplo: simular y analizar un experimento A/B
 
 Combina simulación, estadística descriptiva y `t.test()` en un solo flujo: el tipo de análisis que harías con datos reales de un experimento.
 
@@ -222,8 +222,6 @@ ggplot(experimento, aes(x = grupo, y = tiempo, fill = grupo)) +
 ```r
 t.test(tiempo ~ grupo, data = experimento)
 ```
-
-## Ejercicios adicionales
 
 8. Cambia la media de `tiempo_B` a 44 (una diferencia más chica) y repite el `t.test()`. ¿Sigue siendo significativa la diferencia? ¿Qué pasó con el valor p?
 9. **Reto:** repite el experimento completo 500 veces (con `replicate()`) variando los datos simulados cada vez, y calcula en qué proporción de las repeticiones el `t.test()` detectó una diferencia significativa (`p < 0.05`) cuando las medias reales son 45 y 40 — esto es, informalmente, el "poder" de la prueba.

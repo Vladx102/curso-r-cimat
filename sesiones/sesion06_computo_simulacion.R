@@ -184,7 +184,7 @@ t.test(grupo1, grupo2, var.equal = FALSE)   # prueba de Welch (varianzas distint
 #    medias iguales: ¿cambia el valor p como esperabas?
 
 # =============================================================================
-# EJEMPLO ELABORADO: simular y analizar un experimento A/B
+# EJEMPLO: simular y analizar un experimento A/B
 # =============================================================================
 # Combina simulación, estadística descriptiva y t.test en un solo flujo: el
 # tipo de análisis que harías con datos reales de un experimento.
@@ -218,10 +218,6 @@ ggplot(experimento, aes(x = grupo, y = tiempo, fill = grupo)) +
 # notación de fórmula (variable ~ grupo) -- la misma notación y ~ x que vas
 # a usar con lm()/glm() a partir de la sesión 7.
 t.test(tiempo ~ grupo, data = experimento)
-
-# =============================================================================
-# EJERCICIOS ADICIONALES
-# =============================================================================
 
 # 8. Cambia la media de tiempo_B a 44 (una diferencia más chica) y repite
 #    el t.test(). ¿Sigue siendo significativa la diferencia? ¿Qué pasó con
