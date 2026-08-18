@@ -76,7 +76,7 @@ tidy(modelo_relevel)
 
 Esto no cambia el ajuste del modelo — solo cambia respecto a qué categoría se interpretan los coeficientes.
 
-## Ejemplo elaborado: predicciones e interpretación completa de un modelo
+## Ejemplo: predicciones e interpretación completa de un modelo
 
 ```r
 modelo_pred <- lm(hwy ~ displ + cyl, data = datos)

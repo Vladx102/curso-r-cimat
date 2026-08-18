@@ -68,7 +68,7 @@ tidy(modelo_relevel)
 #    ¿Es significativo? Usa tidy() para revisar su p-value.
 
 # =============================================================================
-# EJEMPLO ELABORADO: predicciones e interpretación completa de un modelo
+# EJEMPLO: predicciones e interpretación completa de un modelo
 # =============================================================================
 
 modelo_pred <- lm(hwy ~ displ + cyl, data = datos)
@@ -88,10 +88,6 @@ predict(modelo_pred, newdata = auto_nuevo, interval = "prediction")
 autos_hipoteticos <- tibble(displ = c(2, 3, 4, 5), cyl = c(4, 6, 6, 8))
 autos_hipoteticos %>%
   mutate(hwy_estimado = predict(modelo_pred, newdata = .))
-
-# =============================================================================
-# EJERCICIOS ADICIONALES
-# =============================================================================
 
 # 3. Usando modelo_pred, predice hwy para un auto con displ = 6 y cyl = 8.
 #    Compara el intervalo de confianza y el de predicción -- ¿cuál es más
