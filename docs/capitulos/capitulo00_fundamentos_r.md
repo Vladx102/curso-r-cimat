@@ -223,6 +223,42 @@ temperaturas >= 20 & temperaturas <= 28
 
 El truco en el inciso (b) — `sum()` sobre un vector lógico — es un patrón que vas a repetir muchísimo en R: `TRUE` se trata como `1` y `FALSE` como `0`, así que sumar un vector lógico cuenta cuántos `TRUE` hay.
 
+## Ejemplo elaborado: inventario de una tienda
+
+Un ejemplo que combina vectores, aritmética, comparación y operadores lógicos en un solo problema con más de un paso — así se ve un mini-análisis real, aunque sea chiquito.
+
+```r
+producto <- c("playera", "pantalon", "gorra", "sudadera", "calcetines")
+precio   <- c(250, 480, 150, 620, 60)
+stock    <- c(12, 3, 25, 0, 40)
+
+# Valor total del inventario (precio * cantidad, elemento por elemento)
+valor_por_producto <- precio * stock
+valor_por_producto
+valor_total <- sum(valor_por_producto)
+valor_total
+
+# ¿Qué productos están por agotarse (stock < 5) pero SÍ tienen existencia
+# (no están ya en 0)?
+por_agotarse <- stock < 5 & stock > 0
+producto[por_agotarse]
+
+# ¿Cuál es el producto más caro entre los que tienen stock disponible?
+producto[stock > 0][which.max(precio[stock > 0])]
+
+# Sube el precio 10% a todo excepto a los calcetines (el último producto)
+precio_nuevo <- precio
+precio_nuevo[-5] <- precio_nuevo[-5] * 1.10
+precio_nuevo
+```
+
+Nota cómo `producto[stock > 0][which.max(precio[stock > 0])]` encadena dos pasos de indexación: primero te quedas con los productos que tienen stock, y de esos te quedas con la posición del precio más alto. Este tipo de encadenamiento — indexar el resultado de otra indexación — es un patrón muy común una vez que te acostumbras a pensar en vectores en vez de loops.
+
+## Ejercicios adicionales
+
+2. Usando los vectores `producto`/`precio`/`stock` del ejemplo elaborado de arriba, encuentra qué productos están completamente agotados (`stock == 0`) y calcula qué porcentaje del catálogo representan.
+3. **Reto:** crea tus propios vectores `temperatura` (7 días) y `lluvia_mm` (7 días, mm de lluvia). Encuentra en cuántos días llovió (`lluvia_mm > 0`) **y** la temperatura fue menor a 20°C, usando un solo operador lógico.
+
 ---
 
 [Índice](../../README.md) · [Capítulo 1 →](capitulo01_vectores_tipos.md)

@@ -209,3 +209,44 @@ sum(temperaturas > 25)          # sum() sobre un lógico cuenta los TRUE
 
 # c) Días entre 20°C y 28°C (inclusive)
 temperaturas >= 20 & temperaturas <= 28
+
+# =============================================================================
+# EJEMPLO ELABORADO: inventario de una tienda
+# =============================================================================
+# Combina vectores, aritmética, comparación y operadores lógicos en un solo
+# problema con más de un paso -- así se ve un mini-análisis real.
+
+producto <- c("playera", "pantalon", "gorra", "sudadera", "calcetines")
+precio   <- c(250, 480, 150, 620, 60)
+stock    <- c(12, 3, 25, 0, 40)
+
+# Valor total del inventario (precio * cantidad, elemento por elemento)
+valor_por_producto <- precio * stock
+valor_por_producto
+valor_total <- sum(valor_por_producto)
+valor_total
+
+# ¿Qué productos están por agotarse (stock < 5) pero SÍ tienen existencia
+# (no están ya en 0)?
+por_agotarse <- stock < 5 & stock > 0
+producto[por_agotarse]
+
+# ¿Cuál es el producto más caro entre los que tienen stock disponible?
+producto[stock > 0][which.max(precio[stock > 0])]
+
+# Sube el precio 10% a todo excepto a los calcetines (el último producto)
+precio_nuevo <- precio
+precio_nuevo[-5] <- precio_nuevo[-5] * 1.10
+precio_nuevo
+
+# =============================================================================
+# EJERCICIOS ADICIONALES
+# =============================================================================
+
+# 2. Usando los vectores producto/precio/stock del ejemplo elaborado de
+#    arriba, encuentra qué productos están completamente agotados
+#    (stock == 0) y calcula qué porcentaje del catálogo representan.
+
+# 3. (Reto) Crea tus propios vectores `temperatura` (7 días) y `lluvia_mm`
+#    (7 días, mm de lluvia). Encuentra en cuántos días llovió (lluvia_mm > 0)
+#    Y la temperatura fue menor a 20°C, usando un solo operador lógico.
