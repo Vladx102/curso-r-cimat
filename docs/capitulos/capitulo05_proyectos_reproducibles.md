@@ -74,7 +74,7 @@ source("R/funciones.R")
 
 Esta función, `error_estandar()`, la vamos a reutilizar tal cual en el capítulo 6.
 
-## Ejemplo elaborado: un mini "kit" de funciones para reportar notas
+## Ejemplo: un mini "kit" de funciones para reportar notas
 
 Buena práctica más allá de documentar: **validar** argumentos y **componer** funciones chicas en vez de escribir una función gigante que hace todo.
 

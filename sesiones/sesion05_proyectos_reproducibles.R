@@ -85,7 +85,7 @@ error_estandar(c(1, 2, 3, NA, 5))
 #    proyecto sin usar setwd().
 
 # =============================================================================
-# EJEMPLO ELABORADO: un mini "kit" de funciones para reportar notas
+# EJEMPLO: un mini "kit" de funciones para reportar notas
 # =============================================================================
 # Buena práctica más allá de documentar: VALIDAR argumentos y COMPONER
 # funciones chicas en vez de escribir una función gigante que hace todo.
@@ -126,10 +126,6 @@ reporte_calificaciones(c(95, 82, 67, 58, 71, NA))
 # Si le pasamos algo inválido, falla con un mensaje claro en vez de dar un
 # resultado silenciosamente incorrecto:
 # reporte_calificaciones(c(95, 150, 40))   # Error: hay calificaciones fuera de [0, 100]
-
-# =============================================================================
-# EJERCICIOS ADICIONALES
-# =============================================================================
 
 # 4. Agrega una función `resumen_texto(reporte)` que reciba la lista que
 #    regresa reporte_calificaciones() y construya un string legible como
