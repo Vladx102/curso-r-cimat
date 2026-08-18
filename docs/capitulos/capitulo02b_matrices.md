@@ -169,7 +169,7 @@ round(proporcion * 100, 1)
 
 ## Ejercicios
 
-2. Usando `ventas` del ejemplo, calcula qué mes tuvo más ventas combinando **todas** las sucursales (usa `colSums()`).
+2. Crea tu propia matriz `produccion` de 3 fábricas (filas) × 4 trimestres (columnas) con valores inventados. Calcula qué trimestre tuvo más producción combinando **todas** las fábricas (usa `colSums()`).
 3. **Reto:** crea una matriz `temperaturas` de 3 ciudades × 4 estaciones del año con valores inventados. Usando `%*%`, multiplícala por un vector de pesos `c(0.25, 0.25, 0.25, 0.25)` para obtener, en una sola operación, el promedio anual ponderado de cada ciudad.
 
 ---

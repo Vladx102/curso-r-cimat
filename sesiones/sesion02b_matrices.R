@@ -160,8 +160,9 @@ round(proporcion * 100, 1)
 # EJERCICIOS
 # =============================================================================
 
-# 2. Usando `ventas` del ejemplo, calcula qué mes tuvo más ventas
-#    combinando TODAS las sucursales (usa colSums()).
+# 2. Crea tu propia matriz `produccion` de 3 fábricas (filas) x 4 trimestres
+#    (columnas) con valores inventados. Calcula qué trimestre tuvo más
+#    producción combinando TODAS las fábricas (usa colSums()).
 
 # 3. (Reto) Crea una matriz `temperaturas` de 3 ciudades x 4 estaciones del
 #    año con valores inventados. Usando %*%, multiplícala por un vector de
