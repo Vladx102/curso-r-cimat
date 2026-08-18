@@ -95,7 +95,7 @@ Un efecto colateral de la vectorización es el **reciclaje**: si operas entre ve
 c(1, 2, 3, 4) + c(1, 2)          # se recicla c(1,2) -> c(1,2,1,2)
 ```
 
-## Ejemplo elaborado: calificaciones de un grupo
+## Ejemplo: calificaciones de un grupo
 
 Un problema con varios pasos que combina tipos, vectores, indexación y vectorización — el tipo de cosa que vas a hacer todo el tiempo en R.
 
@@ -138,7 +138,7 @@ Los `ifelse()` anidados son el equivalente vectorizado de una cadena de `if`/`el
    }
    ```
 
-4. Usando `calif` del ejemplo elaborado, calcula cuántos alumnos están a menos de 5 puntos de subir de letra (por ejemplo, un 88 está a 2 puntos de "A"). Pista: compara `calif` contra los cortes 90, 70 y 60 con indexación lógica.
+4. Usando `calif` del ejemplo, calcula cuántos alumnos están a menos de 5 puntos de subir de letra (por ejemplo, un 88 está a 2 puntos de "A"). Pista: compara `calif` contra los cortes 90, 70 y 60 con indexación lógica.
 5. **Reto:** sin usar `ifelse()` ni `for`, calcula cuántos alumnos tienen una calificación que es múltiplo de 5 (usa `%%` y `sum()` sobre un lógico).
 
 ---

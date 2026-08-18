@@ -88,7 +88,7 @@ v^2
 c(1, 2, 3, 4) + c(1, 2)          # se recicla c(1,2) -> c(1,2,1,2)
 
 # =============================================================================
-# EJEMPLO ELABORADO: calificaciones de un grupo
+# EJEMPLO: calificaciones de un grupo
 # =============================================================================
 # Un problema con varios pasos que combina tipos, vectores, indexación y
 # vectorización -- el tipo de cosa que vas a hacer todo el tiempo en R.
@@ -130,7 +130,7 @@ calif_ajustada
 #      if (i %% 3 == 0 || i %% 5 == 0) resultado <- c(resultado, i)
 #    }
 
-# 4. Usando `calif` del ejemplo elaborado, calcula cuántos alumnos están a
+# 4. Usando `calif` del ejemplo, calcula cuántos alumnos están a
 #    menos de 5 puntos de subir de letra (p.ej. un 88 está a 2 puntos de "A").
 #    Pista: compara calif contra los cortes 90, 70 y 60 con indexación lógica.
 
