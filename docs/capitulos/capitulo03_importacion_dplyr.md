@@ -7,7 +7,7 @@ Script de práctica: [`sesiones/sesion03_importacion_dplyr.R`](../../sesiones/se
 
 ## Objetivo
 
-Distinguir `data.frame` de `tibble`, importar datos con readr, y dominar `filter()`/`select()`/`mutate()`/`arrange()` encadenados con el pipe. A partir de aquí el curso se mueve al ecosistema **tidyverse**.
+Distinguir `data.frame` de `tibble`, importar datos con readr, dominar `filter()`/`select()`/`mutate()`/`arrange()` encadenados con el pipe, y manejar cadenas de texto con stringr. A partir de aquí el curso se mueve al ecosistema **tidyverse**.
 
 ```r
 library(tidyverse)
@@ -98,11 +98,49 @@ datos %>%
 
 Cada línea del pipeline se lee como un paso independiente — esto hace que el código de dplyr sea, en general, más fácil de leer y depurar que el equivalente en indexación base de R.
 
+## 5. Manejo de cadenas con stringr
+
+**stringr** (parte del tidyverse) da funciones consistentes para trabajar con texto: todas empiezan con `str_` y reciben primero el vector de texto, como el resto del tidyverse. Base R tiene equivalentes (`paste`, `substr`, `toupper`, `gsub`...), pero stringr es más predecible y legible.
+
+```r
+nombres <- c("  Ana García", "luis PEREZ", "Marta lopez ")
+
+str_trim(nombres)                  # quita espacios al inicio/final
+str_to_lower(nombres)              # minúsculas
+str_to_upper(nombres)              # MAYÚSCULAS
+str_to_title(str_trim(nombres))    # Formato Título
+
+str_length(nombres)                       # número de caracteres
+str_detect(nombres, "PEREZ")              # ¿contiene el patrón? (vector lógico)
+str_replace(nombres, "lopez", "López")    # reemplaza la primera coincidencia
+str_split(str_trim(nombres), " ")         # separa por espacio -> lista de vectores
+```
+
+`paste()`/`paste0()` son de base R pero se usan constantemente, incluso en código tidyverse, para construir texto:
+
+```r
+paste("Hola", "mundo")             # "Hola mundo" (separador " " por default)
+paste0("ID-", 1:3)                 # "ID-1" "ID-2" "ID-3" (sin separador)
+```
+
+Aplicado a un data frame real — `manufacturer` y `model` en `mpg` son columnas de texto:
+
+```r
+datos %>%
+  mutate(
+    manufacturer = str_to_title(manufacturer),
+    es_toyota    = str_detect(manufacturer, "Toyota")
+  ) %>%
+  select(manufacturer, model, es_toyota) %>%
+  distinct()
+```
+
 ## Ejercicios
 
 1. Filtra `mpg` con `cyl == 4` y selecciona solo `manufacturer`, `model`, `cty`, `hwy`.
 2. Usa `mutate()` para crear una columna `hwy_km` = `hwy * 1.60934` (millas a kilómetros) y ordénala de mayor a menor.
 3. Encadena `filter() %>% select() %>% arrange()` en una sola expresión con el pipe, usando una condición y columnas de tu elección.
+4. Usando stringr, crea una columna nueva `model_mayus` con el nombre del modelo en mayúsculas, y filtra solo los renglones donde `model` contenga la letra `"x"` (usa `str_detect()` con `ignore_case` si hace falta).
 
 ---
 

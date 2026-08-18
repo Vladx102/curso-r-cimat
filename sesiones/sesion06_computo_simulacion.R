@@ -5,7 +5,9 @@
 #
 # Objetivo de la sesión (2h):
 #   Usar la familia d/p/q/r para trabajar con distribuciones, fijar semillas
-#   para reproducibilidad, y simular experimentos con Monte Carlo.
+#   para reproducibilidad, simular experimentos con Monte Carlo, y generar
+#   datasets ficticios (fechas, categorías, IDs) para practicar sin depender
+#   de datos reales.
 
 library(tidyverse)
 
@@ -75,6 +77,30 @@ tibble(medias) %>%
   labs(title = "CLT: distribución de medias muestrales de Exp(1)", x = "media muestral") +
   theme_minimal()
 
+# -----------------------------------------------------------------------------
+# 4. Generar datos ficticios para practicar
+# -----------------------------------------------------------------------------
+# No siempre necesitas un dataset real para practicar dplyr/ggplot2: puedes
+# construir uno ficticio combinando sample(), fechas y las funciones r<dist>()
+# ya vistas. Útil para tener datos "de mentira" con la forma que quieras.
+
+set.seed(42)
+n <- 200
+
+datos_ficticios <- tibble(
+  id        = sprintf("ID%03d", 1:n),                                    # identificador secuencial
+  fecha     = sample(seq(as.Date("2024-01-01"), as.Date("2024-12-31"),
+                          by = "day"), n, replace = TRUE),                # fechas aleatorias en un rango
+  categoria = sample(c("A", "B", "C"), n, replace = TRUE,
+                      prob = c(0.5, 0.3, 0.2)),                          # categorías con probabilidades distintas
+  cliente   = sample(c("Ana", "Luis", "Marta", "Iván", "Sofía"), n,
+                      replace = TRUE),                                   # nombres ficticios (con repetición)
+  monto     = round(rgamma(n, shape = 2, rate = 0.1), 2)                 # numérica asimétrica (p.ej. montos de compra)
+)
+
+datos_ficticios
+table(datos_ficticios$categoria)          # verifica que las proporciones cuadran aprox.
+
 # =============================================================================
 # EJERCICIOS
 # =============================================================================
@@ -94,3 +120,8 @@ tibble(medias) %>%
 #    distribución uniforme (runif) y de una binomial con p = 0.05
 #    (muy asimétrica). ¿Con qué tamaño de muestra n empieza a verse
 #    razonablemente normal en cada caso?
+
+# 5. Genera tu propio dataset ficticio con al menos 4 columnas (incluyendo una
+#    fecha y una variable categórica) y n = 150 filas. Usa table()/
+#    prop.table() para verificar que las categorías respetan aproximadamente
+#    las probabilidades que definiste en el prob de sample().

@@ -4,8 +4,9 @@
 # =============================================================================
 #
 # Objetivo de la sesión (2h):
-#   Distinguir data.frame de tibble, importar datos con readr y dominar
-#   filter/select/mutate/arrange encadenados con el pipe.
+#   Distinguir data.frame de tibble, importar datos con readr, dominar
+#   filter/select/mutate/arrange encadenados con el pipe, y manejar cadenas
+#   de texto con stringr.
 
 # install.packages("tidyverse")   # ejecutar una sola vez si falta
 library(tidyverse)
@@ -75,6 +76,39 @@ datos %>%
   select(manufacturer, model, cyl, hwy) %>%
   arrange(desc(hwy))
 
+# -----------------------------------------------------------------------------
+# 5. Manejo de cadenas con stringr
+# -----------------------------------------------------------------------------
+# stringr (parte del tidyverse) da funciones consistentes para texto: todas
+# empiezan con str_ y reciben primero el vector de texto, como el resto del
+# tidyverse. Base R tiene equivalentes (paste, substr, toupper, gsub...),
+# pero stringr es más predecible y legible.
+
+nombres <- c("  Ana García", "luis PEREZ", "Marta lopez ")
+
+str_trim(nombres)                  # quita espacios al inicio/final
+str_to_lower(nombres)              # minúsculas
+str_to_upper(nombres)              # MAYÚSCULAS
+str_to_title(str_trim(nombres))    # Formato Título
+
+str_length(nombres)                # número de caracteres
+str_detect(nombres, "PEREZ")       # ¿contiene el patrón? (vector lógico)
+str_replace(nombres, "lopez", "López")  # reemplaza la primera coincidencia
+str_split(str_trim(nombres), " ")  # separa por espacio -> lista de vectores
+
+# paste()/paste0() (base R) para construir texto, muy usado en cualquier caso:
+paste("Hola", "mundo")             # "Hola mundo" (separador " " por default)
+paste0("ID-", 1:3)                 # "ID-1" "ID-2" "ID-3" (sin separador)
+
+# Aplicado a un data frame real: manufacturer/model de mpg son texto.
+datos %>%
+  mutate(
+    manufacturer = str_to_title(manufacturer),
+    es_toyota    = str_detect(manufacturer, "Toyota")
+  ) %>%
+  select(manufacturer, model, es_toyota) %>%
+  distinct()
+
 # =============================================================================
 # EJERCICIOS
 # =============================================================================
@@ -86,3 +120,7 @@ datos %>%
 
 # 3. Encadena filter() %>% select() %>% arrange() en una sola expresión con
 #    el pipe, usando una condición y columnas de tu elección.
+
+# 4. Usando stringr, crea una columna nueva `model_mayus` con el nombre del
+#    modelo en mayúsculas, y filtra solo los renglones donde `model`
+#    contenga la letra "x" (usa str_detect() con ignore_case si hace falta).

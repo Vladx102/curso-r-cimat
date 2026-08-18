@@ -8,7 +8,7 @@ Script de práctica: [`sesiones/sesion00_fundamentos_r.R`](../../sesiones/sesion
 
 ## Objetivo
 
-Este capítulo es el punto de entrada más básico del curso: aritmética, variables, tipos de datos, un primer vistazo a vectores, operadores de comparación, y cómo usar la ayuda integrada de R. El [capítulo 1](capitulo01_vectores_tipos.md) retoma vectores y tipos de datos con más profundidad y a mayor ritmo — si ya tienes experiencia programando, puedes avanzar directo a ese capítulo y usar este como referencia.
+Este capítulo es el punto de entrada más básico del curso: aritmética, variables, tipos de datos, un primer vistazo a vectores, operadores de comparación, cómo usar la ayuda integrada de R, e instalar/cargar librerías. El [capítulo 1](capitulo01_vectores_tipos.md) retoma vectores y tipos de datos con más profundidad y a mayor ritmo — si ya tienes experiencia programando, puedes avanzar directo a ese capítulo y usar este como referencia.
 
 ## 1. Operaciones aritméticas
 
@@ -135,6 +135,32 @@ example(mean)         # corre los ejemplos de la documentación
 ```
 
 `?` es tu primer recurso cuando no sabes qué argumentos acepta una función; `??` cuando ni siquiera sabes cómo se llama la función que buscas.
+
+## 9. Instalar y cargar librerías (paquetes)
+
+R base trae muchas funciones (`mean`, `sum`, `class`...), pero la mayor parte de su poder está en **paquetes**: colecciones de funciones adicionales que instalas una vez y cargas cada sesión. **CRAN** (*Comprehensive R Archive Network*) es el repositorio oficial de paquetes de R.
+
+```r
+# install.packages() descarga e instala un paquete desde CRAN.
+# Se hace UNA SOLA VEZ por computadora, no en cada sesión:
+install.packages("tidyverse")
+
+# library() carga un paquete YA instalado en la sesión actual.
+# A diferencia de install.packages(), esto sí hay que hacerlo cada vez
+# que abres R:
+library(tidyverse)
+
+# Ver qué paquetes ya tienes instalados:
+installed.packages()[, "Package"] |> head(10)
+```
+
+`require()` hace lo mismo que `library()`, pero regresa `FALSE` en vez de dar error si el paquete no existe — útil dentro de funciones o scripts que necesitan comprobar disponibilidad antes de usar un paquete:
+
+```r
+if (!require("tidyverse")) install.packages("tidyverse")
+```
+
+En este curso no necesitas instalar paquetes uno por uno: [`install.R`](../../install.R), en la raíz del proyecto, ya instala de una vez todos los que se usan más adelante. Basta con correr `source("install.R")` al terminar la [guía de instalación](../instalacion.md).
 
 ## Ejercicio
 

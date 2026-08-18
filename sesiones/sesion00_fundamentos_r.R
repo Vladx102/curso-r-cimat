@@ -5,9 +5,10 @@
 #
 # Objetivo de la sesión (2h):
 #   Primer contacto con la sintaxis de R: operaciones aritméticas, variables,
-#   tipos de datos, un primer vistazo a vectores, operadores de comparación
-#   y cómo usar la ayuda/documentación integrada. La sesión 1 retoma
-#   vectores y tipos de datos con mayor profundidad y a mayor ritmo.
+#   tipos de datos, un primer vistazo a vectores, operadores de comparación,
+#   cómo usar la ayuda/documentación integrada, e instalar/cargar librerías
+#   (paquetes). La sesión 1 retoma vectores y tipos de datos con mayor
+#   profundidad y a mayor ritmo.
 
 # -----------------------------------------------------------------------------
 # 1. Operaciones aritméticas
@@ -122,6 +123,33 @@ example(mean)         # corre los ejemplos de la documentación
 
 # Cuando no recuerdas el nombre exacto de una función:
 ??"media"            # busca en toda la documentación instalada
+
+# -----------------------------------------------------------------------------
+# 9. Instalar y cargar librerías (paquetes)
+# -----------------------------------------------------------------------------
+# R base trae muchas funciones (mean, sum, class...), pero la mayor parte de
+# su poder está en paquetes: colecciones de funciones adicionales que
+# instalas una vez y cargas cada sesión. CRAN (Comprehensive R Archive
+# Network) es el repositorio oficial de paquetes.
+
+# install.packages() descarga e instala un paquete desde CRAN.
+# Solo se hace UNA VEZ por computadora (no en cada sesión):
+# install.packages("tidyverse")
+
+# library() carga un paquete YA instalado en la sesión actual. A diferencia
+# de install.packages(), esto sí hay que hacerlo cada vez que abres R:
+# library(tidyverse)
+
+# Ver qué paquetes ya tienes instalados:
+installed.packages()[, "Package"] |> head(10)
+
+# require() hace lo mismo que library(), pero regresa FALSE en vez de dar
+# error si el paquete no existe — útil dentro de funciones/scripts que
+# necesitan comprobar si algo está disponible antes de usarlo.
+# if (!require("tidyverse")) install.packages("tidyverse")
+
+# En este curso, install.R (en la raíz del proyecto) ya instala de una vez
+# todos los paquetes necesarios: basta correr source("install.R") al inicio.
 
 # =============================================================================
 # EJERCICIO

@@ -7,7 +7,7 @@ Script de práctica: [`sesiones/sesion06_computo_simulacion.R`](../../sesiones/s
 
 ## Objetivo
 
-Usar la familia `d`/`p`/`q`/`r` para trabajar con distribuciones de probabilidad, fijar semillas para reproducibilidad, y simular experimentos con Monte Carlo.
+Usar la familia `d`/`p`/`q`/`r` para trabajar con distribuciones de probabilidad, fijar semillas para reproducibilidad, simular experimentos con Monte Carlo, y generar datasets ficticios para practicar sin depender de datos reales.
 
 ```r
 library(tidyverse)
@@ -92,12 +92,38 @@ tibble(medias) %>%
 
 El Teorema del Límite Central se entiende mucho mejor simulándolo, viendo el histograma converger a una campana, que memorizando su enunciado formal.
 
+## 4. Generar datos ficticios para practicar
+
+No siempre necesitas un dataset real para practicar dplyr o ggplot2: puedes construir uno ficticio combinando `sample()`, secuencias de fechas y las funciones `r<dist>()` que ya viste. Es la manera más rápida de tener datos "de mentira" con exactamente la forma que quieras (tipos de columna, proporciones de categorías, tamaño de muestra).
+
+```r
+set.seed(42)
+n <- 200
+
+datos_ficticios <- tibble(
+  id        = sprintf("ID%03d", 1:n),                                    # identificador secuencial
+  fecha     = sample(seq(as.Date("2024-01-01"), as.Date("2024-12-31"),
+                          by = "day"), n, replace = TRUE),                # fechas aleatorias en un rango
+  categoria = sample(c("A", "B", "C"), n, replace = TRUE,
+                      prob = c(0.5, 0.3, 0.2)),                          # categorías con probabilidades distintas
+  cliente   = sample(c("Ana", "Luis", "Marta", "Iván", "Sofía"), n,
+                      replace = TRUE),                                   # nombres ficticios (con repetición)
+  monto     = round(rgamma(n, shape = 2, rate = 0.1), 2)                 # numérica asimétrica (p.ej. montos de compra)
+)
+
+datos_ficticios
+table(datos_ficticios$categoria)          # verifica que las proporciones cuadran aprox.
+```
+
+El argumento `prob` de `sample()` controla qué tan probable es cada categoría; sin él, `sample()` asume que todas las opciones son igual de probables. Este mismo patrón — combinar `sample()`, fechas y funciones `r<dist>()` dentro de un `tibble()` — es el que vas a reutilizar más adelante para generar predictores antes de ajustar un modelo (sesiones 7 en adelante).
+
 ## Ejercicios
 
 1. Usando `qnorm()`, encuentra el valor crítico de una normal estándar para un intervalo de confianza del 90%.
 2. Simula 10,000 lanzamientos de un dado justo (`sample(1:6, ...)`) y verifica con una tabla (`table()`/`prop.table()`) que cada cara aparece aproximadamente 1/6 de las veces.
 3. Escribe una función `intervalo_confianza_media(x, conf = 0.95)` que reciba un vector y regrese el intervalo de confianza para la media usando la aproximación normal: `media +/- z * error_estandar(x)`.
 4. **Reto:** repite la simulación del CLT del ejemplo 2 pero partiendo de una distribución uniforme (`runif`) y de una binomial con `p = 0.05` (muy asimétrica). ¿Con qué tamaño de muestra `n` empieza a verse razonablemente normal en cada caso?
+5. Genera tu propio dataset ficticio con al menos 4 columnas (incluyendo una fecha y una variable categórica) y `n = 150` filas. Usa `table()`/`prop.table()` para verificar que las categorías respetan aproximadamente las probabilidades que definiste en el `prob` de `sample()`.
 
 ---
 

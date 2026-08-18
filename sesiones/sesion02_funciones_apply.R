@@ -5,8 +5,10 @@
 #
 # Objetivo de la sesión (2h):
 #   Manejar NA, dominar las estructuras de control de R (for, if/else,
-#   while, repeat, break/next, switch), escribir funciones propias y usar
-#   la familia apply como puente entre loops y vectorización.
+#   while, repeat, break/next, switch), escribir funciones propias
+#   (incluyendo return(), funciones anónimas, ámbito de variables y
+#   recursión), y usar la familia apply como puente entre loops y
+#   vectorización.
 
 v <- c(2, 4, 6, 8, 10)   # retomamos el vector de la sesión 1
 
@@ -84,6 +86,50 @@ resumen <- function(x, ...) {
 }
 resumen(w, na.rm = TRUE)
 
+# -- return() explícito --------------------------------------------------
+# Por default, una función de R regresa el valor de la ÚLTIMA expresión
+# evaluada (retorno implícito) — así están escritas estandarizar() y
+# resumen() de arriba. return() es válido y a veces más claro, sobre todo
+# para salir antes de tiempo:
+clasificar <- function(x) {
+  if (is.na(x)) {
+    return("sin dato")
+  }
+  if (x >= 60) {
+    return("aprobado")
+  }
+  "reprobado"      # última expresión: se regresa sin necesidad de return()
+}
+clasificar(75)
+clasificar(40)
+clasificar(NA)
+
+# -- Funciones anónimas (lambda) ------------------------------------------
+# Cuando una función se usa una sola vez (típicamente dentro de sapply()/
+# lapply()), no siempre vale la pena nombrarla. R permite dos sintaxis:
+sapply(1:5, function(x) x^2)     # sintaxis clásica
+sapply(1:5, \(x) x^2)             # azúcar sintáctica desde R 4.1 (equivalente)
+
+# -- Ámbito de variables (scope) -------------------------------------------
+# Una función ve las variables definidas fuera de ella (su entorno), pero
+# lo que se crea DENTRO de la función no existe afuera.
+z <- 100
+sumar_a_z <- function(x) {
+  z <- z + x   # este `z` es una copia local; no modifica el z de afuera
+  z
+}
+sumar_a_z(5)
+z              # sigue siendo 100: la función no tiene efectos secundarios
+
+# -- Recursión ---------------------------------------------------------
+# Una función puede llamarse a sí misma. Como en cualquier lenguaje, necesita
+# un caso base para no recursar infinitamente.
+factorial_recursivo <- function(n) {
+  if (n <= 1) return(1)         # caso base
+  n * factorial_recursivo(n - 1) # llamada recursiva
+}
+factorial_recursivo(5)   # 5 * 4 * 3 * 2 * 1 = 120
+
 # -----------------------------------------------------------------------------
 # 4. Listas: la estructura heterogénea (equivalente a dict/struct)
 # -----------------------------------------------------------------------------
@@ -125,3 +171,14 @@ sapply(mtcars[, c("mpg", "hp", "wt")], mean)
 
 # 5. Con un for y next/break, imprime los múltiplos de 3 entre 1 y 30,
 #    pero detente en cuanto encuentres uno mayor a 20.
+
+# 6. Escribe una función es_par(x) que regrese TRUE/FALSE usando return()
+#    dentro de un if/else (en vez de dejar el retorno implícito).
+
+# 7. Reescribe el ejercicio 6 como función anónima con \(x) ... y úsala
+#    directamente dentro de un sapply() sobre el vector 1:10.
+
+# 8. Escribe una función recursiva fibonacci(n) que regrese el n-ésimo
+#    número de Fibonacci (fibonacci(1) = 1, fibonacci(2) = 1,
+#    fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)). Compara el resultado
+#    con tu solución iterativa del ejercicio 4.

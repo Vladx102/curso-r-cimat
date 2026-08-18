@@ -7,7 +7,7 @@ Script de práctica: [`sesiones/sesion02_funciones_apply.R`](../../sesiones/sesi
 
 ## Objetivo
 
-Manejar `NA` correctamente, dominar las estructuras de control de R (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`), escribir funciones propias con argumentos flexibles, y usar la familia `apply` como puente entre loops y vectorización.
+Manejar `NA` correctamente, dominar las estructuras de control de R (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`), escribir funciones propias (incluyendo `return()`, funciones anónimas, ámbito de variables y recursión), y usar la familia `apply` como puente entre loops y vectorización.
 
 ## 1. NA: el valor faltante
 
@@ -102,6 +102,52 @@ resumen(w, na.rm = TRUE)
 
 El patrón `...` es muy común en el tidyverse: te permite escribir funciones "delgadas" que delegan el trabajo pesado a funciones ya existentes, sin perder flexibilidad.
 
+Por default, una función de R regresa el valor de la **última expresión evaluada** (retorno implícito) — así están escritas `estandarizar()` y `resumen()` de arriba. `return()` es igual de válido y a veces más claro, sobre todo para salir antes de tiempo:
+
+```r
+clasificar <- function(x) {
+  if (is.na(x)) {
+    return("sin dato")
+  }
+  if (x >= 60) {
+    return("aprobado")
+  }
+  "reprobado"      # última expresión: se regresa sin necesidad de return()
+}
+clasificar(75)
+clasificar(40)
+clasificar(NA)
+```
+
+Cuando una función se usa una sola vez — típicamente dentro de `sapply()`/`lapply()` — no siempre vale la pena nombrarla. R permite dos sintaxis equivalentes para funciones anónimas (lambda):
+
+```r
+sapply(1:5, function(x) x^2)     # sintaxis clásica
+sapply(1:5, \(x) x^2)             # azúcar sintáctica desde R 4.1
+```
+
+Una función ve las variables definidas fuera de ella (su entorno), pero lo que se crea **dentro** de la función no existe afuera: cada llamada trabaja con su propia copia local.
+
+```r
+z <- 100
+sumar_a_z <- function(x) {
+  z <- z + x   # este z es una copia local; no modifica el z de afuera
+  z
+}
+sumar_a_z(5)
+z              # sigue siendo 100: la función no tiene efectos secundarios
+```
+
+Una función también puede llamarse a sí misma (recursión). Como en cualquier lenguaje, necesita un caso base para no recursar infinitamente:
+
+```r
+factorial_recursivo <- function(n) {
+  if (n <= 1) return(1)          # caso base
+  n * factorial_recursivo(n - 1) # llamada recursiva
+}
+factorial_recursivo(5)   # 5 * 4 * 3 * 2 * 1 = 120
+```
+
 ## 4. Listas: la estructura heterogénea
 
 A diferencia de un vector (homogéneo), una lista puede contener elementos de distintos tipos — el equivalente de un `dict` o un `struct`.
@@ -142,6 +188,9 @@ sapply(mtcars[, c("mpg", "hp", "wt")], mean)
 3. Usando `mtcars`, calcula con `sapply()` la media y la desviación estándar de cada columna numérica.
 4. Usando `while`, imprime los primeros 5 números de Fibonacci (1, 1, 2, 3, 5).
 5. Con un `for` y `next`/`break`, imprime los múltiplos de 3 entre 1 y 30, pero detente en cuanto encuentres uno mayor a 20.
+6. Escribe una función `es_par(x)` que regrese `TRUE`/`FALSE` usando `return()` dentro de un `if`/`else` (en vez de dejar el retorno implícito).
+7. Reescribe el ejercicio 6 como función anónima con `\(x) ...` y úsala directamente dentro de un `sapply()` sobre el vector `1:10`.
+8. Escribe una función recursiva `fibonacci(n)` que regrese el n-ésimo número de Fibonacci (`fibonacci(1) = 1`, `fibonacci(2) = 1`, `fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)`). Compara el resultado con tu solución iterativa del ejercicio 4.
 
 ---
 
