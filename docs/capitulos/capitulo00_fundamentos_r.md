@@ -199,7 +199,13 @@ En este curso no necesitas instalar paquetes uno por uno: [`install.R`](../../in
 
 ## Ejercicio
 
-Crea un vector `temperaturas` con las temperaturas (en °C) de 7 días de la semana. Calcula:
+Esta semana se registraron las siguientes temperaturas (°C), de lunes a domingo:
+
+```r
+temperaturas <- c(22, 25, 28, 19, 31, 24, 27)
+```
+
+Calcula:
 
 a. la temperatura promedio de la semana
 b. cuántos días la temperatura fue mayor a 25°C
@@ -244,8 +250,23 @@ Nota cómo `producto[stock > 0 & precio == precio_max_disponible]` combina **dos
 
 ## Ejercicios
 
-2. Crea tus propios vectores `articulo` (5 nombres) y `existencias` (5 cantidades, incluyendo al menos un 0) para un puesto de mercado. Encuentra cuántos artículos están agotados (`existencias == 0`) y qué porcentaje del catálogo representan.
-3. **Reto:** crea tus propios vectores `temperatura` (7 días) y `lluvia_mm` (7 días, mm de lluvia). Encuentra en cuántos días llovió (`lluvia_mm > 0`) **y** la temperatura fue menor a 20°C, usando un solo operador lógico.
+2. Un puesto de mercado tiene este catálogo y existencias:
+
+   ```r
+   articulo    <- c("manzana", "pan", "leche", "huevo", "queso")
+   existencias <- c(12, 0, 5, 0, 8)
+   ```
+
+   Encuentra cuántos artículos están agotados (`existencias == 0`) y qué porcentaje del catálogo representan.
+
+3. **Reto:** esta semana se registraron estos datos:
+
+   ```r
+   temperatura <- c(18, 22, 15, 19, 24, 17, 20)
+   lluvia_mm   <- c(5, 0, 12, 3, 0, 8, 0)
+   ```
+
+   Encuentra en cuántos días llovió (`lluvia_mm > 0`) **y** la temperatura fue menor a 20°C, usando un solo operador lógico.
 
 ---
 

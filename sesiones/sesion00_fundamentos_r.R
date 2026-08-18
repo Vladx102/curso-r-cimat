@@ -187,8 +187,10 @@ installed.packages()[, "Package"] |> head(10)
 # EJERCICIO
 # =============================================================================
 
-# Crea un vector `temperaturas` con las temperaturas (en °C) de 7 días de
-# la semana. Calcula:
+# Esta semana se registraron las siguientes temperaturas (°C), de lunes a
+# domingo:
+#   temperaturas <- c(22, 25, 28, 19, 31, 24, 27)
+# Guárdalas en un vector `temperaturas` y calcula:
 #   a) la temperatura promedio de la semana
 #   b) cuántos días la temperatura fue mayor a 25°C
 #   c) un vector lógico que indique en qué días la temperatura estuvo
@@ -231,11 +233,14 @@ precio_nuevo
 # EJERCICIOS
 # =============================================================================
 
-# 2. Crea tus propios vectores `articulo` (5 nombres) y `existencias`
-#    (5 cantidades, incluyendo al menos un 0) para un puesto de mercado.
+# 2. Un puesto de mercado tiene este catálogo y existencias:
+#      articulo    <- c("manzana", "pan", "leche", "huevo", "queso")
+#      existencias <- c(12, 0, 5, 0, 8)
 #    Encuentra cuántos artículos están agotados (existencias == 0) y qué
 #    porcentaje del catálogo representan.
 
-# 3. (Reto) Crea tus propios vectores `temperatura` (7 días) y `lluvia_mm`
-#    (7 días, mm de lluvia). Encuentra en cuántos días llovió (lluvia_mm > 0)
-#    Y la temperatura fue menor a 20°C, usando un solo operador lógico.
+# 3. (Reto) Esta semana se registraron estos datos:
+#      temperatura <- c(18, 22, 15, 19, 24, 17, 20)
+#      lluvia_mm   <- c(5, 0, 12, 3, 0, 8, 0)
+#    Encuentra en cuántos días llovió (lluvia_mm > 0) Y la temperatura fue
+#    menor a 20°C, usando un solo operador lógico.
