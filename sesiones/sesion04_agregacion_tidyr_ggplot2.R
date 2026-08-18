@@ -98,7 +98,7 @@ ggplot(datos, aes(x = class, y = hwy)) +
 #    (geom_smooth(method = "lm") dentro de aes(color = class)).
 
 # =============================================================================
-# EJEMPLO ELABORADO: eficiencia promedio por clase y tipo de tracción
+# EJEMPLO: eficiencia promedio por clase y tipo de tracción
 # =============================================================================
 # Combina group_by con más de una variable, pivot_wider y un gráfico de
 # barras agrupado -- un flujo de análisis exploratorio típico de principio
@@ -125,11 +125,7 @@ ggplot(resumen_completo, aes(x = class, y = hwy_prom, fill = drv)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-# =============================================================================
-# EJERCICIOS ADICIONALES
-# =============================================================================
-
-# 5. Repite el ejemplo elaborado pero agrupando por manufacturer en vez de
+# 5. Repite el ejemplo pero agrupando por manufacturer en vez de
 #    class, y quédate solo con los 5 fabricantes con más modelos (n()) en
 #    el dataset.
 

@@ -116,7 +116,7 @@ La ventaja de este enfoque por capas es que puedes construir gráficos complejos
 3. Usa `pivot_wider()` sobre `datos %>% count(class, drv)` para obtener una tabla con clases como filas y tipos de tracción (`drv`) como columnas.
 4. **Reto:** reproduce con ggplot2 un gráfico de dispersión de `cty` vs. `hwy`, coloreado por `class`, con una línea de tendencia por clase (`geom_smooth(method = "lm")` dentro de `aes(color = class)`).
 
-## Ejemplo elaborado: eficiencia promedio por clase y tipo de tracción
+## Ejemplo: eficiencia promedio por clase y tipo de tracción
 
 Combina `group_by()` con más de una variable, `pivot_wider()` y un gráfico de barras agrupado — un flujo de análisis exploratorio típico de principio a fin.
 
@@ -151,9 +151,7 @@ ggplot(resumen_completo, aes(x = class, y = hwy_prom, fill = drv)) +
 
 `position = "dodge"` es lo que separa las barras de cada `drv` en vez de apilarlas — el equivalente en ggplot2 de un gráfico de barras agrupado.
 
-## Ejercicios adicionales
-
-5. Repite el ejemplo elaborado pero agrupando por `manufacturer` en vez de `class`, y quédate solo con los 5 fabricantes con más modelos (`n()`) en el dataset.
+5. Repite el ejemplo pero agrupando por `manufacturer` en vez de `class`, y quédate solo con los 5 fabricantes con más modelos (`n()`) en el dataset.
 6. **Reto:** usa `pivot_longer()` sobre `mpg` para poner `cty` y `hwy` en una sola columna `tipo_millas` con su valor en `millas`, y grafica un boxplot de `millas` por `tipo_millas`, coloreado por esa misma variable.
 
 ---
