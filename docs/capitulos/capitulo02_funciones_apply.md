@@ -239,8 +239,8 @@ Nota el uso de `!is.na(...) && ...` en la condición del `if`: es exactamente el
 6. Escribe una función `es_par(x)` que regrese `TRUE`/`FALSE` usando `return()` dentro de un `if`/`else` (en vez de dejar el retorno implícito).
 7. Reescribe el ejercicio 6 como función anónima con `\(x) ...` y úsala directamente dentro de un `sapply()` sobre el vector `1:10`.
 8. Escribe una función recursiva `fibonacci(n)` que regrese el n-ésimo número de Fibonacci (`fibonacci(1) = 1`, `fibonacci(2) = 1`, `fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)`). Compara el resultado con tu solución iterativa del ejercicio 4.
-9. Agrega `grupo_D <- c(NA, NA, NA, 70)` a la lista `grupos` del ejemplo y vuelve a correr `sapply(grupos, resumen_grupo)`. ¿Qué regresa para ese grupo? ¿Por qué?
-10. **Reto:** reescribe `resumen_grupo()` para que, en vez de un vector con nombres, regrese una **lista** con un elemento extra `posiciones_na` que sea el vector de posiciones (`which()`) donde hay `NA` en ese grupo.
+9. Escribe tu propia función `resumen_ventas(x)` que reciba un vector de montos de venta (con algunos `NA`) y regrese un vector con nombres: `n_na`, `promedio`, y una bandera `meta_cumplida` (`1` si el promedio `>= 500`, `0` si no, `NA` si más de la mitad del vector son `NA`). Pruébala con `sapply()` sobre una lista `ventas_por_dia` con al menos 3 vectores.
+10. **Reto:** modifica tu función `resumen_ventas()` para que, en vez de un vector con nombres, regrese una **lista** con un elemento extra `posiciones_na` que sea el vector de posiciones (`which()`) donde hay `NA` en ese vector.
 
 ---
 

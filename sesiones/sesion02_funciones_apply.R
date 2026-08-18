@@ -225,10 +225,13 @@ for (nombre_grupo in colnames(resultado)) {
 }
 total_aprueban
 
-# 9. Agrega grupo_D <- c(NA, NA, NA, 70) a la lista `grupos` del ejemplo y
-#    vuelve a correr sapply(grupos, resumen_grupo). ¿Qué regresa para ese
-#    grupo? ¿Por qué?
+# 9. Escribe tu propia función `resumen_ventas(x)` que reciba un vector de
+#    montos de venta (con algunos NA) y regrese un vector con nombres:
+#    n_na, promedio, y una bandera meta_cumplida (1 si el promedio >= 500,
+#    0 si no, NA si más de la mitad del vector son NA). Pruébala con
+#    sapply() sobre una lista `ventas_por_dia` con al menos 3 vectores.
 
-# 10. (Reto) Reescribe resumen_grupo() para que, en vez de un vector con
-#     nombres, regrese una LISTA con un elemento extra "posiciones_na" que
-#     sea el vector de posiciones (which()) donde hay NA en ese grupo.
+# 10. (Reto) Modifica tu función `resumen_ventas()` para que, en vez de un
+#     vector con nombres, regrese una LISTA con un elemento extra
+#     "posiciones_na" que sea el vector de posiciones (which()) donde hay
+#     NA en ese vector.
