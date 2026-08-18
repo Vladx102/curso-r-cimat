@@ -211,10 +211,12 @@ tapply(pedidos_limpios$monto, pedidos_limpios$cliente, sum)
 # En la sesión 4 vas a ver group_by() + summarize(), la forma idiomática de
 # tidyverse para hacer justo este tipo de agregación dentro de un pipe.
 
-# 7. Usando `pedidos`, filtra los pedidos con estatus == "pendiente" o
-#    "cancelado", y calcula cuántos días han pasado (today() - fecha)
-#    desde cada uno.
+# 7. Crea un tibble `reservas` con columnas persona (con espacios/mayúsculas
+#    inconsistentes, como en el ejemplo de arriba), fecha (texto
+#    "YYYY-MM-DD") y estatus ("confirmada"/"cancelada"). Filtra las
+#    canceladas y calcula cuántos días han pasado (today() - fecha) desde
+#    cada una.
 
-# 8. (Reto) Limpia el nombre de cliente en `pedidos` (sin filtrar nada) y
-#    usa tapply() para contar cuántos pedidos hizo cada cliente, sin
+# 8. (Reto) Limpia el nombre de persona en `reservas` (sin filtrar nada) y
+#    usa tapply() para contar cuántas reservas hizo cada persona, sin
 #    importar el estatus.
