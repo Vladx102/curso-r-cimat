@@ -200,7 +200,7 @@ ventas %>%
 5. Crea un vector de 5 fechas con `ymd()` y calcula cuántos días han pasado desde cada una hasta hoy (`today()`). ¿Cuál día de la semana (`wday`) cayó cada fecha?
 6. Usando el data frame `ventas` del ejemplo de lubridate, agrega 4 filas más con fechas de marzo y abril, y repite el `group_by(mes) %>% summarize()` para ver el total por mes con los nuevos datos.
 
-## Ejemplo elaborado: limpiar y resumir un log de pedidos
+## Ejemplo: limpiar y resumir un log de pedidos
 
 Combina dplyr, stringr y lubridate en un solo pipeline — el tipo de limpieza que te vas a topar con datos reales casi todos los días.
 
@@ -232,8 +232,6 @@ tapply(pedidos_limpios$monto, pedidos_limpios$cliente, sum)
 ```
 
 En el [capítulo 4](capitulo04_agregacion_tidyr_ggplot2.md) vas a ver `group_by()` + `summarize()`, la forma idiomática de tidyverse para hacer justo este tipo de agregación dentro de un pipe — pero el resultado es el mismo que con `tapply()`.
-
-## Ejercicios adicionales
 
 7. Usando `pedidos`, filtra los pedidos con `estatus == "pendiente"` o `"cancelado"`, y calcula cuántos días han pasado (`today() - fecha`) desde cada uno.
 8. **Reto:** limpia el nombre de cliente en `pedidos` (sin filtrar nada) y usa `tapply()` para contar cuántos pedidos hizo cada cliente, sin importar el estatus.

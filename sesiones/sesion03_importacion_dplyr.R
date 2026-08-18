@@ -180,7 +180,7 @@ ventas %>%
 #    summarize() para ver el total por mes con los nuevos datos.
 
 # =============================================================================
-# EJEMPLO ELABORADO: limpiar y resumir un log de pedidos
+# EJEMPLO: limpiar y resumir un log de pedidos
 # =============================================================================
 # Combina dplyr, stringr y lubridate en un solo pipeline -- el tipo de
 # limpieza que te vas a topar con datos reales casi todos los días.
@@ -210,10 +210,6 @@ tapply(pedidos_limpios$monto, pedidos_limpios$cliente, sum)
 
 # En la sesión 4 vas a ver group_by() + summarize(), la forma idiomática de
 # tidyverse para hacer justo este tipo de agregación dentro de un pipe.
-
-# =============================================================================
-# EJERCICIOS ADICIONALES
-# =============================================================================
 
 # 7. Usando `pedidos`, filtra los pedidos con estatus == "pendiente" o
 #    "cancelado", y calcula cuántos días han pasado (today() - fecha)
