@@ -35,7 +35,7 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 |---|---|---|
 | 0 | Fundamentos de R | Operaciones aritméticas · Variables y tipos de datos · Primer contacto con vectores · Operadores de comparación · Ayuda y documentación (`?`, `help()`) · Ejercicio con solución |
 | 1 | Vectores y tipos de datos | Consola, scripts y proyectos (.Rproj) · Tipos de datos y vectores; indexación desde 1 y reciclaje · Vectorización vs. loops |
-| 2 | Funciones y familia apply | Control de flujo y manejo de NA · Funciones propias (default, `...`) · Listas y familia apply (`sapply`, `lapply`, `vapply`) |
+| 2 | Funciones y familia apply | Manejo de NA · Estructuras de control (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`) · Funciones propias (default, `...`) · Listas y familia apply (`sapply`, `lapply`, `vapply`) |
 | 2b | Matrices | Creación y operaciones con matrices · Filas y columnas (`rbind`, `cbind`, `rowSums`...) · Selección de elementos · Categorías con `factor()` · Ejercicio con solución |
 | 2c | Data Frames en base R | Crear un `data.frame` · Datasets de ejemplo incluidos en R · Selección y ordenación (`order()`) · Exportar/importar CSV · Tratamiento de valores nulos (`is.na()`, `na.omit()`, imputación) · Operaciones por fila y columna (`apply()`) |
 | 3 | Importación y verbos de dplyr | `data.frame` vs. `tibble`; importación con readr · El pipe `%>%` · dplyr: `filter`, `select`, `mutate`, `arrange` |

@@ -4,8 +4,9 @@
 # =============================================================================
 #
 # Objetivo de la sesión (2h):
-#   Manejar NA, escribir funciones propias y usar la familia apply como
-#   puente entre loops y vectorización.
+#   Manejar NA, dominar las estructuras de control de R (for, if/else,
+#   while, repeat, break/next, switch), escribir funciones propias y usar
+#   la familia apply como puente entre loops y vectorización.
 
 v <- c(2, 4, 6, 8, 10)   # retomamos el vector de la sesión 1
 
@@ -34,6 +35,39 @@ if (n %% 2 == 0) {
 
 # ifelse() vectorizado (muy usado, distinto de if/else escalar)
 ifelse(v %% 4 == 0, "múltiplo de 4", "no")
+
+# while: se repite mientras la condición sea TRUE
+contador <- 1
+while (contador <= 3) {
+  print(contador)
+  contador <- contador + 1
+}
+
+# repeat: loop infinito: SIEMPRE necesita un break para terminar
+contador <- 1
+repeat {
+  print(contador)
+  contador <- contador + 1
+  if (contador > 3) break
+}
+
+# break sale del loop por completo; next salta a la siguiente iteración
+# (mismo comportamiento que en la mayoría de los lenguajes)
+for (i in 1:10) {
+  if (i %% 2 == 0) next        # salta los pares
+  if (i > 7) break             # se detiene antes de llegar a 10
+  print(i)
+}
+
+# switch(): alternativa a una cadena larga de if/else if para un solo valor
+dia <- "mar"
+tipo_dia <- switch(
+  dia,
+  sab = ,                      # sin cuerpo: "cae" al siguiente caso (como en C)
+  dom = "fin de semana",
+  "día entre semana"           # valor por default si no coincide ningún caso
+)
+tipo_dia
 
 # -----------------------------------------------------------------------------
 # 3. Funciones propias
@@ -86,3 +120,8 @@ sapply(mtcars[, c("mpg", "hp", "wt")], mean)
 # 3. Usando el dataset built-in `mtcars`, calcula con sapply() la media y la
 #    desviación estándar de cada columna numérica. Pista: usa una función
 #    anónima o \(x) resumen(x).
+
+# 4. Usando while, imprime los primeros 5 números de Fibonacci (1, 1, 2, 3, 5).
+
+# 5. Con un for y next/break, imprime los múltiplos de 3 entre 1 y 30,
+#    pero detente en cuanto encuentres uno mayor a 20.

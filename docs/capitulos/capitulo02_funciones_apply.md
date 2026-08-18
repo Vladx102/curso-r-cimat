@@ -7,7 +7,7 @@ Script de práctica: [`sesiones/sesion02_funciones_apply.R`](../../sesiones/sesi
 
 ## Objetivo
 
-Manejar `NA` correctamente, escribir funciones propias con argumentos flexibles, y usar la familia `apply` como puente entre loops y vectorización.
+Manejar `NA` correctamente, dominar las estructuras de control de R (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`), escribir funciones propias con argumentos flexibles, y usar la familia `apply` como puente entre loops y vectorización.
 
 ## 1. NA: el valor faltante
 
@@ -42,6 +42,46 @@ Lo distintivo de R es `ifelse()`, la versión **vectorizada** de un if/else esca
 
 ```r
 ifelse(v %% 4 == 0, "múltiplo de 4", "no")
+```
+
+R también tiene `while` (se repite mientras la condición sea `TRUE`) y `repeat` (un loop infinito que **siempre** necesita un `break` para terminar):
+
+```r
+contador <- 1
+while (contador <= 3) {
+  print(contador)
+  contador <- contador + 1
+}
+
+contador <- 1
+repeat {
+  print(contador)
+  contador <- contador + 1
+  if (contador > 3) break
+}
+```
+
+`break` y `next` funcionan igual que en la mayoría de los lenguajes: `break` sale del loop por completo, `next` salta directo a la siguiente iteración.
+
+```r
+for (i in 1:10) {
+  if (i %% 2 == 0) next        # salta los pares
+  if (i > 7) break             # se detiene antes de llegar a 10
+  print(i)
+}
+```
+
+Para evitar una cadena larga de `if`/`else if` cuando comparas una sola variable contra varios valores posibles, `switch()` es más legible:
+
+```r
+dia <- "mar"
+tipo_dia <- switch(
+  dia,
+  sab = ,                      # sin cuerpo: "cae" al siguiente caso (como en C)
+  dom = "fin de semana",
+  "día entre semana"           # valor por default si no coincide ningún caso
+)
+tipo_dia
 ```
 
 ## 3. Funciones propias
@@ -100,6 +140,8 @@ sapply(mtcars[, c("mpg", "hp", "wt")], mean)
 1. Crea un vector `edades` con al menos 8 valores numéricos, incluyendo un `NA`. Calcula la media y la desviación estándar ignorando el `NA`.
 2. Escribe una función `rango()` que reciba un vector y regrese `max(x) - min(x)`, ignorando NAs por default pero permitiendo cambiarlo con un argumento `na.rm`.
 3. Usando `mtcars`, calcula con `sapply()` la media y la desviación estándar de cada columna numérica.
+4. Usando `while`, imprime los primeros 5 números de Fibonacci (1, 1, 2, 3, 5).
+5. Con un `for` y `next`/`break`, imprime los múltiplos de 3 entre 1 y 30, pero detente en cuanto encuentres uno mayor a 20.
 
 ---
 
