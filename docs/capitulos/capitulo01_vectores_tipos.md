@@ -95,6 +95,36 @@ Un efecto colateral de la vectorización es el **reciclaje**: si operas entre ve
 c(1, 2, 3, 4) + c(1, 2)          # se recicla c(1,2) -> c(1,2,1,2)
 ```
 
+## Ejemplo elaborado: calificaciones de un grupo
+
+Un problema con varios pasos que combina tipos, vectores, indexación y vectorización — el tipo de cosa que vas a hacer todo el tiempo en R.
+
+```r
+calif <- c(85, 42, 90, 67, 55, 78, 100, 38, 61, 73)
+alumno <- paste0("alumno", 1:10)
+
+# Vectorizar una regla de negocio: convertir cada calificación en una letra,
+# SIN usar un for-loop.
+letra <- ifelse(calif >= 90, "A",
+          ifelse(calif >= 70, "B",
+           ifelse(calif >= 60, "C", "F")))
+data.frame(alumno, calif, letra)     # (data.frame se ve en el capítulo 2c)
+
+# ¿Qué proporción del grupo reprobó (letra == "F")?
+mean(letra == "F")     # TRUE/FALSE -> 1/0, así que mean() da una proporción
+
+# Nombres de quienes sacaron la calificación más alta y la más baja
+alumno[which.max(calif)]
+alumno[which.min(calif)]
+
+# Reescalar todas las calificaciones sumando 5 puntos, sin pasar de 100
+# (pmin() es la versión vectorizada de min(): compara elemento por elemento)
+calif_ajustada <- pmin(calif + 5, 100)
+calif_ajustada
+```
+
+Los `ifelse()` anidados son el equivalente vectorizado de una cadena de `if`/`else if`/`else`: se evalúan de afuera hacia adentro, y cada capa solo aplica sobre los elementos que no cayeron en la capa anterior. `pmin()`/`pmax()` (con el prefijo "p" de *parallel*) son menos conocidas que `min()`/`max()`, pero son justo lo que necesitas cuando quieres un tope o piso aplicado elemento por elemento en vez de sobre el vector completo.
+
 ## Ejercicios
 
 1. Crea un vector `v` con al menos 10 valores numéricos. Usando indexación lógica (sin `for`), obtén los elementos mayores a su propia media.
@@ -107,6 +137,9 @@ c(1, 2, 3, 4) + c(1, 2)          # se recicla c(1,2) -> c(1,2,1,2)
      if (i %% 3 == 0 || i %% 5 == 0) resultado <- c(resultado, i)
    }
    ```
+
+4. Usando `calif` del ejemplo elaborado, calcula cuántos alumnos están a menos de 5 puntos de subir de letra (por ejemplo, un 88 está a 2 puntos de "A"). Pista: compara `calif` contra los cortes 90, 70 y 60 con indexación lógica.
+5. **Reto:** sin usar `ifelse()` ni `for`, calcula cuántos alumnos tienen una calificación que es múltiplo de 5 (usa `%%` y `sum()` sobre un lógico).
 
 ---
 
