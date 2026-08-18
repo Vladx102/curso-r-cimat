@@ -211,7 +211,7 @@ sum(temperaturas > 25)          # sum() sobre un lógico cuenta los TRUE
 temperaturas >= 20 & temperaturas <= 28
 
 # =============================================================================
-# EJEMPLO ELABORADO: inventario de una tienda
+# EJEMPLO: inventario de una tienda
 # =============================================================================
 # Combina vectores, aritmética, comparación y operadores lógicos en un solo
 # problema con más de un paso -- así se ve un mini-análisis real.
@@ -244,10 +244,10 @@ precio_nuevo[-5] <- precio_nuevo[-5] * 1.10
 precio_nuevo
 
 # =============================================================================
-# EJERCICIOS ADICIONALES
+# EJERCICIOS
 # =============================================================================
 
-# 2. Usando los vectores producto/precio/stock del ejemplo elaborado de
+# 2. Usando los vectores producto/precio/stock del ejemplo de
 #    arriba, encuentra qué productos están completamente agotados
 #    (stock == 0) y calcula qué porcentaje del catálogo representan.
 

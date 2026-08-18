@@ -223,7 +223,7 @@ temperaturas >= 20 & temperaturas <= 28
 
 El truco en el inciso (b) — `sum()` sobre un vector lógico — es un patrón que vas a repetir muchísimo en R: `TRUE` se trata como `1` y `FALSE` como `0`, así que sumar un vector lógico cuenta cuántos `TRUE` hay.
 
-## Ejemplo elaborado: inventario de una tienda
+## Ejemplo: inventario de una tienda
 
 Un ejemplo que combina vectores, aritmética, comparación y operadores lógicos en un solo problema con más de un paso — así se ve un mini-análisis real, aunque sea chiquito.
 
@@ -258,9 +258,9 @@ precio_nuevo
 
 Nota cómo `producto[stock > 0 & precio == precio_max_disponible]` combina **dos condiciones** dentro de la misma indexación lógica con `&`: solo te interesan los productos que tienen stock **y** cuyo precio coincide con el máximo encontrado. Combinar condiciones así, en vez de hacerlo en dos pasos separados, es un patrón que vas a usar todo el tiempo.
 
-## Ejercicios adicionales
+## Ejercicios
 
-2. Usando los vectores `producto`/`precio`/`stock` del ejemplo elaborado de arriba, encuentra qué productos están completamente agotados (`stock == 0`) y calcula qué porcentaje del catálogo representan.
+2. Usando los vectores `producto`/`precio`/`stock` del ejemplo de arriba, encuentra qué productos están completamente agotados (`stock == 0`) y calcula qué porcentaje del catálogo representan.
 3. **Reto:** crea tus propios vectores `temperatura` (7 días) y `lluvia_mm` (7 días, mm de lluvia). Encuentra en cuántos días llovió (`lluvia_mm > 0`) **y** la temperatura fue menor a 20°C, usando un solo operador lógico.
 
 ---
