@@ -106,8 +106,8 @@ autos_hipoteticos %>%
 
 1. Ajusta `lm(hwy ~ cty, data = datos)`. Interpreta la pendiente: ¿cuánto cambia `hwy` por cada unidad de `cty`?
 2. Agrega `year` como predictor adicional (como factor) a `modelo_multi`. ¿Es significativo? Revisa su p-value con `tidy()`.
-3. Usando `modelo_pred`, predice `hwy` para un auto con `displ = 6` y `cyl = 8`. Compara el intervalo de confianza y el de predicción — ¿cuál es más ancho? ¿Por qué crees que sea así?
-4. **Reto:** ajusta un modelo `hwy ~ displ + cyl + class` y predice `hwy` para un auto hipotético de clase `"suv"` con `displ = 4` y `cyl = 8`. ¿Cambia mucho la predicción respecto al modelo sin `class`?
+3. Ajusta tu propio modelo `lm(cty ~ displ + cyl, data = datos)` y predice `cty` para un auto con `displ = 5` y `cyl = 8`. Compara el intervalo de confianza y el de predicción de esa estimación — ¿cuál es más ancho? ¿Por qué crees que sea así?
+4. **Reto:** ajusta un modelo `hwy ~ displ + cyl + class` y predice `hwy` para un auto hipotético de clase `"suv"` con `displ = 4` y `cyl = 8`. Compara esa predicción contra la de un modelo `hwy ~ displ + cyl` (sin `class`) para el mismo auto — ¿cambia mucho?
 
 ---
 

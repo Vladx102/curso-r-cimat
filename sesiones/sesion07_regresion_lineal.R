@@ -89,10 +89,12 @@ autos_hipoteticos <- tibble(displ = c(2, 3, 4, 5), cyl = c(4, 6, 6, 8))
 autos_hipoteticos %>%
   mutate(hwy_estimado = predict(modelo_pred, newdata = .))
 
-# 3. Usando modelo_pred, predice hwy para un auto con displ = 6 y cyl = 8.
-#    Compara el intervalo de confianza y el de predicción -- ¿cuál es más
-#    ancho? ¿Por qué crees que sea así?
+# 3. Ajusta tu propio modelo lm(cty ~ displ + cyl, data = datos) y predice
+#    cty para un auto con displ = 5 y cyl = 8. Compara el intervalo de
+#    confianza y el de predicción de esa estimación -- ¿cuál es más ancho?
+#    ¿Por qué crees que sea así?
 
 # 4. (Reto) Ajusta un modelo hwy ~ displ + cyl + class y predice hwy para
-#    un auto hipotético de clase "suv" con displ = 4 y cyl = 8. ¿Cambia
-#    mucho la predicción respecto al modelo sin class?
+#    un auto hipotético de clase "suv" con displ = 4 y cyl = 8. Compara esa
+#    predicción contra la de un modelo hwy ~ displ + cyl (sin class) para
+#    el mismo auto -- ¿cambia mucho?
