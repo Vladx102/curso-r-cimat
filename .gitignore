@@ -1,0 +1,30 @@
+# Historial y datos de sesión de R
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+
+# RStudio
+.Rproj.user/
+
+# Archivos de render de Quarto / R Markdown
+/.quarto/
+*.html
+*_files/
+*_cache/
+
+# renv (si se usa para fijar dependencias)
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/staging/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.Rproj.user
