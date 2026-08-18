@@ -7,10 +7,14 @@ Script de práctica: [`sesiones/sesion03_importacion_dplyr.R`](../../sesiones/se
 
 ## Objetivo
 
-Distinguir `data.frame` de `tibble`, importar datos con readr, dominar `filter()`/`select()`/`mutate()`/`arrange()` encadenados con el pipe, y manejar cadenas de texto con stringr. A partir de aquí el curso se mueve al ecosistema **tidyverse**.
+Distinguir `data.frame` de `tibble`, importar datos con readr/readxl, dominar `filter()`/`select()`/`mutate()`/`arrange()` encadenados con el pipe, manejar cadenas de texto con stringr, y fechas con lubridate. A partir de aquí el curso se mueve al ecosistema **tidyverse**.
 
 ```r
 library(tidyverse)
+library(readxl)     # importar Excel (.xlsx); no es parte del "core" tidyverse,
+                     # pero se instala junto con install.packages("tidyverse")
+library(lubridate)  # manejo de fechas; ya viene cargado con library(tidyverse),
+                     # pero lo cargamos explícito para dejar claro de dónde sale
 ```
 
 ## 1. data.frame vs. tibble
@@ -43,6 +47,14 @@ datos
 
 glimpse(datos)     # equivalente tidy de str()
 ```
+
+`readxl::read_excel()` lee archivos `.xlsx`/`.xls` — muy común cuando los datos vienen de alguien que trabaja en Excel:
+
+```r
+# datos_excel <- read_excel("ruta/a/archivo.xlsx", sheet = "Hoja1")
+```
+
+readxl no tiene función para *escribir* Excel; para exportar se usa el paquete `openxlsx` (fuera del alcance de este curso).
 
 ## 3. El pipe %>%
 
@@ -135,12 +147,58 @@ datos %>%
   distinct()
 ```
 
+## 6. Manejo de fechas con lubridate
+
+Base R maneja fechas con `as.Date()`, pero **lubridate** (parte del tidyverse) da funciones más legibles: `ymd()`/`dmy()`/`mdy()` parsean según el orden de los componentes, sin pelearse con `format()`.
+
+```r
+fechas_texto <- c("2024-03-15", "2024-07-01", "2024-12-25")
+fechas <- ymd(fechas_texto)     # "year-month-day" -- adivina el formato
+fechas
+```
+
+Extraer componentes es igual de directo:
+
+```r
+year(fechas)
+month(fechas)
+day(fechas)
+wday(fechas, label = TRUE)      # día de la semana (como texto: "vie", "lun"...)
+```
+
+La aritmética de fechas regresa objetos `difftime`, y `floor_date()`/`ceiling_date()` redondean a la unidad que necesites:
+
+```r
+hoy <- today()
+hoy - fechas
+as.numeric(hoy - fechas)        # como número, en días
+
+floor_date(fechas, unit = "month")    # primer día del mes
+ceiling_date(fechas, unit = "month")  # primer día del siguiente mes
+```
+
+Agrupar por mes es un patrón muy común en análisis con series de tiempo:
+
+```r
+ventas <- tibble(
+  fecha = ymd(c("2024-01-05", "2024-01-20", "2024-02-03", "2024-02-15")),
+  monto = c(100, 150, 200, 90)
+)
+
+ventas %>%
+  mutate(mes = floor_date(fecha, "month")) %>%
+  group_by(mes) %>%
+  summarize(total = sum(monto))
+```
+
 ## Ejercicios
 
 1. Filtra `mpg` con `cyl == 4` y selecciona solo `manufacturer`, `model`, `cty`, `hwy`.
 2. Usa `mutate()` para crear una columna `hwy_km` = `hwy * 1.60934` (millas a kilómetros) y ordénala de mayor a menor.
 3. Encadena `filter() %>% select() %>% arrange()` en una sola expresión con el pipe, usando una condición y columnas de tu elección.
 4. Usando stringr, crea una columna nueva `model_mayus` con el nombre del modelo en mayúsculas, y filtra solo los renglones donde `model` contenga la letra `"x"` (usa `str_detect()` con `ignore_case` si hace falta).
+5. Crea un vector de 5 fechas con `ymd()` y calcula cuántos días han pasado desde cada una hasta hoy (`today()`). ¿Cuál día de la semana (`wday`) cayó cada fecha?
+6. Usando el data frame `ventas` del ejemplo de lubridate, agrega 4 filas más con fechas de marzo y abril, y repite el `group_by(mes) %>% summarize()` para ver el total por mes con los nuevos datos.
 
 ---
 

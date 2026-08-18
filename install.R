@@ -10,7 +10,9 @@
 # (mpg, mtcars, warpbreaks), así que no se necesitan datos externos.
 
 paquetes_requeridos <- c(
-  "tidyverse",  # dplyr, tidyr, ggplot2, purrr, readr, tibble...
+  "tidyverse",  # dplyr, tidyr, ggplot2, purrr, readr, tibble, stringr, lubridate...
+  "readxl",     # importar archivos Excel (sesión 3)
+  "skimr",      # skim(): resúmenes descriptivos rápidos (sesión 6)
   "broom",      # tidy(), glance(), augment() para modelos
   "car"         # vif() para diagnóstico de colinealidad (sesión 8)
 )

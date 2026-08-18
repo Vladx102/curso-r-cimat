@@ -7,10 +7,11 @@
 #   Usar la familia d/p/q/r para trabajar con distribuciones, fijar semillas
 #   para reproducibilidad, simular experimentos con Monte Carlo, generar
 #   datasets ficticios (fechas, categorías, IDs), resumir datos con las
-#   herramientas de estadística descriptiva de R (quantile, IQR, cor, cov),
-#   y dar el primer paso hacia inferencia con t.test().
+#   herramientas de estadística descriptiva de R (quantile, IQR, cor, cov,
+#   skimr::skim()), y dar el primer paso hacia inferencia con t.test().
 
 library(tidyverse)
+library(skimr)      # resúmenes descriptivos rápidos de un data frame completo
 
 # Función de la sesión anterior, la reutilizamos aquí:
 error_estandar <- function(x, na.rm = TRUE) {
@@ -121,6 +122,11 @@ cov(mtcars$mpg, mtcars$hp)     # covarianza (misma idea, sin normalizar a [-1, 1
 
 # cor() sobre varias columnas a la vez da la matriz de correlaciones
 cor(mtcars[, c("mpg", "hp", "wt")])
+
+# skimr::skim() automatiza todo lo anterior de un jalón: para cada columna
+# de un data frame completo, da media, sd, cuartiles, histograma en texto,
+# % de NAs, etc. Es el punto de partida típico al explorar un dataset nuevo.
+skim(mtcars[, c("mpg", "hp", "wt")])
 
 # -----------------------------------------------------------------------------
 # 6. Introducción a la inferencia: t.test()

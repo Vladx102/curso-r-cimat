@@ -38,10 +38,10 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 | 2 | Funciones y familia apply | Manejo de NA · Estructuras de control (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`) · Funciones propias (default, `...`, `return()`, anónimas, ámbito, recursión) · Listas y familia apply (`sapply`, `lapply`, `vapply`) |
 | 2b | Matrices | Creación y operaciones con matrices · Filas y columnas (`rbind`, `cbind`, `rowSums`...) · Selección de elementos · Categorías con `factor()` · Ejercicio con solución |
 | 2c | Data Frames en base R | Crear un `data.frame` · Datasets de ejemplo incluidos en R · Selección y ordenación (`order()`) · Exportar/importar CSV · Tratamiento de valores nulos (`is.na()`, `na.omit()`, imputación) · Operaciones por fila y columna (`apply()`) |
-| 3 | Importación y verbos de dplyr | `data.frame` vs. `tibble`; importación con readr · El pipe `%>%` · dplyr: `filter`, `select`, `mutate`, `arrange` · Manejo de cadenas con stringr (`str_detect`, `str_replace`, `str_split`...) |
+| 3 | Importación y verbos de dplyr | `data.frame` vs. `tibble`; importación con readr/readxl · El pipe `%>%` · dplyr: `filter`, `select`, `mutate`, `arrange` · Manejo de cadenas con stringr (`str_detect`, `str_replace`, `str_split`...) · Fechas con lubridate (`ymd`, `wday`, `floor_date`) |
 | 4 | Agregación, tidyr y ggplot2 | `group_by()` + `summarize()` · tidyr: `pivot_longer`/`wider`, joins · ggplot2: gramática de gráficos, geoms y facetas |
 | 5 | Proyectos reproducibles | Organización de proyectos y buenas prácticas · Quarto/R Markdown · Documentar y reutilizar funciones propias |
-| 6 | Cómputo estadístico y simulación | Distribuciones en R: familias d/p/q/r · Números aleatorios y semillas (`set.seed`) · Simulación Monte Carlo: ley de grandes números y TLC · Generar datasets ficticios (fechas, categorías, IDs) · Estadística descriptiva (`quantile`, `IQR`, `cor`, `cov`) · Introducción a inferencia con `t.test()` |
+| 6 | Cómputo estadístico y simulación | Distribuciones en R: familias d/p/q/r · Números aleatorios y semillas (`set.seed`) · Simulación Monte Carlo: ley de grandes números y TLC · Generar datasets ficticios (fechas, categorías, IDs) · Estadística descriptiva (`quantile`, `IQR`, `cor`, `cov`, `skimr::skim()`) · Introducción a inferencia con `t.test()` |
 | 7 | Regresión lineal | Fórmulas en R (`y ~ x`) · `lm()`: ajuste, `summary()` y coeficientes · Factores, niveles de referencia y contrastes |
 | 8 | Diagnóstico y ANOVA | Interacciones entre predictores · Diagnóstico de supuestos: residuos, `plot.lm()`, colinealidad · ANOVA y modelos anidados |
 | 9 | Modelos lineales generalizados | `glm()`: regresión logística y de Poisson · Selección de modelos: AIC/BIC, `step()` |
@@ -64,5 +64,5 @@ Carácter no numérico: al ser un curso de nivelación, la evaluación tiene com
 ## Material y software
 
 - R (versión reciente) y RStudio Desktop, o Positron.
-- Paquetes: tidyverse, broom, car, quarto (o rmarkdown). Ver [`install.R`](../install.R).
+- Paquetes: tidyverse (incluye readr, dplyr, tidyr, ggplot2, stringr, lubridate...), readxl, skimr, broom, car, quarto (o rmarkdown). Ver [`install.R`](../install.R).
 - Scripts de práctica por sesión en [`sesiones/`](../sesiones); teoría en prosa en [`capitulos/`](capitulos).
