@@ -7,7 +7,7 @@ Script de práctica: [`sesiones/sesion02c_dataframes_base.R`](../../sesiones/ses
 
 ## Objetivo
 
-Crear data frames con las herramientas de base R (sin tidyverse), explorar los datasets de ejemplo incluidos en R, seleccionar y ordenar filas/columnas, exportar e importar CSV, y operar por fila o columna. El [capítulo 3](capitulo03_importacion_dplyr.md) retoma todo esto con `tibble`/dplyr — mucho más cómodo para el trabajo diario — pero vale la pena conocer primero la base sobre la que está construido el tidyverse.
+Crear data frames con las herramientas de base R (sin tidyverse), explorar los datasets de ejemplo incluidos en R, seleccionar y ordenar filas/columnas, exportar e importar CSV, tratar valores nulos, y operar por fila o columna. El [capítulo 3](capitulo03_importacion_dplyr.md) retoma todo esto con `tibble`/dplyr — mucho más cómodo para el trabajo diario — pero vale la pena conocer primero la base sobre la que está construido el tidyverse.
 
 ## 1. Crear nuestro primer Data Frame
 
@@ -77,7 +77,44 @@ estudiantes_leidos <- read.csv("estudiantes.csv")
 
 `row.names = FALSE` evita que R agregue una columna extra con el número de fila al exportar — es un olvido muy común la primera vez que se usa `write.csv()`, y produce un CSV con una columna `X` fea al importarlo de vuelta.
 
-## 5. Operaciones por filas
+## 5. Tratamiento de valores nulos
+
+`NA` (*Not Available*) es el valor nulo/faltante de R. Un data frame real casi siempre tiene `NA`s, y hay que decidir explícitamente qué hacer con ellos — R nunca los ignora silenciosamente.
+
+```r
+con_nulos <- data.frame(
+  nombre = c("Ana", "Luis", "Carla", "Diego"),
+  edad = c(23, NA, 22, 24),
+  promedio = c(8.5, 7.2, NA, 6.8)
+)
+con_nulos
+
+is.na(con_nulos)              # matriz lógica: TRUE donde hay NA
+is.na(con_nulos$edad)          # solo en una columna
+sum(is.na(con_nulos))          # cuántos NA hay en total
+colSums(is.na(con_nulos))      # cuántos NA hay por columna
+```
+
+Para quedarte solo con las filas completas:
+
+```r
+complete.cases(con_nulos)
+con_nulos[complete.cases(con_nulos), ]
+
+# na.omit() hace lo mismo de un solo paso: elimina filas con al menos un NA
+na.omit(con_nulos)
+```
+
+Y para **imputar** en vez de eliminar — reemplazar el `NA` con un valor razonable, como la media de la columna:
+
+```r
+con_nulos$edad[is.na(con_nulos$edad)] <- mean(con_nulos$edad, na.rm = TRUE)
+con_nulos
+```
+
+Eliminar filas con `na.omit()` es más simple pero pierde información; imputar (o modelar los NAs explícitamente) es más trabajo pero conserva las observaciones. Cuál conviene depende del contexto — no hay una regla universal.
+
+## 6. Operaciones por filas
 
 `apply(datos, MARGIN, funcion)` aplica una función por fila (`MARGIN = 1`) o por columna (`MARGIN = 2`).
 
@@ -87,7 +124,7 @@ apply(notas, 1, sum)          # suma de cada fila
 apply(notas, 1, mean)          # promedio de cada fila
 ```
 
-## 6. Operaciones por columnas
+## 7. Operaciones por columnas
 
 ```r
 apply(notas, 2, mean)
@@ -109,6 +146,7 @@ a. crea un sub-data.frame `autos_eficientes` con los autos cuyo `mpg` (millas po
 b. ordénalo de mayor a menor `mpg`
 c. calcula, con `apply()`, el promedio de las columnas `mpg`, `hp` y `wt` sobre **todo** `mtcars` (no solo `autos_eficientes`)
 d. exporta `autos_eficientes` a un archivo CSV llamado `autos_eficientes.csv` sin la columna de nombres de fila
+e. toma `con_nulos` (del punto 5) y crea una versión `con_nulos_completo` donde el `NA` de `promedio` se reemplaza por la media de esa columna, igual que se hizo arriba con `edad`
 
 ---
 

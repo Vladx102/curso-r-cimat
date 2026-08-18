@@ -37,7 +37,7 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 | 1 | Vectores y tipos de datos | Consola, scripts y proyectos (.Rproj) · Tipos de datos y vectores; indexación desde 1 y reciclaje · Vectorización vs. loops |
 | 2 | Funciones y familia apply | Control de flujo y manejo de NA · Funciones propias (default, `...`) · Listas y familia apply (`sapply`, `lapply`, `vapply`) |
 | 2b | Matrices | Creación y operaciones con matrices · Filas y columnas (`rbind`, `cbind`, `rowSums`...) · Selección de elementos · Categorías con `factor()` · Ejercicio con solución |
-| 2c | Data Frames en base R | Crear un `data.frame` · Datasets de ejemplo incluidos en R · Selección y ordenación (`order()`) · Exportar/importar CSV · Operaciones por fila y columna (`apply()`) |
+| 2c | Data Frames en base R | Crear un `data.frame` · Datasets de ejemplo incluidos en R · Selección y ordenación (`order()`) · Exportar/importar CSV · Tratamiento de valores nulos (`is.na()`, `na.omit()`, imputación) · Operaciones por fila y columna (`apply()`) |
 | 3 | Importación y verbos de dplyr | `data.frame` vs. `tibble`; importación con readr · El pipe `%>%` · dplyr: `filter`, `select`, `mutate`, `arrange` |
 | 4 | Agregación, tidyr y ggplot2 | `group_by()` + `summarize()` · tidyr: `pivot_longer`/`wider`, joins · ggplot2: gramática de gráficos, geoms y facetas |
 | 5 | Proyectos reproducibles | Organización de proyectos y buenas prácticas · Quarto/R Markdown · Documentar y reutilizar funciones propias |
