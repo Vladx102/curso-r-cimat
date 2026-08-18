@@ -183,6 +183,51 @@ t.test(grupo1, grupo2, var.equal = FALSE)   # prueba de Welch (varianzas distint
 6. Usando `mtcars$wt`, calcula el resumen de 5 números (`quantile()`), el IQR, y determina si hay valores atípicos con la regla `Q1 - 1.5*IQR` / `Q3 + 1.5*IQR`. ¿Cuál es la correlación entre `wt` y `mpg`? ¿Tiene sentido el signo?
 7. Simula dos muestras normales con medias distintas (`rnorm`) y usa `t.test()` para probar si la diferencia de medias es significativa. Repite con medias iguales: ¿cambia el valor p como esperabas?
 
+## Ejemplo elaborado: simular y analizar un experimento A/B
+
+Combina simulación, estadística descriptiva y `t.test()` en un solo flujo: el tipo de análisis que harías con datos reales de un experimento.
+
+```r
+set.seed(7)
+n_por_grupo <- 40
+
+# Simulamos un experimento: el grupo B (una versión nueva de una página web)
+# tiene un tiempo de conversión ligeramente menor (mejor) que el grupo A.
+tiempo_A <- rnorm(n_por_grupo, mean = 45, sd = 12)   # segundos, versión actual
+tiempo_B <- rnorm(n_por_grupo, mean = 40, sd = 12)   # segundos, versión nueva
+
+experimento <- tibble(
+  grupo = rep(c("A", "B"), each = n_por_grupo),
+  tiempo = c(tiempo_A, tiempo_B)
+)
+
+# Resumen descriptivo por grupo
+experimento %>%
+  group_by(grupo) %>%
+  summarize(n = n(), media = mean(tiempo), mediana = median(tiempo),
+            sd = sd(tiempo), IQR = IQR(tiempo))
+```
+
+Visualizar antes de probar formalmente siempre vale la pena — un boxplot te da una intuición inmediata de si la diferencia es grande frente a la variabilidad dentro de cada grupo:
+
+```r
+ggplot(experimento, aes(x = grupo, y = tiempo, fill = grupo)) +
+  geom_boxplot(alpha = 0.7) +
+  labs(title = "Tiempo de conversión por grupo del experimento", y = "segundos") +
+  theme_minimal()
+```
+
+`t.test()` también acepta notación de fórmula (`variable ~ grupo`) en vez de dos vectores separados — la misma notación `y ~ x` que vas a usar con `lm()`/`glm()` a partir del [capítulo 7](capitulo07_regresion_lineal.md):
+
+```r
+t.test(tiempo ~ grupo, data = experimento)
+```
+
+## Ejercicios adicionales
+
+8. Cambia la media de `tiempo_B` a 44 (una diferencia más chica) y repite el `t.test()`. ¿Sigue siendo significativa la diferencia? ¿Qué pasó con el valor p?
+9. **Reto:** repite el experimento completo 500 veces (con `replicate()`) variando los datos simulados cada vez, y calcula en qué proporción de las repeticiones el `t.test()` detectó una diferencia significativa (`p < 0.05`) cuando las medias reales son 45 y 40 — esto es, informalmente, el "poder" de la prueba.
+
 ---
 
 [← Capítulo 5](capitulo05_proyectos_reproducibles.md) · [Índice](../../README.md) · [Capítulo 7 →](capitulo07_regresion_lineal.md)
