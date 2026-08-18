@@ -127,10 +127,11 @@ reporte_calificaciones(c(95, 82, 67, 58, 71, NA))
 # resultado silenciosamente incorrecto:
 # reporte_calificaciones(c(95, 150, 40))   # Error: hay calificaciones fuera de [0, 100]
 
-# 4. Agrega una función `resumen_texto(reporte)` que reciba la lista que
-#    regresa reporte_calificaciones() y construya un string legible como
-#    "Promedio: 78.8 (C) -- distribución: A=1, B=1, C=1, F=1" usando paste().
+# 4. Escribe una función `validar_temperaturas(x)` que use stop() para
+#    detener la ejecución si algún valor está fuera de [-40, 50] °C,
+#    siguiendo el mismo estilo de validación que viste en el ejemplo.
 
-# 5. (Reto) Modifica validar_calificaciones() para que, en vez de stop(),
-#    regrese un vector lógico indicando CUÁLES elementos son inválidos
-#    (útil para poder filtrarlos en vez de detener el script por completo).
+# 5. (Reto) Escribe una función `resumen_ventas_texto(ventas)` que reciba
+#    un vector de montos, calcule su promedio y desviación estándar, y
+#    regrese un string legible como "Promedio: $450.30 (DE: $120.10)"
+#    usando paste()/sprintf().

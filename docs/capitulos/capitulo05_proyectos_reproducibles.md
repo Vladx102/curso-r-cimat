@@ -124,8 +124,8 @@ reporte_calificaciones(c(95, 82, 67, 58, 71, NA))
 1. Escribe una función `coef_variacion(x, na.rm = TRUE)` que regrese `sd(x) / mean(x)`, documentada con el mismo estilo que `error_estandar()`.
 2. Crea un archivo `R/funciones.R` con al menos dos funciones propias (puedes reutilizar `estandarizar()` y `resumen()` del capítulo 2) y cárgalas en un script nuevo con `source("R/funciones.R")`.
 3. Crea un proyecto de RStudio (`.Rproj`) con carpetas `data/`, `R/` y `outputs/`, y verifica que `getwd()` apunta a la raíz del proyecto sin usar `setwd()`.
-4. Agrega una función `resumen_texto(reporte)` que reciba la lista que regresa `reporte_calificaciones()` y construya un string legible como `"Promedio: 78.8 (C) -- distribución: A=1, B=1, C=1, F=1"` usando `paste()`.
-5. **Reto:** modifica `validar_calificaciones()` para que, en vez de `stop()`, regrese un vector lógico indicando **cuáles** elementos son inválidos (útil para poder filtrarlos en vez de detener el script por completo).
+4. Escribe una función `validar_temperaturas(x)` que use `stop()` para detener la ejecución si algún valor está fuera de `[-40, 50]` °C, siguiendo el mismo estilo de validación que viste en el ejemplo.
+5. **Reto:** escribe una función `resumen_ventas_texto(ventas)` que reciba un vector de montos, calcule su promedio y desviación estándar, y regrese un string legible como `"Promedio: $450.30 (DE: $120.10)"` usando `paste()`/`sprintf()`.
 
 ---
 
