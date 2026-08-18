@@ -65,7 +65,7 @@ tidy(modelo_final, conf.int = TRUE, exponentiate = TRUE) %>%
   theme_minimal()
 
 # =============================================================================
-# EJEMPLO ELABORADO: comparar dos modelos con validación cruzada
+# EJEMPLO: comparar dos modelos con validación cruzada
 # =============================================================================
 # La validación cruzada no es solo para reportar un número -- sirve para
 # DECIDIR entre modelos candidatos de forma más confiable que comparar su
@@ -124,7 +124,7 @@ tibble(
 # 2. (Reto) Implementa validación cruzada de 5 folds para ese mismo modelo
 #    logístico sobre mtcars y reporta la exactitud promedio.
 
-# 3. Usa comparar_modelo_cv() del ejemplo elaborado para evaluar un tercer
+# 3. Usa comparar_modelo_cv() del ejemplo para evaluar un tercer
 #    modelo, traccion_4wd ~ displ + class, y decide cuál de los tres
 #    modelos (simple, completo, con class) tiene mejor exactitud promedio.
 
