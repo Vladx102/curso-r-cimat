@@ -1,0 +1,97 @@
+# Capítulo 8 — Diagnóstico de supuestos y ANOVA
+
+**Sesión 8 · Día 4, tarde · 2 horas**
+Script de práctica: [`sesiones/sesion08_diagnostico_anova.R`](../../sesiones/sesion08_diagnostico_anova.R)
+
+[← Capítulo 7](capitulo07_regresion_lineal.md) · [Índice](../../README.md) · [Capítulo 9 →](capitulo09_glm.md)
+
+## Objetivo
+
+Trabajar con interacciones entre predictores, diagnosticar los supuestos de un modelo lineal, y comparar modelos anidados con ANOVA.
+
+```r
+library(tidyverse)
+library(broom)
+
+datos <- as_tibble(mpg)
+modelo_multi <- lm(hwy ~ displ + cyl + class, data = datos)
+```
+
+## 1. Interacciones
+
+Una interacción permite que el efecto de un predictor cambie según el nivel de otro. `y ~ x * grupo` es azúcar sintáctica para `y ~ x + grupo + x:grupo`.
+
+```r
+modelo_interaccion <- lm(hwy ~ displ * drv, data = datos)
+summary(modelo_interaccion)
+
+ggplot(datos, aes(displ, hwy, color = drv)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Interacción displ:drv") +
+  theme_minimal()
+```
+
+Si las líneas de tendencia por grupo en la gráfica anterior tienen pendientes claramente distintas, es una señal visual de que la interacción importa.
+
+## 2. Diagnóstico de supuestos
+
+Los supuestos clásicos de `lm()` son: linealidad, homocedasticidad (varianza constante de los residuos), normalidad de los residuos, independencia, y ausencia de multicolinealidad severa entre predictores.
+
+R trae un diagnóstico visual integrado con un solo comando:
+
+```r
+par(mfrow = c(2, 2))
+plot(modelo_multi)      # 4 gráficos de diagnóstico clásicos de R
+par(mfrow = c(1, 1))
+```
+
+Cómo leer cada uno de los cuatro paneles:
+
+1. **Residuals vs Fitted** — ¿hay un patrón visible? Si sí, sugiere violación de linealidad u homocedasticidad.
+2. **Normal Q-Q** — ¿los residuos se alinean con la diagonal? Si sí, se ven razonablemente normales.
+3. **Scale-Location** — otra forma de revisar homocedasticidad (varianza constante de los residuos).
+4. **Residuals vs Leverage** — identifica observaciones influyentes mediante la distancia de Cook.
+
+Para multicolinealidad entre predictores, el diagnóstico estándar es el **VIF** (Variance Inflation Factor):
+
+```r
+# install.packages("car")
+car::vif(modelo_multi)     # VIF > 5-10 sugiere colinealidad problemática
+```
+
+Y si prefieres construir tus propios diagnósticos con ggplot2 en vez de los gráficos base de R, `broom::augment()` te da los residuos y valores ajustados en formato tibble:
+
+```r
+aug <- augment(modelo_multi)
+ggplot(aug, aes(.fitted, .resid)) +
+  geom_point(alpha = 0.4) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(title = "Residuos vs. valores ajustados") +
+  theme_minimal()
+```
+
+## 3. ANOVA y comparación de modelos anidados
+
+`anova()` aplicado a dos modelos anidados responde una pregunta muy concreta: ¿el modelo más grande explica significativamente más varianza que el más chico, o la mejora es solo ruido?
+
+```r
+modelo_simple <- lm(hwy ~ displ, data = datos)
+anova(modelo_simple, modelo_multi)
+```
+
+`anova()` sobre un solo modelo con un factor es equivalente a comparar medias entre grupos (el ANOVA "clásico" de un curso de estadística):
+
+```r
+modelo_anova <- lm(hwy ~ class, data = datos)
+anova(modelo_anova)
+```
+
+## Ejercicios
+
+1. Usando `augment()`, identifica las 3 observaciones con mayor residuo absoluto de `modelo_multi`. ¿Qué tienen en común?
+2. **Reto:** ajusta dos modelos anidados — uno sin interacción (`hwy ~ displ + drv`) y otro con interacción (`hwy ~ displ * drv`). Compáralos con `anova()` y decide, con base en el p-value, si la interacción aporta información significativa.
+
+---
+
+[← Capítulo 7](capitulo07_regresion_lineal.md) · [Índice](../../README.md) · [Capítulo 9 →](capitulo09_glm.md)

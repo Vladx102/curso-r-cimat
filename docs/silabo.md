@@ -4,6 +4,8 @@ Curso de nivelación — Maestría en Ciencias, CIMAT Aguascalientes
 
 *Duración: 10 sesiones · 2 horas cada una (20 horas totales) · 5 días, 2 sesiones al día*
 
+> El desarrollo teórico de cada sesión está en [`capitulos/`](capitulos/capitulo01_vectores_tipos.md); el código ejecutable equivalente está en [`sesiones/`](../sesiones).
+
 ## Presentación
 
 Curso intensivo de nivelación dirigido a estudiantes de nuevo ingreso a la maestría del CIMAT Aguascalientes, previo al curso de Modelación Estadística. Está diseñado para alumnos que ya saben programar en algún otro lenguaje (Python, C/C++, MATLAB, etc.), por lo que no se dedica tiempo a conceptos generales de programación: el curso va directo a la sintaxis y los idiomas propios de R, y dedica la mayor parte del tiempo a su aplicación en modelación estadística.
