@@ -34,7 +34,7 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 | Sesión | Tema | Contenidos |
 |---|---|---|
 | 0 | Fundamentos de R | Operaciones aritméticas · Variables y tipos de datos · Primer contacto con vectores · Operadores de comparación y lógicos (`&`, `\|`, `&&`, `\|\|`, `xor`, `any`, `all`) · Ayuda y documentación (`?`, `help()`) · Instalar y cargar librerías (`install.packages`, `library`, CRAN) · Ejercicio con solución |
-| 1 | Vectores y tipos de datos | Consola, scripts y proyectos (.Rproj) · Tipos de datos y vectores; indexación desde 1 y reciclaje · Vectorización vs. loops |
+| 1 | Vectores y tipos de datos | Todo es función (operadores) · `typeof()` y tipos atómicos (integer vs. double, complex) · Vectores: no hay escalares, coerción · Indexación: `v[-1]`, `which()` · Vectorización vs. loops |
 | 2 | Funciones y familia apply | Manejo de NA · Estructuras de control (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`) · Funciones propias (default, `...`, `return()`, anónimas, ámbito, recursión) · Listas y familia apply (`sapply`, `lapply`, `vapply`) |
 | 2b | Matrices | Creación y operaciones con matrices · Filas y columnas (`rbind`, `cbind`, `rowSums`...) · Selección de elementos · Categorías con `factor()` · Ejercicio con solución |
 | 2c | Data Frames en base R | Crear un `data.frame` · Datasets de ejemplo incluidos en R · Selección y ordenación (`order()`) · Exportar/importar CSV · Tratamiento de valores nulos (`is.na()`, `na.omit()`, imputación) · Operaciones por fila y columna (`apply()`) |

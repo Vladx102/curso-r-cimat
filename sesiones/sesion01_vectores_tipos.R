@@ -5,57 +5,68 @@
 #
 # Objetivo de la sesión (2h):
 #   Traducir tu experiencia previa de programación a los idiomas propios de R:
-#   vectores, tipos de datos, indexación desde 1 y vectorización.
+#   vectores, tipos de datos, indexación desde 1 y vectorización. Retomamos
+#   directo desde donde quedó la sesión 0 -- lo que ya viste ahí (asignación
+#   básica, class(), crear vectores con c(), v[1]/indexación lógica) no se
+#   repite aquí; esta sesión va a lo que falta.
 
 # -----------------------------------------------------------------------------
-# 1. Consola, scripts y asignación
+# 1. Todo es una función (incluso los operadores)
 # -----------------------------------------------------------------------------
+# Ya asignaste variables con <- en la sesión 0. Una particularidad de R
+# frente a otros lenguajes que ahí no vimos: CASI TODO es una función,
+# incluidos los operadores.
 
-x <- 10          # operador de asignación preferido: <-  (= también funciona)
-y = 20           # válido, pero por convención se reserva para argumentos de función
+x <- 10
+y <- 20     # `=` también es válido para asignar, pero por convención se
+            # reserva para argumentos dentro de una llamada a función
 x + y
 
-# Todo en R es un objeto; casi todo es una función (incluso `+`)
+# x + y es azúcar sintáctica para:
 `+`(x, y)
 
-# -----------------------------------------------------------------------------
-# 2. Tipos de datos atómicos
-# -----------------------------------------------------------------------------
-
-class(1L)          # integer
-class(1)           # double (¡el default numérico es double, no integer!)
-class("a")         # character
-class(TRUE)        # logical
-class(1 + 2i)      # complex
-class(NA)          # logical por default, pero NA se adapta al contexto
-
-typeof(1L); typeof(1)
+# Esto importa más adelante: entender que +, [, <- son funciones normales
+# es lo que te permite, por ejemplo, sobrecargarlas para tus propias clases.
 
 # -----------------------------------------------------------------------------
-# 3. Vectores: la unidad básica de R (no hay "escalares")
+# 2. Tipos de datos atómicos: más allá de class()
 # -----------------------------------------------------------------------------
+# En la sesión 0 ya viste class() sobre numeric/integer/character/logical.
+# Dos cosas que faltaban ahí: typeof() y el tipo complex.
+
+typeof(1L); typeof(1)     # class() dice "numeric" para ambos; typeof() sí
+                            # distingue "integer" de "double"
+
+class(1 + 2i)               # complex: los números complejos son otro tipo atómico
+
+# -----------------------------------------------------------------------------
+# 3. Vectores: no hay "escalares"
+# -----------------------------------------------------------------------------
+# Ya creaste vectores con c() en la sesión 0. Lo que faltaba: en R un solo
+# número ES un vector de longitud 1 -- no existen los escalares como tipo
+# aparte, a diferencia de Python o C.
 
 v <- c(2, 4, 6, 8, 10)
-v
 length(v)
-class(v)
+is.vector(5)   # TRUE: hasta un solo número es un vector
 
-# Un solo número ES un vector de longitud 1
-is.vector(5)
-
-# Los vectores son homogéneos: la coerción es automática e implícita
+# Los vectores son homogéneos: si mezclas tipos, R los coerciona
+# automáticamente al tipo "más general" (character > numeric > logical):
 c(1, "a", TRUE)     # todo pasa a character
 c(1, TRUE)          # TRUE -> 1 (numeric)
 
 # -----------------------------------------------------------------------------
-# 4. Indexación: empieza en 1, no en 0
+# 4. Indexación: lo que falta más allá de v[1] y la indexación lógica
 # -----------------------------------------------------------------------------
+# En la sesión 0 ya usaste v[1], v[c(1,3)] y la indexación lógica v[v > x].
+# Dos patrones más que vas a usar seguido:
 
-v[1]                 # primer elemento (¡no v[0]!)
-v[c(1, 3)]            # varios índices
-v[-1]                 # todo MENOS el primero
-v[v > 5]              # indexación lógica -> patrón central en R
-which(v > 5)          # posiciones que cumplen la condición
+v[-1]                 # índice negativo: todo MENOS el primero
+which(v > 5)           # las POSICIONES que cumplen la condición (no los valores)
+
+# v[v > 5] te da los VALORES; which(v > 5) te da los ÍNDICES donde eso pasa.
+# Se combinan: v[which(v > 5)] es equivalente a v[v > 5], pero which() es
+# más explícito cuando necesitas la posición en sí (p.ej. which.max()).
 
 # -----------------------------------------------------------------------------
 # 5. Vectorización vs. loops
