@@ -178,3 +178,47 @@ ventas %>%
 # 6. Usando el data frame `ventas` del ejemplo de lubridate, agrega 4 filas
 #    más con fechas de marzo y abril, y repite el group_by(mes) %>%
 #    summarize() para ver el total por mes con los nuevos datos.
+
+# =============================================================================
+# EJEMPLO ELABORADO: limpiar y resumir un log de pedidos
+# =============================================================================
+# Combina dplyr, stringr y lubridate en un solo pipeline -- el tipo de
+# limpieza que te vas a topar con datos reales casi todos los días.
+
+pedidos <- tibble(
+  cliente = c("  ana garcia", "LUIS PEREZ ", "Marta Lopez", "  ana garcia", "Iván Ruiz"),
+  fecha   = c("2024-01-05", "2024-01-20", "2024-02-03", "2024-02-15", "2024-02-28"),
+  monto   = c(450, 890, 120, 300, 670),
+  estatus = c("pagado", "pendiente", "pagado", "pagado", "cancelado")
+)
+
+pedidos_limpios <- pedidos %>%
+  mutate(
+    cliente = str_to_title(str_trim(cliente)),   # limpia espacios y capitaliza
+    fecha = ymd(fecha),
+    mes = floor_date(fecha, "month")
+  ) %>%
+  filter(estatus == "pagado") %>%
+  arrange(fecha)
+
+pedidos_limpios
+
+# Total pagado por cliente (algunos clientes repiten, como "Ana Garcia" con
+# y sin espacios/mayúsculas -- por eso limpiamos el texto ANTES de agrupar)
+# -- con tapply(), el mismo patrón de base R que ya conoces de la sesión 2c
+tapply(pedidos_limpios$monto, pedidos_limpios$cliente, sum)
+
+# En la sesión 4 vas a ver group_by() + summarize(), la forma idiomática de
+# tidyverse para hacer justo este tipo de agregación dentro de un pipe.
+
+# =============================================================================
+# EJERCICIOS ADICIONALES
+# =============================================================================
+
+# 7. Usando `pedidos`, filtra los pedidos con estatus == "pendiente" o
+#    "cancelado", y calcula cuántos días han pasado (today() - fecha)
+#    desde cada uno.
+
+# 8. (Reto) Limpia el nombre de cliente en `pedidos` (sin filtrar nada) y
+#    usa tapply() para contar cuántos pedidos hizo cada cliente, sin
+#    importar el estatus.
