@@ -130,9 +130,11 @@ calif_ajustada
 #      if (i %% 3 == 0 || i %% 5 == 0) resultado <- c(resultado, i)
 #    }
 
-# 4. Usando `calif` del ejemplo, calcula cuántos alumnos están a
-#    menos de 5 puntos de subir de letra (p.ej. un 88 está a 2 puntos de "A").
-#    Pista: compara calif contra los cortes 90, 70 y 60 con indexación lógica.
+# 4. Crea un vector `puntajes` con al menos 8 calificaciones de tu invención
+#    (0-100). Usando indexación lógica (sin ifelse ni for), cuenta cuántos
+#    puntajes están a menos de 5 puntos de subir de letra, con los mismos
+#    cortes 90/70/60 vistos en la sesión.
 
-# 5. (Reto) Sin usar ifelse() ni for, calcula cuántos alumnos tienen una
-#    calificación que es múltiplo de 5 (usa %% y sum() sobre un lógico).
+# 5. (Reto) Sin usar ifelse() ni for, crea un vector `edades` de al menos
+#    10 valores y calcula cuántos son múltiplos de 5 (usa %% y sum() sobre
+#    un lógico).
