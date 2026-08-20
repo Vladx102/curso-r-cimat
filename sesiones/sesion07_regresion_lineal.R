@@ -29,11 +29,7 @@ modelo_simple
 
 summary(modelo_simple)
 
-# Piezas clave:
-#  - Estimate: coeficientes estimados (pendiente e intercepto)
-#  - Std. Error, t value, Pr(>|t|): prueba de significancia de cada coeficiente
-#  - Multiple R-squared / Adjusted R-squared: bondad de ajuste
-#  - F-statistic: prueba global del modelo
+# Piezas clave: Estimate, Std. Error/t value/Pr(>|t|), R-squared, F-statistic.
 
 # broom::tidy() da la misma info en formato tibble (mejor para programar)
 tidy(modelo_simple, conf.int = TRUE)
@@ -46,9 +42,7 @@ glance(modelo_simple)     # métricas de resumen (R2, AIC, BIC, etc.) en una fil
 modelo_multi <- lm(hwy ~ displ + cyl + class, data = datos)
 summary(modelo_multi)
 
-# class es un factor (character -> factor automático dentro de lm).
-# R elige un nivel de referencia (por default, el primero alfabéticamente)
-# y reporta los demás como diferencias respecto a ese nivel.
+# class es un factor; R usa el primer nivel (alfabético) como referencia.
 levels(factor(datos$class))
 contrasts(factor(datos$class))     # matriz de contrastes tipo "treatment"
 
@@ -78,9 +72,7 @@ tidy(modelo_pred, conf.int = TRUE)
 auto_nuevo <- tibble(displ = 3.5, cyl = 6)
 predict(modelo_pred, newdata = auto_nuevo)
 
-# Intervalo de confianza (para el hwy PROMEDIO de autos con esas
-# características) vs. intervalo de predicción (para UN auto individual con
-# esas características, más ancho porque suma la variabilidad individual):
+# Intervalo de confianza (para el promedio) vs. de predicción (para un individuo, más ancho):
 predict(modelo_pred, newdata = auto_nuevo, interval = "confidence")
 predict(modelo_pred, newdata = auto_nuevo, interval = "prediction")
 

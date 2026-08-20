@@ -33,9 +33,7 @@ tbl[, "x"]         # tibble (más predecible)
 # -----------------------------------------------------------------------------
 # 2. Importar datos con readr
 # -----------------------------------------------------------------------------
-# readr::read_csv() es más rápido y predecible que read.csv() base:
-#   - no convierte strings a factor por default
-#   - infiere tipos de columna e informa cómo lo hizo
+# readr::read_csv() es más rápido y predecible que read.csv() base.
 
 # datos <- read_csv("ruta/a/archivo.csv")
 # Para esta práctica usamos datasets incluidos en R:
@@ -44,17 +42,13 @@ datos
 
 glimpse(datos)     # equivalente tidy de str()
 
-# readxl::read_excel() lee archivos .xlsx/.xls -- muy común cuando los datos
-# vienen de alguien que trabaja en Excel. No tiene "write_excel()"; para
-# exportar a Excel se usa el paquete openxlsx (fuera del alcance de este curso).
+# readxl::read_excel() lee archivos .xlsx/.xls:
 # datos_excel <- read_excel("ruta/a/archivo.xlsx", sheet = "Hoja1")
 
 # -----------------------------------------------------------------------------
 # 3. El pipe %>%
 # -----------------------------------------------------------------------------
-# El pipe encadena operaciones de izquierda a derecha, como method chaining:
-# x %>% f() es equivalente a f(x). El pipe nativo |> es similar en casos
-# simples; usaremos %>% por compatibilidad con el ecosistema tidyverse.
+# x %>% f() equivale a f(x); usaremos %>% por compatibilidad con el tidyverse.
 
 datos %>% glimpse()
 
@@ -88,10 +82,7 @@ datos %>%
 # -----------------------------------------------------------------------------
 # 5. Manejo de cadenas con stringr
 # -----------------------------------------------------------------------------
-# stringr (parte del tidyverse) da funciones consistentes para texto: todas
-# empiezan con str_ y reciben primero el vector de texto, como el resto del
-# tidyverse. Base R tiene equivalentes (paste, substr, toupper, gsub...),
-# pero stringr es más predecible y legible.
+# stringr: funciones consistentes para texto, todas empiezan con str_.
 
 nombres <- c("  Ana García", "luis PEREZ", "Marta lopez ")
 
@@ -121,9 +112,7 @@ datos %>%
 # -----------------------------------------------------------------------------
 # 6. Manejo de fechas con lubridate
 # -----------------------------------------------------------------------------
-# Base R maneja fechas con as.Date(), pero lubridate (parte del tidyverse) da
-# funciones más legibles: ymd()/dmy()/mdy() para parsear según el orden de
-# los componentes, sin pelearse con format().
+# lubridate: ymd()/dmy()/mdy() para parsear fechas sin pelearse con format().
 
 fechas_texto <- c("2024-03-15", "2024-07-01", "2024-12-25")
 fechas <- ymd(fechas_texto)     # "year-month-day" -- adivina el formato
@@ -203,9 +192,7 @@ pedidos_limpios <- pedidos %>%
 
 pedidos_limpios
 
-# Total pagado por cliente (algunos clientes repiten, como "Ana Garcia" con
-# y sin espacios/mayúsculas -- por eso limpiamos el texto ANTES de agrupar)
-# -- con tapply(), el mismo patrón de base R que ya conoces de la sesión 2c
+# Total pagado por cliente (por eso limpiamos el texto ANTES de agrupar):
 tapply(pedidos_limpios$monto, pedidos_limpios$cliente, sum)
 
 # En la sesión 4 vas a ver group_by() + summarize(), la forma idiomática de

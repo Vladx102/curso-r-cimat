@@ -85,9 +85,7 @@ summary(modelo_reducido)
 modelo_reducido_logit <- glm(traccion_4wd ~ displ, data = datos, family = binomial)
 modelo_completo_logit <- glm(traccion_4wd ~ displ + cyl + hwy, data = datos, family = binomial)
 
-# Prueba de razón de verosimilitudes: el análogo de anova() para modelos
-# lineales (sesión 8), pero con test = "Chisq" porque los GLM no se
-# comparan con una F como en lm()
+# Prueba de razón de verosimilitudes: análogo de anova() para GLM (test = "Chisq"):
 anova(modelo_reducido_logit, modelo_completo_logit, test = "Chisq")
 
 # Probabilidad estimada de 4WD para tres autos hipotéticos

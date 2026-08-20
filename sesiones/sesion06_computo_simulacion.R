@@ -63,9 +63,7 @@ tibble(n = seq_along(medias_acumuladas), media = medias_acumuladas) %>%
   labs(title = "Ley de los grandes números", x = "n", y = "Proporción acumulada de éxitos") +
   theme_minimal()
 
-# Ejemplo 2: Teorema del límite central por simulación
-# Tomamos muchas muestras de una exponencial (muy asimétrica) y vemos
-# que la distribución de sus medias se vuelve normal.
+# Ejemplo 2: TLC -- muestras de una exponencial (asimétrica), medias se vuelven normales.
 set.seed(1)
 n_muestra <- 30
 n_repeticiones <- 5000
@@ -82,9 +80,7 @@ tibble(medias) %>%
 # -----------------------------------------------------------------------------
 # 4. Generar datos ficticios para practicar
 # -----------------------------------------------------------------------------
-# No siempre necesitas un dataset real para practicar dplyr/ggplot2: puedes
-# construir uno ficticio combinando sample(), fechas y las funciones r<dist>()
-# ya vistas. Útil para tener datos "de mentira" con la forma que quieras.
+# Dataset ficticio combinando sample(), fechas y las funciones r<dist>() ya vistas.
 
 set.seed(42)
 n <- 200
@@ -123,9 +119,7 @@ cov(mtcars$mpg, mtcars$hp)     # covarianza (misma idea, sin normalizar a [-1, 1
 # cor() sobre varias columnas a la vez da la matriz de correlaciones
 cor(mtcars[, c("mpg", "hp", "wt")])
 
-# skimr::skim() automatiza todo lo anterior de un jalón: para cada columna
-# de un data frame completo, da media, sd, cuartiles, histograma en texto,
-# % de NAs, etc. Es el punto de partida típico al explorar un dataset nuevo.
+# skimr::skim() automatiza todo lo anterior: punto de partida típico al explorar un dataset.
 skim(mtcars[, c("mpg", "hp", "wt")])
 
 # -----------------------------------------------------------------------------
@@ -214,9 +208,7 @@ ggplot(experimento, aes(x = grupo, y = tiempo, fill = grupo)) +
   labs(title = "Tiempo de conversión por grupo del experimento", y = "segundos") +
   theme_minimal()
 
-# ¿La diferencia es estadísticamente significativa? t.test() también acepta
-# notación de fórmula (variable ~ grupo) -- la misma notación y ~ x que vas
-# a usar con lm()/glm() a partir de la sesión 7.
+# t.test() también acepta notación de fórmula (variable ~ grupo):
 t.test(tiempo ~ grupo, data = experimento)
 
 # 8. Simula dos muestras normales `grupo_control` y `grupo_tratamiento`

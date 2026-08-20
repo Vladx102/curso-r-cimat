@@ -67,9 +67,7 @@ tidy(modelo_final, conf.int = TRUE, exponentiate = TRUE) %>%
 # =============================================================================
 # EJEMPLO: comparar dos modelos con validación cruzada
 # =============================================================================
-# La validación cruzada no es solo para reportar un número -- sirve para
-# DECIDIR entre modelos candidatos de forma más confiable que comparar su
-# ajuste sobre los mismos datos con los que se entrenaron.
+# La validación cruzada sirve para DECIDIR entre modelos candidatos, no solo para reportar un número.
 
 comparar_modelo_cv <- function(formula, datos, folds, k) {
   exactitudes <- map_dbl(1:k, function(i) {

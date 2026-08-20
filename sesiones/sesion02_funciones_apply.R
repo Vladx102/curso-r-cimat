@@ -102,10 +102,7 @@ resumen <- function(x, ...) {
 resumen(w, na.rm = TRUE)
 
 # -- return() explícito --------------------------------------------------
-# Por default, una función de R regresa el valor de la ÚLTIMA expresión
-# evaluada (retorno implícito) — así están escritas estandarizar() y
-# resumen() de arriba. return() es válido y a veces más claro, sobre todo
-# para salir antes de tiempo:
+# Por default se regresa la última expresión evaluada (retorno implícito).
 clasificar <- function(x) {
   if (is.na(x)) {
     return("sin dato")
@@ -164,11 +161,7 @@ sapply(lista_vectores, mean)      # simplifica a vector/matriz cuando puede
 lapply(lista_vectores, mean)      # siempre regresa lista
 vapply(lista_vectores, mean, numeric(1))  # como sapply, pero con tipo esperado explícito (más seguro)
 
-# También funciona sobre un data frame, columna por columna -- un data
-# frame es, por debajo, una lista de vectores de igual longitud, así que
-# sapply() lo recorre igual que a la lista de arriba (aquí seleccionamos
-# columnas con $, ya visto, en vez de indexación [, cols] que se ve más
-# adelante en las sesiones de matrices/data frames):
+# También funciona sobre un data frame, columna por columna:
 sapply(list(mpg = mtcars$mpg, hp = mtcars$hp, wt = mtcars$wt), mean)
 
 # =============================================================================
@@ -213,9 +206,7 @@ grupo_B <- c(60, NA, NA, 71, 45)
 grupo_C <- c(95, 89, 91, 84, 99)
 grupos <- list(A = grupo_A, B = grupo_B, C = grupo_C)
 
-# Función propia que resume un grupo: cuántos NA tiene, el promedio (sin
-# NA) y si el grupo "aprueba" en general (promedio >= 60). Si más de la
-# mitad del grupo son NA, no tiene sentido calcular un promedio confiable.
+# Resume un grupo: NAs, promedio y si aprueba (promedio >= 60).
 resumen_grupo <- function(x) {
   n_na <- sum(is.na(x))
   prom <- mean(x, na.rm = TRUE)
@@ -232,9 +223,7 @@ resumen_grupo <- function(x) {
 resultado <- sapply(grupos, resumen_grupo)
 resultado
 
-# ¿Cuántos grupos aprueban en total? (recorriendo el resultado con un for,
-# a propósito, para practicar control de flujo -- en la práctica usarías
-# sum() directamente sobre la fila "aprueba")
+# ¿Cuántos grupos aprueban? (con un for a propósito, para practicar control de flujo)
 total_aprueban <- 0
 for (nombre_grupo in colnames(resultado)) {
   if (!is.na(resultado["aprueba", nombre_grupo]) &&

@@ -101,10 +101,7 @@ edades > 25
 # Combinar condiciones: & (y), | (o) -- se aplican elemento por elemento
 edades > 22 & edades < 30
 
-# & y | son VECTORIZADOS: comparan posición por posición y regresan un
-# vector completo. && y || son ESCALARES: solo miran el primer elemento
-# de cada lado y regresan un único TRUE/FALSE. Se usan casi siempre dentro
-# de if()/while(), donde necesitas una sola condición, no un vector:
+# & y | son vectorizados; && y || son escalares y se usan en if()/while():
 edad <- 25
 edad > 18 && edad < 65      # un solo TRUE/FALSE -> válido en if()
 # edades > 22 && edades < 30   # ERROR o warning: edades tiene varios elementos
@@ -159,10 +156,7 @@ example(mean)         # corre los ejemplos de la documentación
 # -----------------------------------------------------------------------------
 # 9. Instalar y cargar librerías (paquetes)
 # -----------------------------------------------------------------------------
-# R base trae muchas funciones (mean, sum, class...), pero la mayor parte de
-# su poder está en paquetes: colecciones de funciones adicionales que
-# instalas una vez y cargas cada sesión. CRAN (Comprehensive R Archive
-# Network) es el repositorio oficial de paquetes.
+# La mayor parte del poder de R está en paquetes (CRAN es el repositorio oficial).
 
 # install.packages() descarga e instala un paquete desde CRAN.
 # Solo se hace UNA VEZ por computadora (no en cada sesión):
@@ -175,9 +169,7 @@ example(mean)         # corre los ejemplos de la documentación
 # Ver qué paquetes ya tienes instalados:
 installed.packages()[, "Package"] |> head(10)
 
-# require() hace lo mismo que library(), pero regresa FALSE en vez de dar
-# error si el paquete no existe — útil dentro de funciones/scripts que
-# necesitan comprobar si algo está disponible antes de usarlo.
+# require() es como library() pero regresa FALSE en vez de error:
 # if (!require("tidyverse")) install.packages("tidyverse")
 
 # En este curso, install.R (en la raíz del proyecto) ya instala de una vez

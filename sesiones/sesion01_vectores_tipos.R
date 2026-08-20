@@ -13,9 +13,7 @@
 # -----------------------------------------------------------------------------
 # 1. Todo es una función (incluso los operadores)
 # -----------------------------------------------------------------------------
-# Ya asignaste variables con <- en la sesión 0. Una particularidad de R
-# frente a otros lenguajes que ahí no vimos: CASI TODO es una función,
-# incluidos los operadores.
+# Particularidad de R frente a otros lenguajes: CASI TODO es una función, incluidos los operadores.
 
 x <- 10
 y <- 20     # `=` también es válido para asignar, pero por convención se
@@ -42,9 +40,7 @@ class(1 + 2i)               # complex: los números complejos son otro tipo ató
 # -----------------------------------------------------------------------------
 # 3. Vectores: no hay "escalares"
 # -----------------------------------------------------------------------------
-# Ya creaste vectores con c() en la sesión 0. Lo que faltaba: en R un solo
-# número ES un vector de longitud 1 -- no existen los escalares como tipo
-# aparte, a diferencia de Python o C.
+# En R un solo número ES un vector de longitud 1 -- no existen escalares aparte.
 
 v <- c(2, 4, 6, 8, 10)
 length(v)
@@ -64,9 +60,7 @@ c(1, TRUE)          # TRUE -> 1 (numeric)
 v[-1]                 # índice negativo: todo MENOS el primero
 which(v > 5)           # las POSICIONES que cumplen la condición (no los valores)
 
-# v[v > 5] te da los VALORES; which(v > 5) te da los ÍNDICES donde eso pasa.
-# Se combinan: v[which(v > 5)] es equivalente a v[v > 5], pero which() es
-# más explícito cuando necesitas la posición en sí (p.ej. which.max()).
+# v[v > 5] da los VALORES; which(v > 5) da los ÍNDICES donde eso pasa.
 
 # -----------------------------------------------------------------------------
 # 5. Vectorización vs. loops

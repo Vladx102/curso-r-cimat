@@ -36,10 +36,7 @@ par(mfrow = c(2, 2))
 plot(modelo_multi)      # 4 gráficos de diagnóstico clásicos de R
 par(mfrow = c(1, 1))
 
-# 1. Residuals vs Fitted -> ¿hay patrón? (viola linealidad/homocedasticidad)
-# 2. Q-Q plot -> ¿residuos se ven normales?
-# 3. Scale-Location -> homocedasticidad
-# 4. Residuals vs Leverage -> observaciones influyentes (distancia de Cook)
+# 1. Residuals vs Fitted  2. Q-Q plot  3. Scale-Location  4. Residuals vs Leverage
 
 # Multicolinealidad: VIF (Variance Inflation Factor)
 # install.packages("car")

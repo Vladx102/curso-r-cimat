@@ -38,9 +38,7 @@ dim(estudiantes)
 # R (y muchos paquetes) traen datasets incluidos, útiles para practicar sin
 # necesidad de archivos externos.
 
-data()                    # lista todos los datasets disponibles (se abre
-                           # en el visor); library(help = "datasets") es
-                           # el equivalente en texto plano
+data()                    # lista todos los datasets disponibles (se abre en el visor)
 
 head(mtcars)               # primeras 6 filas
 head(iris, 3)               # primeras 3 filas
@@ -167,9 +165,7 @@ empleados
 empleados$compensacion_total <- apply(empleados[, c("salario", "bono")], 1, sum)
 empleados
 
-# tapply(valores, grupo, funcion): aplica una función POR GRUPO, sin
-# necesidad de dplyr todavía -- es el equivalente base R de group_by()+
-# summarize(), que verás en la sesión 3.
+# tapply(valores, grupo, funcion): equivalente base R de group_by()+summarize()
 promedio_por_depto <- tapply(empleados$compensacion_total, empleados$departamento, mean)
 promedio_por_depto
 names(promedio_por_depto)[which.max(promedio_por_depto)]
