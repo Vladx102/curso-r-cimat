@@ -1,0 +1,117 @@
+---
+title: "Capítulo 7 — Regresión lineal"
+output: html_document
+---
+
+**Sesión 7 · Día 4, mañana · 2 horas**
+Script de práctica: [`sesiones/sesion07_regresion_lineal.R`](../../sesiones/sesion07_regresion_lineal.R)
+
+[← Capítulo 6](capitulo06_computo_simulacion.md) · [Índice](../../README.md) · [Capítulo 8 →](capitulo08_diagnostico_anova.md)
+
+## Objetivo
+
+Interpretar la notación de fórmula de R, ajustar modelos con `lm()`, leer la salida de `summary()`, y trabajar con factores y niveles de referencia. Aquí arranca la parte de modelación estadística del curso.
+
+```{r chunk-01}
+library(tidyverse)
+library(broom)
+
+datos <- as_tibble(mpg)
+```
+
+## 1. La notación de fórmula: y ~ x
+
+Toda la modelación en R (lineal, generalizada, y buena parte de los modelos estadísticos del ecosistema) comparte la misma notación de fórmula:
+
+| Fórmula | Significado |
+|---|---|
+| `y ~ x1 + x2` | modelo aditivo con dos predictores |
+| `y ~ x1 * x2` | `x1 + x2` + interacción `x1:x2` |
+| `y ~ x1 + x2 - 1` | sin intercepto |
+| `y ~ .` | todas las demás columnas como predictoras |
+
+```{r chunk-02}
+modelo_simple <- lm(hwy ~ displ, data = datos)
+modelo_simple
+```
+
+## 2. summary(): la salida estándar de un modelo
+
+```{r chunk-03}
+summary(modelo_simple)
+```
+
+Las piezas clave de esa salida:
+
+- **Estimate:** los coeficientes estimados (pendiente e intercepto).
+- **Std. Error, t value, Pr(>|t|):** la prueba de significancia de cada coeficiente.
+- **Multiple R-squared / Adjusted R-squared:** qué tan bien ajusta el modelo.
+- **F-statistic:** la prueba global de que el modelo, en conjunto, explica algo.
+
+`broom::tidy()` da exactamente la misma información pero en formato tibble — mucho más cómodo para programar, filtrar o graficar que el texto de `summary()`:
+
+```{r chunk-04}
+tidy(modelo_simple, conf.int = TRUE)
+glance(modelo_simple)     # métricas de resumen (R2, AIC, BIC, etc.) en una fila
+```
+
+## 3. Modelo múltiple y factores
+
+```{r chunk-05}
+modelo_multi <- lm(hwy ~ displ + cyl + class, data = datos)
+summary(modelo_multi)
+```
+
+`class` es una variable de texto, y `lm()` la convierte automáticamente en un factor. R elige un nivel de referencia (por default, el primero en orden alfabético) y reporta los demás niveles como **diferencias respecto a ese nivel de referencia**:
+
+```{r chunk-06}
+levels(factor(datos$class))
+contrasts(factor(datos$class))     # matriz de contrastes tipo "treatment"
+```
+
+Si el nivel de referencia por default no es el más útil para tu interpretación (por ejemplo, quieres comparar todo contra la categoría "midsize" en vez de la primera alfabética), puedes cambiarlo con `relevel()`:
+
+```{r chunk-07}
+datos_relevel <- datos %>% mutate(class = relevel(factor(class), ref = "midsize"))
+modelo_relevel <- lm(hwy ~ class, data = datos_relevel)
+tidy(modelo_relevel)
+```
+
+Esto no cambia el ajuste del modelo — solo cambia respecto a qué categoría se interpretan los coeficientes.
+
+## Ejemplo: predicciones e interpretación completa de un modelo
+
+```{r chunk-08}
+modelo_pred <- lm(hwy ~ displ + cyl, data = datos)
+tidy(modelo_pred, conf.int = TRUE)
+
+# Predecir hwy para un auto hipotético: displ = 3.5, cyl = 6
+auto_nuevo <- tibble(displ = 3.5, cyl = 6)
+predict(modelo_pred, newdata = auto_nuevo)
+```
+
+`predict()` con `interval = "confidence"` da el intervalo para el `hwy` **promedio** de autos con esas características; con `interval = "prediction"` da el intervalo para **un** auto individual con esas características — más ancho, porque suma la variabilidad de un auto en particular a la incertidumbre del promedio:
+
+```{r chunk-09}
+predict(modelo_pred, newdata = auto_nuevo, interval = "confidence")
+predict(modelo_pred, newdata = auto_nuevo, interval = "prediction")
+```
+
+Y para comparar varios escenarios hipotéticos de un jalón, `newdata` puede ser un data frame de varias filas:
+
+```{r chunk-10}
+autos_hipoteticos <- tibble(displ = c(2, 3, 4, 5), cyl = c(4, 6, 6, 8))
+autos_hipoteticos %>%
+  mutate(hwy_estimado = predict(modelo_pred, newdata = .))
+```
+
+## Ejercicios
+
+1. Ajusta `lm(hwy ~ cty, data = datos)`. Interpreta la pendiente: ¿cuánto cambia `hwy` por cada unidad de `cty`?
+2. Agrega `year` como predictor adicional (como factor) a `modelo_multi`. ¿Es significativo? Revisa su p-value con `tidy()`.
+3. Ajusta tu propio modelo `lm(cty ~ displ + cyl, data = datos)` y predice `cty` para un auto con `displ = 5` y `cyl = 8`. Compara el intervalo de confianza y el de predicción de esa estimación — ¿cuál es más ancho? ¿Por qué crees que sea así?
+4. **Reto:** ajusta un modelo `hwy ~ displ + cyl + class` y predice `hwy` para un auto hipotético de clase `"suv"` con `displ = 4` y `cyl = 8`. Compara esa predicción contra la de un modelo `hwy ~ displ + cyl` (sin `class`) para el mismo auto — ¿cambia mucho?
+
+---
+
+[← Capítulo 6](capitulo06_computo_simulacion.md) · [Índice](../../README.md) · [Capítulo 8 →](capitulo08_diagnostico_anova.md)

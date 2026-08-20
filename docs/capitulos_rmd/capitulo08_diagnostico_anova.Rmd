@@ -1,0 +1,139 @@
+---
+title: "Capítulo 8 — Diagnóstico de supuestos y ANOVA"
+output: html_document
+---
+
+**Sesión 8 · Día 4, tarde · 2 horas**
+Script de práctica: [`sesiones/sesion08_diagnostico_anova.R`](../../sesiones/sesion08_diagnostico_anova.R)
+
+[← Capítulo 7](capitulo07_regresion_lineal.md) · [Índice](../../README.md) · [Capítulo 9 →](capitulo09_glm.md)
+
+## Objetivo
+
+Trabajar con interacciones entre predictores, diagnosticar los supuestos de un modelo lineal, y comparar modelos anidados con ANOVA.
+
+```{r chunk-01}
+library(tidyverse)
+library(broom)
+
+datos <- as_tibble(mpg)
+modelo_multi <- lm(hwy ~ displ + cyl + class, data = datos)
+```
+
+## 1. Interacciones
+
+Una interacción permite que el efecto de un predictor cambie según el nivel de otro. `y ~ x * grupo` es azúcar sintáctica para `y ~ x + grupo + x:grupo`.
+
+```{r chunk-02}
+modelo_interaccion <- lm(hwy ~ displ * drv, data = datos)
+summary(modelo_interaccion)
+
+ggplot(datos, aes(displ, hwy, color = drv)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Interacción displ:drv") +
+  theme_minimal()
+```
+
+Si las líneas de tendencia por grupo en la gráfica anterior tienen pendientes claramente distintas, es una señal visual de que la interacción importa.
+
+## 2. Diagnóstico de supuestos
+
+Los supuestos clásicos de `lm()` son: linealidad, homocedasticidad (varianza constante de los residuos), normalidad de los residuos, independencia, y ausencia de multicolinealidad severa entre predictores.
+
+R trae un diagnóstico visual integrado con un solo comando:
+
+```{r chunk-03}
+par(mfrow = c(2, 2))
+plot(modelo_multi)      # 4 gráficos de diagnóstico clásicos de R
+par(mfrow = c(1, 1))
+```
+
+Cómo leer cada uno de los cuatro paneles:
+
+1. **Residuals vs Fitted** — ¿hay un patrón visible? Si sí, sugiere violación de linealidad u homocedasticidad.
+2. **Normal Q-Q** — ¿los residuos se alinean con la diagonal? Si sí, se ven razonablemente normales.
+3. **Scale-Location** — otra forma de revisar homocedasticidad (varianza constante de los residuos).
+4. **Residuals vs Leverage** — identifica observaciones influyentes mediante la distancia de Cook.
+
+Para multicolinealidad entre predictores, el diagnóstico estándar es el **VIF** (Variance Inflation Factor):
+
+```{r chunk-04}
+# install.packages("car")
+car::vif(modelo_multi)     # VIF > 5-10 sugiere colinealidad problemática
+```
+
+Y si prefieres construir tus propios diagnósticos con ggplot2 en vez de los gráficos base de R, `broom::augment()` te da los residuos y valores ajustados en formato tibble:
+
+```{r chunk-05}
+aug <- augment(modelo_multi)
+ggplot(aug, aes(.fitted, .resid)) +
+  geom_point(alpha = 0.4) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(title = "Residuos vs. valores ajustados") +
+  theme_minimal()
+```
+
+## 3. ANOVA y comparación de modelos anidados
+
+`anova()` aplicado a dos modelos anidados responde una pregunta muy concreta: ¿el modelo más grande explica significativamente más varianza que el más chico, o la mejora es solo ruido?
+
+```{r chunk-06}
+modelo_simple <- lm(hwy ~ displ, data = datos)
+anova(modelo_simple, modelo_multi)
+```
+
+`anova()` sobre un solo modelo con un factor es equivalente a comparar medias entre grupos (el ANOVA "clásico" de un curso de estadística):
+
+```{r chunk-07}
+modelo_anova <- lm(hwy ~ class, data = datos)
+anova(modelo_anova)
+```
+
+## Ejemplo: diagnóstico completo y decisión informada
+
+```{r chunk-08}
+aug_multi <- augment(modelo_multi)
+
+# Normalidad de los residuos: complementa el Q-Q plot con una prueba formal
+# (shapiro.test(), del capítulo 6) -- H0: los residuos son normales
+shapiro.test(aug_multi$.resid)
+```
+
+`shapiro.test()` es la contraparte formal de mirar el Q-Q plot: si el p-value es chico, hay evidencia de que los residuos no son normales — pero en muestras grandes hasta desviaciones triviales de normalidad dan p-values chicos, así que conviene interpretarlo junto con el gráfico, no en su lugar.
+
+```{r chunk-09}
+# Observaciones influyentes: distancia de Cook > 4/n es una regla práctica
+# común (no es un umbral mágico, pero sirve como primer filtro)
+umbral_cook <- 4 / nrow(aug_multi)
+idx_influyentes <- which(aug_multi$.cooksd > umbral_cook)
+length(idx_influyentes)
+aug_multi[idx_influyentes, c("hwy", ".fitted", ".resid", ".cooksd")]
+```
+
+Y la pregunta que realmente importa: ¿esas observaciones están cambiando las conclusiones del modelo, o son ruido inofensivo?
+
+```{r chunk-10}
+# ¿Cambian mucho los coeficientes si quitamos esas observaciones?
+modelo_sin_influyentes <- lm(hwy ~ displ + cyl + class, data = datos[-idx_influyentes, ])
+
+bind_rows(
+  tidy(modelo_multi) %>% mutate(modelo = "con todas"),
+  tidy(modelo_sin_influyentes) %>% mutate(modelo = "sin influyentes")
+) %>%
+  select(modelo, term, estimate) %>%
+  pivot_wider(names_from = modelo, values_from = estimate)
+```
+
+Si los coeficientes cambian poco al quitar las observaciones influyentes, el modelo es razonablemente robusto; si cambian mucho, esas pocas observaciones están dominando la conclusión — vale la pena investigarlas antes de reportar el modelo.
+
+## Ejercicios
+
+1. Usando `augment()`, identifica las 3 observaciones con mayor residuo absoluto de `modelo_multi`. ¿Qué tienen en común?
+2. **Reto:** ajusta dos modelos anidados — uno sin interacción (`hwy ~ displ + drv`) y otro con interacción (`hwy ~ displ * drv`). Compáralos con `anova()` y decide, con base en el p-value, si la interacción aporta información significativa.
+3. Ajusta `modelo_simple <- lm(hwy ~ displ, data = datos)`, corre `augment(modelo_simple)` y grafica un histograma de sus residuos (`.resid`) con ggplot2. Complementa con `shapiro.test()` sobre esos residuos. ¿Coinciden tu impresión visual y la prueba formal?
+4. **Reto:** usando `modelo_interaccion` (definido arriba), calcula `augment(modelo_interaccion)`, identifica las observaciones con distancia de Cook mayor a `4/n`, y ajusta un modelo sin esas observaciones. ¿Cambian mucho los coeficientes?
+
+---
+
+[← Capítulo 7](capitulo07_regresion_lineal.md) · [Índice](../../README.md) · [Capítulo 9 →](capitulo09_glm.md)

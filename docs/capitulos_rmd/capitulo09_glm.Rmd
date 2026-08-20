@@ -1,0 +1,134 @@
+---
+title: "Capítulo 9 — Modelos lineales generalizados"
+output: html_document
+---
+
+**Sesión 9 · Día 5, mañana · 2 horas**
+Script de práctica: [`sesiones/sesion09_glm.R`](../../sesiones/sesion09_glm.R)
+
+[← Capítulo 8](capitulo08_diagnostico_anova.md) · [Índice](../../README.md) · [Capítulo 10 →](capitulo10_validacion_cierre.md)
+
+## Objetivo
+
+Extender `lm()` a modelos lineales generalizados (logística, Poisson) y seleccionar modelos con AIC/BIC y `step()`.
+
+## 1. glm(): la misma fórmula, distinta familia
+
+`lm()` es, matemáticamente, un caso particular de `glm()` con `family = gaussian()`. La sintaxis de fórmula es casi idéntica entre ambas funciones — lo único que cambia es el argumento `family`, que le dice al modelo qué tipo de variable de respuesta estás modelando.
+
+```{r chunk-01}
+library(tidyverse)
+library(broom)
+
+datos <- as_tibble(mpg) %>%
+  mutate(traccion_4wd = if_else(drv == "4", 1, 0))
+```
+
+## 2. Regresión logística (respuesta binaria)
+
+```{r chunk-02}
+modelo_logit <- glm(traccion_4wd ~ displ + cyl + hwy, data = datos, family = binomial)
+summary(modelo_logit)
+```
+
+Los coeficientes de una regresión logística viven en la escala de **log-odds**, que no es directamente interpretable. Exponenciarlos los convierte en **odds ratios**, mucho más intuitivos: un odds ratio de 2 significa que las probabilidades (odds) de la respuesta se duplican por cada unidad de aumento en el predictor.
+
+```{r chunk-03}
+tidy(modelo_logit, exponentiate = TRUE, conf.int = TRUE)
+```
+
+Para predicciones en escala de probabilidad (entre 0 y 1) en vez de log-odds, usa `type = "response"`:
+
+```{r chunk-04}
+datos_pred <- datos %>%
+  mutate(prob_4wd = predict(modelo_logit, type = "response"))
+
+ggplot(datos_pred, aes(displ, prob_4wd)) +
+  geom_point(aes(y = traccion_4wd), alpha = 0.3) +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(title = "Probabilidad estimada de tracción 4WD", y = "P(4WD)") +
+  theme_minimal()
+```
+
+## 3. Regresión de Poisson (conteos)
+
+Cuando la variable de respuesta es un conteo (número de eventos), `family = poisson` es el punto de partida estándar. El ejemplo clásico en R es `warpbreaks`: número de roturas de hilo según tipo de lana y nivel de tensión.
+
+```{r chunk-05}
+data(warpbreaks)
+modelo_poisson <- glm(breaks ~ wool + tension, data = warpbreaks, family = poisson)
+summary(modelo_poisson)
+tidy(modelo_poisson, exponentiate = TRUE, conf.int = TRUE)   # ratios de tasa (rate ratios)
+```
+
+Vale la pena revisar sobredispersión antes de confiar en un modelo de Poisson: si la varianza es mucho mayor que la media, el supuesto del modelo (media = varianza) no se cumple, y conviene considerar `quasipoisson` o binomial negativa.
+
+```{r chunk-06}
+mean(warpbreaks$breaks); var(warpbreaks$breaks)
+```
+
+## 4. Selección de modelos: AIC/BIC y step()
+
+AIC y BIC son criterios que penalizan la complejidad del modelo (número de predictores) contra qué tan bien ajusta — menor AIC/BIC generalmente indica un mejor balance entre ajuste y parsimonia.
+
+```{r chunk-07}
+modelo_completo <- glm(traccion_4wd ~ displ + cyl + hwy + cty + year, data = datos, family = binomial)
+
+AIC(modelo_completo)
+BIC(modelo_completo)
+
+modelo_reducido <- step(modelo_completo, direction = "backward", trace = 0)
+summary(modelo_reducido)
+```
+
+`step()` automatiza la búsqueda de un mejor subconjunto de predictores, pero **no reemplaza el criterio del analista**: siempre hay que revisar que el modelo final tenga sentido sustantivo dentro del problema, no solo un mejor número estadístico.
+
+## Ejemplo: comparar modelos anidados y predecir escenarios
+
+```{r chunk-08}
+modelo_reducido_logit <- glm(traccion_4wd ~ displ, data = datos, family = binomial)
+modelo_completo_logit <- glm(traccion_4wd ~ displ + cyl + hwy, data = datos, family = binomial)
+
+# Prueba de razón de verosimilitudes: el análogo de anova() para modelos
+# lineales (capítulo 8), pero con test = "Chisq" porque los GLM no se
+# comparan con una F como en lm()
+anova(modelo_reducido_logit, modelo_completo_logit, test = "Chisq")
+```
+
+Igual que con `anova()` sobre modelos `lm()` en el capítulo anterior, esto responde: ¿los predictores extra (`cyl`, `hwy`) mejoran el modelo significativamente, o el modelo reducido ya captura lo esencial?
+
+```{r chunk-09}
+# Probabilidad estimada de 4WD para tres autos hipotéticos
+autos_hipoteticos <- tibble(
+  displ = c(1.8, 3.0, 5.7),
+  cyl = c(4, 6, 8),
+  hwy = c(35, 26, 18)
+)
+autos_hipoteticos %>%
+  mutate(prob_4wd = predict(modelo_completo_logit, newdata = ., type = "response"))
+```
+
+Y para encontrar un punto de corte concreto — por ejemplo, ¿a partir de qué `displ` la probabilidad estimada de 4WD supera 50%, dejando `cyl` y `hwy` en su promedio — puedes generar una rejilla de valores y filtrar:
+
+```{r chunk-10}
+grid_displ <- tibble(
+  displ = seq(min(datos$displ), max(datos$displ), by = 0.1),
+  cyl = mean(datos$cyl),
+  hwy = mean(datos$hwy)
+)
+grid_displ %>%
+  mutate(prob_4wd = predict(modelo_completo_logit, newdata = ., type = "response")) %>%
+  filter(prob_4wd >= 0.5) %>%
+  slice(1)
+```
+
+## Ejercicios
+
+1. Ajusta un modelo logístico para predecir si un auto es automático o manual usando `mtcars` (variable `am`), con `hp` y `wt` como predictores.
+2. Usando `warpbreaks`, compara por AIC un modelo con interacción `wool*tension` contra el modelo aditivo `wool + tension`. ¿Cuál prefieres?
+3. Usando `modelo_poisson` (`warpbreaks`), predice el número esperado de roturas para `wool = "A"` y `tension = "L"` con `predict(..., type = "response")`.
+4. **Reto:** compara con `anova(..., test = "Chisq")` el `modelo_poisson` contra una versión sin `wool` (`breaks ~ tension`). ¿Aporta `wool` información significativa?
+
+---
+
+[← Capítulo 8](capitulo08_diagnostico_anova.md) · [Índice](../../README.md) · [Capítulo 10 →](capitulo10_validacion_cierre.md)
