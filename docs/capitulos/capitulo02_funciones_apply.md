@@ -175,10 +175,10 @@ vapply(lista_vectores, mean, numeric(1))  # como sapply, con tipo esperado expl�
 
 `sapply()` es tu punto de entrada natural. Si el resultado no se puede simplificar de forma consistente, R regresa una lista de todos modos — en ese caso, o cuando quieres una garantía de tipo, usa `lapply()` o `vapply()`.
 
-Aplicado a un data frame, obtienes una función por columna:
+También funciona sobre un data frame, columna por columna: un data frame es, por debajo, una lista de vectores de igual longitud, así que `sapply()` lo recorre igual que a la lista de arriba. Aquí seleccionamos columnas con `$` (ya visto) en vez de la indexación `[, cols]`, que se ve más adelante en las sesiones de matrices y data frames:
 
 ```r
-sapply(mtcars[, c("mpg", "hp", "wt")], mean)
+sapply(list(mpg = mtcars$mpg, hp = mtcars$hp, wt = mtcars$wt), mean)
 ```
 
 ## Ejemplo: procesar varios grupos con una función propia

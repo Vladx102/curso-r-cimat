@@ -10,6 +10,7 @@
 # Archivos de render de Quarto / R Markdown
 /.quarto/
 *.html
+*.pdf
 *_files/
 *_cache/
 

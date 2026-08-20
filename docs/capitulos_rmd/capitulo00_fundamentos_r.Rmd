@@ -1,6 +1,8 @@
 ---
-title: "Capítulo 0 — Fundamentos de R: aritmética, variables y ayuda"
-output: html_document
+title: 'Capítulo 0 — Fundamentos de R: aritmética, variables y ayuda'
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 **Sesión 0 · 2 horas** — primer contacto con la sintaxis de R

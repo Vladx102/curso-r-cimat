@@ -53,6 +53,8 @@ repeat {
   if (contador > 3) break
 }
 
+rep(8,7)
+
 # break sale del loop por completo; next salta a la siguiente iteración
 # (mismo comportamiento que en la mayoría de los lenguajes)
 for (i in 1:10) {
@@ -71,8 +73,21 @@ tipo_dia <- switch(
 )
 tipo_dia
 
+mes_abrev <- "dic"
+
+switch(
+  mes_abrev,
+  dic = ,
+  ene = ,
+  feb = "invierno",
+  mar = ,
+  abr = ,
+  may = "primavera",
+  "otra estación"
+)
+
 # -----------------------------------------------------------------------------
-# 3. Funciones propias
+# 3. Funciones
 # -----------------------------------------------------------------------------
 
 estandarizar <- function(x, na.rm = TRUE) {
@@ -149,8 +164,12 @@ sapply(lista_vectores, mean)      # simplifica a vector/matriz cuando puede
 lapply(lista_vectores, mean)      # siempre regresa lista
 vapply(lista_vectores, mean, numeric(1))  # como sapply, pero con tipo esperado explícito (más seguro)
 
-# Con data frames, por columna:
-sapply(mtcars[, c("mpg", "hp", "wt")], mean)
+# También funciona sobre un data frame, columna por columna -- un data
+# frame es, por debajo, una lista de vectores de igual longitud, así que
+# sapply() lo recorre igual que a la lista de arriba (aquí seleccionamos
+# columnas con $, ya visto, en vez de indexación [, cols] que se ve más
+# adelante en las sesiones de matrices/data frames):
+sapply(list(mpg = mtcars$mpg, hp = mtcars$hp, wt = mtcars$wt), mean)
 
 # =============================================================================
 # EJERCICIOS
