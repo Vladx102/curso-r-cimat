@@ -71,6 +71,17 @@ poblacion <- tibble(pais = c("MX", "US", "CA"), poblacion_m = c(128, 331, 38))
 largo %>% left_join(poblacion, by = "pais")
 ```
 
+Con datos reales del curso: [`data/libros.csv`](../../data/libros.csv) y [`data/prestamos.csv`](../../data/prestamos.csv) son dos tablas relacionadas por `isbn`, el caso típico donde necesitas un join:
+
+```r
+libros <- read_csv("data/libros.csv")
+prestamos <- read_csv("data/prestamos.csv")
+
+prestamos %>%
+  left_join(libros, by = "isbn") %>%
+  count(genero, sort = TRUE)
+```
+
 ## 3. ggplot2: gramática de gráficos
 
 ggplot2 construye gráficos por capas: empiezas con los datos y un mapeo estético (`aes()`), y vas sumando geometrías (`geom_*()`) y ajustes.
@@ -154,6 +165,7 @@ ggplot(resumen_completo, aes(x = class, y = hwy_prom, fill = drv)) +
 5. Usando `datos` (mpg), agrupa por `manufacturer` y `drv`, calcula el promedio de `cty` por grupo, y grafica un gráfico de barras agrupado (`geom_col(position = "dodge")`) coloreado por `drv`.
 6. **Reto:** usa `pivot_longer()` sobre `mpg` para poner `cty` y `hwy` en una sola columna `tipo_millas` con su valor en `millas`, y grafica un boxplot de `millas` por `tipo_millas`, coloreado por esa misma variable.
 7. Importa [`data/ventas.csv`](../../data/ventas.csv), agrupa por `categoria` y calcula el monto total y el promedio. Grafica un `geom_col()` del monto total por categoría.
+8. Une `prestamos` con `libros` (`left_join()` por `isbn`) y calcula, por género, la duración promedio del préstamo en días (`fecha_devolucion - fecha_prestamo`, solo para los ya devueltos). ¿Qué género se presta por más tiempo?
 
 ---
 

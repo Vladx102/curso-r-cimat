@@ -212,3 +212,7 @@ tapply(pedidos_limpios$monto, pedidos_limpios$cliente, sum)
 
 # 9. Importa data/empleados.csv con read_csv(). Calcula el salario promedio
 #    por departamento y cuántos empleados no tienen bono registrado (NA).
+
+# 10. Importa data/prestamos.csv. Limpia `usuario` con stringr (espacios y
+#     mayúsculas inconsistentes) y filtra los préstamos que siguen abiertos
+#     (fecha_devolucion vacía). ¿Cuántos días lleva prestado el más antiguo?

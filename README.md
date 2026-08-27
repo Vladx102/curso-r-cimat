@@ -33,7 +33,10 @@ curso-r-cimat/
 ├── data/                    # datasets reales (CSV) usados en varias sesiones
 │   ├── ventas.csv           # transacciones de una tienda (sesiones 3 y 4)
 │   ├── empleados.csv        # nómina de una empresa (sesión 3)
-│   └── clima.csv            # temperatura/precipitación diaria, 2 ciudades (sesión 6)
+│   ├── clima.csv            # temperatura/precipitación diaria, 2 ciudades (sesión 6)
+│   ├── libros.csv           # catálogo de una biblioteca (sesiones 3 y 4)
+│   └── prestamos.csv        # préstamos de libros, relacionada con libros.csv
+│                            # por isbn -- para practicar left_join() (sesiones 3 y 4)
 └── sesiones/                # scripts .R de práctica, uno por sesión
     ├── sesion00_fundamentos_r.R
     ├── sesion01_vectores_tipos.R

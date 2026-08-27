@@ -245,6 +245,7 @@ En el [capítulo 4](capitulo04_agregacion_tidyr_ggplot2.md) vas a ver `group_by(
 7. Crea un tibble `reservas` con columnas persona (con espacios/mayúsculas inconsistentes, como en el ejemplo de arriba), fecha (texto `"YYYY-MM-DD"`) y estatus (`"confirmada"`/`"cancelada"`). Filtra las canceladas y calcula cuántos días han pasado (`today() - fecha`) desde cada una.
 8. **Reto:** limpia el nombre de persona en `reservas` (sin filtrar nada) y usa `tapply()` para contar cuántas reservas hizo cada persona, sin importar el estatus.
 9. Importa `data/empleados.csv` con `read_csv("../../data/empleados.csv")`. Calcula el salario promedio por departamento y cuántos empleados no tienen bono registrado (`NA`).
+10. Importa `data/prestamos.csv` (`read_csv("../../data/prestamos.csv")`). Limpia `usuario` con stringr (espacios y mayúsculas inconsistentes) y filtra los préstamos que siguen abiertos (`fecha_devolucion` vacía). ¿Cuántos días lleva prestado el más antiguo?
 
 ---
 

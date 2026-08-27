@@ -51,6 +51,14 @@ largo %>% pivot_wider(names_from = anio, values_from = valor)
 poblacion <- tibble(pais = c("MX", "US", "CA"), poblacion_m = c(128, 331, 38))
 largo %>% left_join(poblacion, by = "pais")
 
+# Con datos reales del curso: dos tablas relacionadas por isbn
+libros <- read_csv("data/libros.csv")
+prestamos <- read_csv("data/prestamos.csv")
+
+prestamos %>%
+  left_join(libros, by = "isbn") %>%
+  count(genero, sort = TRUE)
+
 # -----------------------------------------------------------------------------
 # 3. ggplot2: gramática de gráficos
 # -----------------------------------------------------------------------------
@@ -135,3 +143,7 @@ ggplot(resumen_completo, aes(x = class, y = hwy_prom, fill = drv)) +
 
 # 7. Importa data/ventas.csv, agrupa por categoria y calcula el monto total
 #    y el promedio. Grafica un geom_col() del monto total por categoria.
+
+# 8. Une prestamos con libros (left_join por isbn) y calcula, por genero, la
+#    duracion promedio del prestamo en dias (fecha_devolucion - fecha_prestamo,
+#    solo para los ya devueltos). ¿Qué género se presta por más tiempo?
