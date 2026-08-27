@@ -51,14 +51,6 @@ largo %>% pivot_wider(names_from = anio, values_from = valor)
 poblacion <- tibble(pais = c("MX", "US", "CA"), poblacion_m = c(128, 331, 38))
 largo %>% left_join(poblacion, by = "pais")
 
-# Con datos reales del curso: dos tablas relacionadas por isbn
-libros <- read_csv("data/libros.csv")
-prestamos <- read_csv("data/prestamos.csv")
-
-prestamos %>%
-  left_join(libros, by = "isbn") %>%
-  count(genero, sort = TRUE)
-
 # -----------------------------------------------------------------------------
 # 3. ggplot2: gramática de gráficos
 # -----------------------------------------------------------------------------
@@ -106,29 +98,34 @@ ggplot(datos, aes(x = class, y = hwy)) +
 #    (geom_smooth(method = "lm") dentro de aes(color = class)).
 
 # =============================================================================
-# EJEMPLO: eficiencia promedio por clase y tipo de tracción
+# EJEMPLO: préstamos de la biblioteca por género y estado
 # =============================================================================
-# Combina group_by con más de una variable, pivot_wider y un gráfico de
-# barras agrupado -- un flujo de análisis exploratorio típico de principio
-# a fin.
+# Combina left_join, group_by con más de una variable, pivot_wider y un
+# gráfico de barras agrupado -- un flujo de análisis exploratorio típico
+# de principio a fin, esta vez sobre dos tablas relacionadas.
 
-resumen_completo <- datos %>%
-  group_by(class, drv) %>%
-  summarize(hwy_prom = mean(hwy), n = n(), .groups = "drop")
-resumen_completo
+libros <- read_csv("data/libros.csv")
+prestamos <- read_csv("data/prestamos.csv")
 
-# Tabla ancha: una columna por tipo de tracción, más fácil de leer de un
-# vistazo que la versión larga de arriba
-resumen_completo %>%
-  select(class, drv, hwy_prom) %>%
-  pivot_wider(names_from = drv, values_from = hwy_prom)
+prestamos_completos <- prestamos %>%
+  left_join(libros, by = "isbn") %>%
+  mutate(estado = if_else(is.na(fecha_devolucion), "abierto", "devuelto"))
 
-# Gráfico de barras agrupado: una barra por combinación class x drv
-ggplot(resumen_completo, aes(x = class, y = hwy_prom, fill = drv)) +
+resumen_genero_estado <- prestamos_completos %>%
+  group_by(genero, estado) %>%
+  summarize(n = n(), .groups = "drop")
+resumen_genero_estado
+
+# Tabla ancha: una columna por estado, más fácil de leer de un vistazo
+resumen_genero_estado %>%
+  pivot_wider(names_from = estado, values_from = n, values_fill = 0)
+
+# Gráfico de barras agrupado: una barra por combinación genero x estado
+ggplot(resumen_genero_estado, aes(x = genero, y = n, fill = estado)) +
   geom_col(position = "dodge") +
   labs(
-    title = "Eficiencia promedio en carretera por clase y tipo de tracción",
-    x = "Clase", y = "hwy promedio", fill = "Tracción"
+    title = "Préstamos por género y estado",
+    x = "Género", y = "Número de préstamos", fill = "Estado"
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))

@@ -74,16 +74,7 @@ poblacion <- tibble(pais = c("MX", "US", "CA"), poblacion_m = c(128, 331, 38))
 largo %>% left_join(poblacion, by = "pais")
 ```
 
-Con datos reales del curso: `data/libros.csv` y `data/prestamos.csv` son dos tablas relacionadas por `isbn`, el caso típico donde necesitas un join:
-
-```{r chunk-06b}
-libros <- read_csv("../../data/libros.csv")
-prestamos <- read_csv("../../data/prestamos.csv")
-
-prestamos %>%
-  left_join(libros, by = "isbn") %>%
-  count(genero, sort = TRUE)
-```
+Más abajo, en el "Ejemplo" de este capítulo, vas a usar un join real sobre dos tablas del curso relacionadas por `isbn`.
 
 ## 3. ggplot2: gramática de gráficos
 
@@ -130,40 +121,49 @@ La ventaja de este enfoque por capas es que puedes construir gráficos complejos
 3. Usa `pivot_wider()` sobre `datos %>% count(class, drv)` para obtener una tabla con clases como filas y tipos de tracción (`drv`) como columnas.
 4. **Reto:** reproduce con ggplot2 un gráfico de dispersión de `cty` vs. `hwy`, coloreado por `class`, con una línea de tendencia por clase (`geom_smooth(method = "lm")` dentro de `aes(color = class)`).
 
-## Ejemplo: eficiencia promedio por clase y tipo de tracción
+## Ejemplo: préstamos de la biblioteca por género y estado
 
-Combina `group_by()` con más de una variable, `pivot_wider()` y un gráfico de barras agrupado — un flujo de análisis exploratorio típico de principio a fin.
+Combina `left_join()`, `group_by()` con más de una variable, `pivot_wider()` y un gráfico de barras agrupado — un flujo de análisis exploratorio típico de principio a fin, esta vez sobre dos tablas relacionadas en vez de una sola.
 
 ```{r chunk-10}
-resumen_completo <- datos %>%
-  group_by(class, drv) %>%
-  summarize(hwy_prom = mean(hwy), n = n(), .groups = "drop")
-resumen_completo
+libros <- read_csv("../../data/libros.csv")
+prestamos <- read_csv("../../data/prestamos.csv")
+
+prestamos_completos <- prestamos %>%
+  left_join(libros, by = "isbn") %>%
+  mutate(estado = if_else(is.na(fecha_devolucion), "abierto", "devuelto"))
 ```
 
-Agrupar por dos variables a la vez (`class`, `drv`) da una fila por cada combinación que sí existe en los datos — no todas las clases tienen los tres tipos de tracción, así que el resultado no es una tabla "completa".
+`if_else(is.na(fecha_devolucion), ...)` distingue los préstamos que siguen abiertos (sin fecha de devolución) de los ya cerrados — el mismo patrón de "convierte una condición en una etiqueta" que ya usaste con `ifelse()`.
+
+```{r chunk-10b}
+resumen_genero_estado <- prestamos_completos %>%
+  group_by(genero, estado) %>%
+  summarize(n = n(), .groups = "drop")
+resumen_genero_estado
+```
+
+Agrupar por dos variables a la vez (`genero`, `estado`) da una fila por cada combinación que sí existe en los datos.
 
 ```{r chunk-11}
-# Tabla ancha: una columna por tipo de tracción, más fácil de leer de un
-# vistazo que la versión larga de arriba
-resumen_completo %>%
-  select(class, drv, hwy_prom) %>%
-  pivot_wider(names_from = drv, values_from = hwy_prom)
+# Tabla ancha: una columna por estado, más fácil de leer de un vistazo
+resumen_genero_estado %>%
+  pivot_wider(names_from = estado, values_from = n, values_fill = 0)
 ```
 
 ```{r chunk-12}
-# Gráfico de barras agrupado: una barra por combinación class x drv
-ggplot(resumen_completo, aes(x = class, y = hwy_prom, fill = drv)) +
+# Gráfico de barras agrupado: una barra por combinación genero x estado
+ggplot(resumen_genero_estado, aes(x = genero, y = n, fill = estado)) +
   geom_col(position = "dodge") +
   labs(
-    title = "Eficiencia promedio en carretera por clase y tipo de tracción",
-    x = "Clase", y = "hwy promedio", fill = "Tracción"
+    title = "Préstamos por género y estado",
+    x = "Género", y = "Número de préstamos", fill = "Estado"
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-`position = "dodge"` es lo que separa las barras de cada `drv` en vez de apilarlas — el equivalente en ggplot2 de un gráfico de barras agrupado.
+`position = "dodge"` es lo que separa las barras de cada `estado` en vez de apilarlas — el equivalente en ggplot2 de un gráfico de barras agrupado.
 
 5. Usando `datos` (mpg), agrupa por `manufacturer` y `drv`, calcula el promedio de `cty` por grupo, y grafica un gráfico de barras agrupado (`geom_col(position = "dodge")`) coloreado por `drv`.
 6. **Reto:** usa `pivot_longer()` sobre `mpg` para poner `cty` y `hwy` en una sola columna `tipo_millas` con su valor en `millas`, y grafica un boxplot de `millas` por `tipo_millas`, coloreado por esa misma variable.
