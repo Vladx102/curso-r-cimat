@@ -35,8 +35,10 @@ tbl[, "x"]         # tibble (más predecible)
 # -----------------------------------------------------------------------------
 # readr::read_csv() es más rápido y predecible que read.csv() base.
 
-# datos <- read_csv("ruta/a/archivo.csv")
-# Para esta práctica usamos datasets incluidos en R:
+ventas <- read_csv("data/ventas.csv")   # archivo real, incluido en el curso
+glimpse(ventas)
+
+# Para el resto de la sesión usamos un dataset incluido en R:
 datos <- as_tibble(mpg)     # dataset de ggplot2: consumo de autos
 datos
 
@@ -207,3 +209,6 @@ tapply(pedidos_limpios$monto, pedidos_limpios$cliente, sum)
 # 8. (Reto) Limpia el nombre de persona en `reservas` (sin filtrar nada) y
 #    usa tapply() para contar cuántas reservas hizo cada persona, sin
 #    importar el estatus.
+
+# 9. Importa data/empleados.csv con read_csv(). Calcula el salario promedio
+#    por departamento y cuántos empleados no tienen bono registrado (NA).

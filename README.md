@@ -30,6 +30,10 @@ curso-r-cimat/
 │       ├── capitulo01_vectores_tipos.Rmd
 │       ├── ...
 │       └── capitulo10_validacion_cierre.Rmd
+├── data/                    # datasets reales (CSV) usados en varias sesiones
+│   ├── ventas.csv           # transacciones de una tienda (sesiones 3 y 4)
+│   ├── empleados.csv        # nómina de una empresa (sesión 3)
+│   └── clima.csv            # temperatura/precipitación diaria, 2 ciudades (sesión 6)
 └── sesiones/                # scripts .R de práctica, uno por sesión
     ├── sesion00_fundamentos_r.R
     ├── sesion01_vectores_tipos.R
@@ -40,7 +44,7 @@ curso-r-cimat/
     └── sesion10_validacion_cierre.R
 ```
 
-Cada capítulo en `docs/capitulos/` explica la teoría en prosa con ejemplos de código; el script equivalente en `sesiones/` es la versión ejecutable, con el mismo código y una sección de ejercicios al final. `docs/capitulos_rmd/` tiene el mismo contenido teórico que `docs/capitulos/`, pero como `.Rmd`: si prefieres leer y correr el código a la vez (en vez de leer el `.md` y luego el script por separado), abre el `.Rmd` en RStudio y ve ejecutando los chunks conforme avanzas.
+Cada capítulo en `docs/capitulos/` explica la teoría en prosa con ejemplos de código; el script equivalente en `sesiones/` es la versión ejecutable, con el mismo código y una sección de ejercicios al final. `docs/capitulos_rmd/` tiene el mismo contenido teórico que `docs/capitulos/`, pero como `.Rmd`: si prefieres leer y correr el código a la vez (en vez de leer el `.md` y luego el script por separado), abre el `.Rmd` en RStudio y ve ejecutando los chunks conforme avanzas. `data/` tiene datasets reales (no solo los incluidos en R como `mpg`/`mtcars`) para practicar importación y análisis con `read_csv()`; se usan en las sesiones 3, 4 y 6, y quedan disponibles para tus propios ejercicios.
 
 ## Temario
 

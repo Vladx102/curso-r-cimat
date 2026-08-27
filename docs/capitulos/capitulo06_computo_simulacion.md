@@ -147,6 +147,15 @@ cor(mtcars[, c("mpg", "hp", "wt")])
 skim(mtcars[, c("mpg", "hp", "wt")])
 ```
 
+Lo mismo, con datos reales del curso ([`data/clima.csv`](../../data/clima.csv), dos ciudades con temperatura y precipitación diaria de un año):
+
+```r
+clima <- read_csv("data/clima.csv")
+quantile(clima$precipitacion_mm)
+IQR(clima$precipitacion_mm)
+cor(clima$temperatura_c, clima$precipitacion_mm)
+```
+
 ## 6. Introducción a la inferencia: t.test()
 
 `t.test()` hace una prueba t y, de paso, regresa el intervalo de confianza para la media — ya no hace falta calcularlo a mano con `error_estandar()`.
@@ -172,6 +181,12 @@ t.test(grupo1, grupo2, var.equal = FALSE)   # prueba de Welch (varianzas distint
 ```
 
 `var.equal = FALSE` (prueba de Welch) es el default de R porque asumir varianzas iguales cuando no lo son infla el error tipo I — cuando tengas duda, deja el default.
+
+Con la notación de fórmula, sobre datos reales: ¿difiere la temperatura entre las dos ciudades de `clima`?
+
+```r
+t.test(temperatura_c ~ ciudad, data = clima)
+```
 
 ## Ejercicios
 
@@ -225,6 +240,7 @@ t.test(tiempo ~ grupo, data = experimento)
 
 8. Simula dos muestras normales `grupo_control` y `grupo_tratamiento` (n = 30 cada una) con una diferencia de medias pequeña (p. ej. 50 vs. 52) y usa `t.test()` para ver si la diferencia es significativa. Repite con una diferencia más grande (50 vs. 60): ¿cambia el valor p como esperabas?
 9. **Reto:** usando tus muestras simuladas del ejercicio 8, repite la simulación 500 veces (con `replicate()`) y calcula en qué proporción de las repeticiones el `t.test()` detecta una diferencia significativa (`p < 0.05`) — esto es, informalmente, el "poder" de la prueba.
+10. Usando [`data/clima.csv`](../../data/clima.csv), calcula la temperatura promedio y el IQR de precipitación por ciudad (dplyr). ¿La diferencia de temperatura del `t.test()` de arriba es consistente con esos promedios?
 
 ---
 

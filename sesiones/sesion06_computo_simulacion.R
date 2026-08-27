@@ -122,6 +122,12 @@ cor(mtcars[, c("mpg", "hp", "wt")])
 # skimr::skim() automatiza todo lo anterior: punto de partida típico al explorar un dataset.
 skim(mtcars[, c("mpg", "hp", "wt")])
 
+# Lo mismo, con datos reales del curso:
+clima <- read_csv("data/clima.csv")
+quantile(clima$precipitacion_mm)
+IQR(clima$precipitacion_mm)
+cor(clima$temperatura_c, clima$precipitacion_mm)
+
 # -----------------------------------------------------------------------------
 # 6. Introducción a la inferencia: t.test()
 # -----------------------------------------------------------------------------
@@ -142,6 +148,9 @@ grupo2 <- rnorm(20, mean = 53, sd = 5)
 
 t.test(grupo1, grupo2, var.equal = TRUE)    # asumiendo varianzas iguales
 t.test(grupo1, grupo2, var.equal = FALSE)   # prueba de Welch (varianzas distintas; es el default)
+
+# Con notación de fórmula, sobre datos reales: ¿difiere la temperatura entre ciudades?
+t.test(temperatura_c ~ ciudad, data = clima)
 
 # =============================================================================
 # EJERCICIOS
@@ -221,3 +230,7 @@ t.test(tiempo ~ grupo, data = experimento)
 #    simulación 500 veces (con replicate()) y calcula en qué proporción de
 #    las repeticiones el t.test() detecta una diferencia significativa
 #    (p < 0.05) -- esto es, informalmente, el "poder" de la prueba.
+
+# 10. Usando data/clima.csv, calcula la temperatura promedio y el IQR de
+#     precipitación por ciudad (dplyr). ¿La diferencia de temperatura del
+#     t.test() de arriba es consistente con esos promedios?

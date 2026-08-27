@@ -153,6 +153,7 @@ ggplot(resumen_completo, aes(x = class, y = hwy_prom, fill = drv)) +
 
 5. Usando `datos` (mpg), agrupa por `manufacturer` y `drv`, calcula el promedio de `cty` por grupo, y grafica un gráfico de barras agrupado (`geom_col(position = "dodge")`) coloreado por `drv`.
 6. **Reto:** usa `pivot_longer()` sobre `mpg` para poner `cty` y `hwy` en una sola columna `tipo_millas` con su valor en `millas`, y grafica un boxplot de `millas` por `tipo_millas`, coloreado por esa misma variable.
+7. Importa [`data/ventas.csv`](../../data/ventas.csv), agrupa por `categoria` y calcula el monto total y el promedio. Grafica un `geom_col()` del monto total por categoría.
 
 ---
 

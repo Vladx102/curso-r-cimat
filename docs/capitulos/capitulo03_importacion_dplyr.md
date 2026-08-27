@@ -38,10 +38,16 @@ Esa última diferencia es sutil pero importante: en un `data.frame`, seleccionar
 
 `readr::read_csv()` es más rápido y más predecible que `read.csv()` (base R): no convierte strings a factor por default, e infiere los tipos de columna reportando cómo lo hizo.
 
-```r
-# datos <- read_csv("ruta/a/archivo.csv")
+El repositorio del curso incluye datasets reales en `data/` para practicar justo esto:
 
-# Para la práctica del curso usamos datasets incluidos en R:
+```r
+ventas <- read_csv("data/ventas.csv")   # archivo real, incluido en el curso
+glimpse(ventas)
+```
+
+Para el resto de la sesión usamos un dataset incluido en R, más grande y ya familiar:
+
+```r
 datos <- as_tibble(mpg)     # dataset de ggplot2: consumo de autos
 datos
 
@@ -235,6 +241,7 @@ En el [capítulo 4](capitulo04_agregacion_tidyr_ggplot2.md) vas a ver `group_by(
 
 7. Crea un tibble `reservas` con columnas persona (con espacios/mayúsculas inconsistentes, como en el ejemplo de arriba), fecha (texto `"YYYY-MM-DD"`) y estatus (`"confirmada"`/`"cancelada"`). Filtra las canceladas y calcula cuántos días han pasado (`today() - fecha`) desde cada una.
 8. **Reto:** limpia el nombre de persona en `reservas` (sin filtrar nada) y usa `tapply()` para contar cuántas reservas hizo cada persona, sin importar el estatus.
+9. Importa [`data/empleados.csv`](../../data/empleados.csv) con `read_csv()`. Calcula el salario promedio por departamento y cuántos empleados no tienen bono registrado (`NA`).
 
 ---
 
