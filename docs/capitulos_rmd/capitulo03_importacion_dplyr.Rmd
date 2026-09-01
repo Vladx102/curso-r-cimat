@@ -6,7 +6,7 @@ output: html_document
 **Sesión 3 · Día 2, mañana · 2 horas**
 Script de práctica: [`sesiones/sesion03_importacion_dplyr.R`](../../sesiones/sesion03_importacion_dplyr.R)
 
-[← Capítulo 2c](capitulo02c_dataframes_base.md) · [Índice](../../README.md) · [Capítulo 4 →](capitulo04_agregacion_tidyr_ggplot2.md)
+[← Capítulo 2d](capitulo02d_graficos_base.md) · [Índice](../../README.md) · [Capítulo 4 →](capitulo04_agregacion_tidyr_ggplot2.md)
 
 ## Objetivo
 
@@ -249,4 +249,4 @@ En el [capítulo 4](capitulo04_agregacion_tidyr_ggplot2.md) vas a ver `group_by(
 
 ---
 
-[← Capítulo 2c](capitulo02c_dataframes_base.md) · [Índice](../../README.md) · [Capítulo 4 →](capitulo04_agregacion_tidyr_ggplot2.md)
+[← Capítulo 2d](capitulo02d_graficos_base.md) · [Índice](../../README.md) · [Capítulo 4 →](capitulo04_agregacion_tidyr_ggplot2.md)

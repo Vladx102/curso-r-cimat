@@ -2,13 +2,13 @@
 
 Curso de nivelación — Maestría en Ciencias, CIMAT Aguascalientes
 
-*Duración: 13 sesiones · 2 horas cada una (26 horas totales)*
+*Duración: 14 sesiones · 2 horas cada una (28 horas totales)*
 
 > El desarrollo teórico de cada sesión está en [`capitulos/`](capitulos/capitulo00_fundamentos_r.md); el código ejecutable equivalente está en [`sesiones/`](../sesiones). Antes de la sesión 0, sigue la [guía de instalación](instalacion.md).
 
 ## Presentación
 
-Curso intensivo de nivelación dirigido a estudiantes de nuevo ingreso a la maestría del CIMAT Aguascalientes, previo al curso de Modelación Estadística. La columna vertebral del curso (sesiones 1 en adelante) está diseñada para alumnos que ya saben programar en algún otro lenguaje (Python, C/C++, MATLAB, etc.), por lo que no se detiene en conceptos generales de programación: va directo a la sintaxis y los idiomas propios de R, y dedica la mayor parte del tiempo a su aplicación en modelación estadística. Las sesiones 0, 2b y 2c cubren fundamentos de R desde cero (aritmética, matrices, data frames en base R) para quien las necesite como punto de partida o repaso — son opcionales para quien ya tiene ese terreno cubierto.
+Curso intensivo de nivelación dirigido a estudiantes de nuevo ingreso a la maestría del CIMAT Aguascalientes, previo al curso de Modelación Estadística. La columna vertebral del curso (sesiones 1 en adelante) está diseñada para alumnos que ya saben programar en algún otro lenguaje (Python, C/C++, MATLAB, etc.), por lo que no se detiene en conceptos generales de programación: va directo a la sintaxis y los idiomas propios de R, y dedica la mayor parte del tiempo a su aplicación en modelación estadística. Las sesiones 0, 2b, 2c y 2d cubren fundamentos de R desde cero (aritmética, matrices, data frames en base R, gráficos en base R) para quien las necesite como punto de partida o repaso — son opcionales para quien ya tiene ese terreno cubierto.
 
 ## Objetivos
 
@@ -20,11 +20,11 @@ Curso intensivo de nivelación dirigido a estudiantes de nuevo ingreso a la maes
 
 ## Dirigido a
 
-Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1 en adelante asumen experiencia previa en programación en cualquier lenguaje, sin necesariamente experiencia previa en R; las sesiones 0, 2b y 2c no asumen ningún conocimiento previo de R.
+Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1 en adelante asumen experiencia previa en programación en cualquier lenguaje, sin necesariamente experiencia previa en R; las sesiones 0, 2b, 2c y 2d no asumen ningún conocimiento previo de R.
 
 ## Metodología
 
-- 13 sesiones de 2 horas: exposición breve de conceptos + práctica guiada en RStudio/Posit. Pensado originalmente como 2 sesiones por día (mañana y tarde), pero la cadencia la puede ajustar quien imparta el curso.
+- 14 sesiones de 2 horas: exposición breve de conceptos + práctica guiada en RStudio/Posit. Pensado originalmente como 2 sesiones por día (mañana y tarde), pero la cadencia la puede ajustar quien imparta el curso.
 - Aprendizaje por comparación con otros lenguajes ("esto es como X, pero...").
 - Ejercicios cortos al final de cada sesión (algunos con solución incluida) y un mini-proyecto integrador en la última sesión.
 - Todo el material se organiza por sesión en [`sesiones/`](../sesiones) (código) y [`capitulos/`](capitulos) (teoría en prosa).
@@ -38,6 +38,7 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 | 2 | Funciones y familia apply | Manejo de NA · Estructuras de control (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`) · Funciones propias (default, `...`, `return()`, anónimas, ámbito, recursión) · Listas y familia apply (`sapply`, `lapply`, `vapply`) |
 | 2b | Matrices | Creación y operaciones con matrices · Filas y columnas (`rbind`, `cbind`, `rowSums`...) · Selección de elementos · Categorías con `factor()` · Ejercicio con solución |
 | 2c | Data Frames en base R | Crear un `data.frame` · Datasets de ejemplo incluidos en R · Selección y ordenación (`order()`) · Exportar/importar CSV · Tratamiento de valores nulos (`is.na()`, `na.omit()`, imputación) · Operaciones por fila y columna (`apply()`) |
+| 2d | Gráficos con R base | `plot()`: puntos y líneas · `barplot()`: barras · `hist()`: distribución · `boxplot()`: cajas y la interfaz de fórmula `y ~ x` · paneles múltiples con `par(mfrow = ...)` |
 | 3 | Importación y verbos de dplyr | `data.frame` vs. `tibble`; importación con readr/readxl · El pipe `%>%` · dplyr: `filter`, `select`, `mutate`, `arrange` · Manejo de cadenas con stringr (`str_detect`, `str_replace`, `str_split`...) · Fechas con lubridate (`ymd`, `wday`, `floor_date`) |
 | 4 | Agregación, tidyr y ggplot2 | `group_by()` + `summarize()` · tidyr: `pivot_longer`/`wider`, joins · ggplot2: gramática de gráficos, geoms y facetas |
 | 5 | Proyectos reproducibles | Organización de proyectos y buenas prácticas · Quarto/R Markdown · Documentar y reutilizar funciones propias |
@@ -56,7 +57,7 @@ Carácter no numérico: al ser un curso de nivelación, la evaluación tiene com
 
 ## Requisitos previos
 
-- Ninguno para las sesiones 0, 2b y 2c (parten de cero).
+- Ninguno para las sesiones 0, 2b, 2c y 2d (parten de cero).
 - Para las sesiones 1 en adelante: experiencia de programación en al menos un lenguaje (cualquiera).
 - Laptop propia con R y RStudio (o Positron/VS Code) instalados antes de la sesión 0 — ver la [guía de instalación](instalacion.md).
 - No se requiere experiencia previa en estadística más allá de un curso básico de probabilidad y estadística de licenciatura.

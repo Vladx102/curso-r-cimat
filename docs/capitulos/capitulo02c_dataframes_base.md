@@ -3,7 +3,7 @@
 **Sesión 2c · 2 horas**
 Script de práctica: [`sesiones/sesion02c_dataframes_base.R`](../../sesiones/sesion02c_dataframes_base.R)
 
-[← Capítulo 2b](capitulo02b_matrices.md) · [Índice](../../README.md) · [Capítulo 3 →](capitulo03_importacion_dplyr.md)
+[← Capítulo 2b](capitulo02b_matrices.md) · [Índice](../../README.md) · [Capítulo 2d →](capitulo02d_graficos_base.md)
 
 ## Objetivo
 
@@ -193,4 +193,4 @@ Vale la pena quedarse con esta comparación en la cabeza: `tapply()` resuelve en
 
 ---
 
-[← Capítulo 2b](capitulo02b_matrices.md) · [Índice](../../README.md) · [Capítulo 3 →](capitulo03_importacion_dplyr.md)
+[← Capítulo 2b](capitulo02b_matrices.md) · [Índice](../../README.md) · [Capítulo 2d →](capitulo02d_graficos_base.md)

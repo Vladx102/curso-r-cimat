@@ -1,8 +1,8 @@
 # Curso de nivelación en R — CIMAT Aguascalientes
 
-Material de un curso intensivo de R para alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes, previo al curso de Modelación Estadística. Está pensado para estudiantes que ya saben programar en algún otro lenguaje, así que va directo a los idiomas propios de R (vectorización, tidyverse, modelación) sin detenerse en conceptos generales de programación — con un par de sesiones adicionales de fundamentos (aritmética, matrices, data frames base) para quien las necesite como referencia o repaso.
+Material de un curso intensivo de R para alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes, previo al curso de Modelación Estadística. Está pensado para estudiantes que ya saben programar en algún otro lenguaje, así que va directo a los idiomas propios de R (vectorización, tidyverse, modelación) sin detenerse en conceptos generales de programación — con varias sesiones adicionales de fundamentos (aritmética, matrices, data frames base, gráficos base) para quien las necesite como referencia o repaso.
 
-**13 sesiones de 2 horas · 26 horas totales.**
+**14 sesiones de 2 horas · 28 horas totales.**
 
 El temario completo está en [`docs/silabo.md`](docs/silabo.md). Antes de la sesión 0, sigue la [guía de instalación](docs/instalacion.md).
 
@@ -21,6 +21,7 @@ curso-r-cimat/
 │   │   ├── capitulo02_funciones_apply.md
 │   │   ├── capitulo02b_matrices.md
 │   │   ├── capitulo02c_dataframes_base.md
+│   │   ├── capitulo02d_graficos_base.md
 │   │   ├── ...
 │   │   └── capitulo10_validacion_cierre.md
 │   └── capitulos_rmd/       # mismos capítulos en R Markdown (.Rmd), con
@@ -43,6 +44,7 @@ curso-r-cimat/
     ├── sesion02_funciones_apply.R
     ├── sesion02b_matrices.R
     ├── sesion02c_dataframes_base.R
+    ├── sesion02d_graficos_base.R
     ├── ...
     └── sesion10_validacion_cierre.R
 ```
@@ -58,6 +60,7 @@ Cada capítulo en `docs/capitulos/` explica la teoría en prosa con ejemplos de 
 | 2 | Funciones propias y familia apply | [capitulo02](docs/capitulos/capitulo02_funciones_apply.md) | [capitulo02.Rmd](docs/capitulos_rmd/capitulo02_funciones_apply.Rmd) | [sesion02](sesiones/sesion02_funciones_apply.R) |
 | 2b | Matrices | [capitulo02b](docs/capitulos/capitulo02b_matrices.md) | [capitulo02b.Rmd](docs/capitulos_rmd/capitulo02b_matrices.Rmd) | [sesion02b](sesiones/sesion02b_matrices.R) |
 | 2c | Data Frames en base R | [capitulo02c](docs/capitulos/capitulo02c_dataframes_base.md) | [capitulo02c.Rmd](docs/capitulos_rmd/capitulo02c_dataframes_base.Rmd) | [sesion02c](sesiones/sesion02c_dataframes_base.R) |
+| 2d | Gráficos con R base | [capitulo02d](docs/capitulos/capitulo02d_graficos_base.md) | [capitulo02d.Rmd](docs/capitulos_rmd/capitulo02d_graficos_base.Rmd) | [sesion02d](sesiones/sesion02d_graficos_base.R) |
 | 3 | Importación de datos y verbos de dplyr | [capitulo03](docs/capitulos/capitulo03_importacion_dplyr.md) | [capitulo03.Rmd](docs/capitulos_rmd/capitulo03_importacion_dplyr.Rmd) | [sesion03](sesiones/sesion03_importacion_dplyr.R) |
 | 4 | Agregación, tidyr y ggplot2 | [capitulo04](docs/capitulos/capitulo04_agregacion_tidyr_ggplot2.md) | [capitulo04.Rmd](docs/capitulos_rmd/capitulo04_agregacion_tidyr_ggplot2.Rmd) | [sesion04](sesiones/sesion04_agregacion_tidyr_ggplot2.R) |
 | 5 | Proyectos reproducibles (Quarto/R Markdown) | [capitulo05](docs/capitulos/capitulo05_proyectos_reproducibles.md) | [capitulo05.Rmd](docs/capitulos_rmd/capitulo05_proyectos_reproducibles.Rmd) | [sesion05](sesiones/sesion05_proyectos_reproducibles.R) |
@@ -67,7 +70,7 @@ Cada capítulo en `docs/capitulos/` explica la teoría en prosa con ejemplos de 
 | 9 | Modelos lineales generalizados (`glm`) | [capitulo09](docs/capitulos/capitulo09_glm.md) | [capitulo09.Rmd](docs/capitulos_rmd/capitulo09_glm.Rmd) | [sesion09](sesiones/sesion09_glm.R) |
 | 10 | Validación de modelos y mini-proyecto integrador | [capitulo10](docs/capitulos/capitulo10_validacion_cierre.md) | [capitulo10.Rmd](docs/capitulos_rmd/capitulo10_validacion_cierre.Rmd) | [sesion10](sesiones/sesion10_validacion_cierre.R) |
 
-Las sesiones 0, 2b y 2c son de fundamentos de R (aritmética/variables, matrices, data frames en base R) — puedes saltarlas si ya tienes ese terreno cubierto y avanzar directo a la sesión 1. Detalles de objetivos, evaluación y requisitos previos en [`docs/silabo.md`](docs/silabo.md).
+Las sesiones 0, 2b, 2c y 2d son de fundamentos de R (aritmética/variables, matrices, data frames en base R, gráficos en base R) — puedes saltarlas si ya tienes ese terreno cubierto y avanzar directo a la sesión 1. Detalles de objetivos, evaluación y requisitos previos en [`docs/silabo.md`](docs/silabo.md).
 
 ## Cómo empezar
 

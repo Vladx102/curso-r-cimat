@@ -1,0 +1,156 @@
+# Capítulo 2d — Gráficos con R base
+
+**Sesión 2d · 2 horas**
+Script de práctica: [`sesiones/sesion02d_graficos_base.R`](../../sesiones/sesion02d_graficos_base.R)
+
+[← Capítulo 2c](capitulo02c_dataframes_base.md) · [Índice](../../README.md) · [Capítulo 3 →](capitulo03_importacion_dplyr.md)
+
+## Objetivo
+
+Graficar con las funciones de base R (`plot()`, `barplot()`, `hist()`, `boxplot()`) antes de llegar a ggplot2 en el [capítulo 4](capitulo04_agregacion_tidyr_ggplot2.md). Son las funciones más rápidas para explorar datos mientras trabajas — sin necesidad de cargar tidyverse — y entender qué automatiza ggplot2 te ayuda a apreciar la diferencia cuando lo veas.
+
+## 1. plot(): dispersión de puntos
+
+`plot(x, y)` es la función más general de base R: con dos vectores numéricos dibuja un gráfico de dispersión.
+
+```r
+plot(mtcars$wt, mtcars$mpg)
+```
+
+Como cualquier función de base R, se personaliza con argumentos: `main` (título), `xlab`/`ylab` (etiquetas de eje), `col` (color) y `pch` (tipo de punto):
+
+```r
+plot(mtcars$wt, mtcars$mpg,
+  main = "Peso vs. rendimiento",
+  xlab = "Peso (miles de lb)", ylab = "Millas por galón",
+  pch = 19, col = "steelblue"
+)
+```
+
+## 2. plot(): líneas
+
+El mismo `plot()` dibuja líneas en vez de puntos con el argumento `type`: `"l"` para línea, `"b"` para puntos y línea juntos (*both*).
+
+```r
+ventas_mensuales <- c(120, 135, 128, 150, 145, 160, 158, 170, 165, 180, 190, 200)
+meses <- 1:12
+
+plot(meses, ventas_mensuales, type = "l")
+
+plot(meses, ventas_mensuales,
+  type = "b", col = "darkgreen", pch = 16,
+  main = "Ventas mensuales", xlab = "Mes", ylab = "Ventas (miles)"
+)
+```
+
+## 3. barplot(): barras
+
+`barplot()` espera un vector ya resumido (no datos crudos) — normalmente el resultado de `table()`, que cuenta cuántas veces aparece cada valor:
+
+```r
+conteo_cyl <- table(mtcars$cyl)
+conteo_cyl
+
+barplot(conteo_cyl,
+  main = "Autos por número de cilindros",
+  xlab = "Cilindros", ylab = "Cantidad", col = "coral"
+)
+```
+
+## 4. hist(): distribución
+
+`hist()` sí toma el vector de datos crudo: agrupa los valores en intervalos (*bins*) y cuenta cuántas observaciones caen en cada uno.
+
+```r
+hist(mtcars$mpg)
+
+hist(mtcars$mpg,
+  breaks = 10, col = "lightblue",
+  main = "Distribución de millas por galón", xlab = "mpg"
+)
+```
+
+`breaks` controla (aproximadamente) cuántos intervalos usar — más intervalos dan más detalle, pero también más ruido visual.
+
+## 5. boxplot(): cajas
+
+`boxplot()` resume una distribución con cuartiles: la caja va del primer al tercer cuartil, la línea interior es la mediana, y los "bigotes" se extienden hasta 1.5 veces el rango intercuartílico (los puntos más allá son valores atípicos).
+
+```r
+boxplot(mtcars$mpg)
+```
+
+Con la **interfaz de fórmula** `y ~ x` se compara la distribución de `y` entre grupos definidos por `x` — la misma sintaxis de fórmula que vas a usar con `lm()` en el [capítulo 7](capitulo07_regresion_lineal.md):
+
+```r
+boxplot(mpg ~ cyl,
+  data = mtcars,
+  main = "mpg por número de cilindros",
+  xlab = "Cilindros", ylab = "mpg", col = "lightyellow"
+)
+```
+
+## 6. Paneles múltiples y personalización
+
+`par(mfrow = c(filas, columnas))` divide la ventana gráfica en varios paneles, útil para comparar gráficos lado a lado:
+
+```r
+par(mfrow = c(1, 2))
+hist(mtcars$mpg, col = "lightblue", main = "Histograma")
+boxplot(mtcars$mpg, col = "lightyellow", main = "Boxplot")
+par(mfrow = c(1, 1))    # regresar a un panel por gráfico
+```
+
+Sin `par(mfrow = c(1, 1))` al final, los siguientes gráficos del script se seguirían dibujando en un panel dividido — fácil de olvidar y una fuente común de confusión.
+
+## Ejercicio
+
+Usando el dataset incluido `mtcars`:
+
+a. haz un boxplot de `hp` separado por `am` (0 = automático, 1 = manual)
+b. haz un barplot con el conteo de autos por número de marchas (`gear`)
+c. haz un histograma de `disp` con 15 *breaks*
+
+## Ejemplo: temperatura diaria de una ciudad
+
+```r
+dias <- 1:30
+temperatura <- c(
+  18, 19, 17, 20, 22, 21, 19, 18, 20, 23,
+  24, 22, 21, 19, 18, 17, 19, 21, 23, 25,
+  26, 24, 22, 20, 19, 18, 20, 22, 24, 23
+)
+
+plot(dias, temperatura,
+  type = "l", col = "firebrick",
+  main = "Temperatura diaria", xlab = "Día", ylab = "°C"
+)
+
+hist(temperatura, col = "lightblue", main = "Distribución de temperaturas")
+```
+
+Combinar las cuatro funciones de este capítulo sobre los mismos datos es un buen ejercicio de cuándo usar cada una: serie de tiempo con `plot()`, distribución con `hist()`, conteo por categoría con `barplot()`, comparación entre categorías con `boxplot()`.
+
+```r
+categoria <- ifelse(temperatura < 20, "fría", ifelse(temperatura < 24, "templada", "cálida"))
+conteo_categoria <- table(categoria)
+
+barplot(conteo_categoria,
+  main = "Días por categoría de temperatura",
+  col = c("tomato", "gold", "skyblue")
+)
+
+boxplot(temperatura ~ categoria,
+  main = "Temperatura por categoría",
+  xlab = "Categoría", ylab = "°C", col = "lightgreen"
+)
+```
+
+## Ejercicios
+
+2. Crea un vector `precipitacion` de 30 valores (inventa datos razonables en mm) y grafica su serie de tiempo con `plot(type = "l")`.
+3. **Reto:** usando `dias`, `temperatura` y `precipitacion`, usa `par(mfrow = c(1, 2))` para mostrar ambas series de tiempo lado a lado en la misma ventana gráfica.
+
+---
+
+[← Capítulo 2c](capitulo02c_dataframes_base.md) · [Índice](../../README.md) · [Capítulo 3 →](capitulo03_importacion_dplyr.md)
