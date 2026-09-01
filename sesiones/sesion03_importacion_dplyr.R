@@ -9,9 +9,12 @@
 #   texto con stringr, y fechas con lubridate.
 
 # install.packages("tidyverse")   # ejecutar una sola vez si falta
+install.packages("tidyverse")
+
+
 library(tidyverse)
 library(readxl)     # importar Excel (.xlsx); no es parte del "core" tidyverse,
-                     # pero se instala junto con install.packages("tidyverse")
+                    # pero se instala junto con install.packages("tidyverse")
 library(lubridate)  # manejo de fechas; ya viene cargado con library(tidyverse),
                      # pero lo cargamos explícito para dejar claro de dónde sale
 
@@ -20,6 +23,11 @@ library(lubridate)  # manejo de fechas; ya viene cargado con library(tidyverse),
 # -----------------------------------------------------------------------------
 
 df_base <- data.frame(x = 1:5, y = letters[1:5])
+
+
+
+
+
 tbl <- as_tibble(df_base)
 
 class(df_base)
@@ -36,7 +44,11 @@ tbl[, "x"]         # tibble (más predecible)
 # readr::read_csv() es más rápido y predecible que read.csv() base.
 
 ventas <- read_csv("data/ventas.csv")   # archivo real, incluido en el curso
+ventas <- read.csv("~/Maestria CIMAT/Curso de R/data/ventas.csv")
+
 glimpse(ventas)
+
+head(ventas)     # equivalente a head() base, pero más bonito)
 
 # Para el resto de la sesión usamos un dataset incluido en R:
 datos <- as_tibble(mpg)     # dataset de ggplot2: consumo de autos
@@ -44,8 +56,12 @@ datos
 
 glimpse(datos)     # equivalente tidy de str()
 
+
+
+
+
 # readxl::read_excel() lee archivos .xlsx/.xls:
-# datos_excel <- read_excel("ruta/a/archivo.xlsx", sheet = "Hoja1")
+#datos_excel <- read_excel("ruta/a/archivo.xlsx", sheet = "Hoja1")
 
 # -----------------------------------------------------------------------------
 # 3. El pipe %>%
@@ -59,7 +75,13 @@ datos %>% glimpse()
 # -----------------------------------------------------------------------------
 
 # filter(): seleccionar filas por condición
-datos %>% filter(cyl == 4, year == 2008)
+datos2 <- datos %>% filter(cyl == 4, year == 2008, hwy > 25) %>% 
+                    select(manufacturer, model, cty, hwy) %>% 
+                    mutate(eficiencia_prom = cty*100)
+
+
+datos %>% group_by(manufacturer,class,year) %>% summarize(media_cty = mean(cty))
+
 
 # select(): elegir columnas
 datos %>% select(manufacturer, model, cty, hwy)
@@ -146,17 +168,36 @@ ventas %>%
   group_by(mes) %>%
   summarize(total = sum(monto))
 
+sample(c("Max","Mario","Sarai","Juan","Jaqueline","Ricardo"),1)
+
 # =============================================================================
 # EJERCICIOS
 # =============================================================================
 
 # 1. Filtra `mpg` con cyl == 4 y selecciona solo manufacturer, model, cty, hwy.
 
+dat <- mpg
+
+mpg[mpg$cyl==4, c("model","cty", "hwy")]
+
+
+
 # 2. Usa mutate() para crear una columna `hwy_km` = hwy * 1.60934
 #    (millas a kilómetros) y ordénala de mayor a menor.
 
+dat$hwy_km <- dat$cyl + dat$hwy  * 1.60934
+dat
+
+
 # 3. Encadena filter() %>% select() %>% arrange() en una sola expresión con
 #    el pipe, usando una condición y columnas de tu elección.
+
+dat[order(dat$hwy_km, decreasing = TRUE),]
+
+unique(dat$year)
+
+
+
 
 # 4. Usando stringr, crea una columna nueva `model_mayus` con el nombre del
 #    modelo en mayúsculas, y filtra solo los renglones donde `model`

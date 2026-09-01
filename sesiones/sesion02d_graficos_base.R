@@ -8,9 +8,35 @@
 #   antes de llegar a ggplot2 en la sesión 4 — útil para exploración
 #   rápida y para entender qué automatiza ggplot2 después.
 
+# mtcars: datos de Motor Trend (1974), un auto por fila
+# mpg   - millas por galón (rendimiento)
+# cyl   - número de cilindros
+# disp  - desplazamiento del motor (pulgadas cúbicas)
+# hp    - caballos de fuerza
+# drat  - relación de transmisión del eje trasero
+# wt    - peso (miles de libras)
+# qsec  - tiempo en 1/4 de milla (segundos)
+# vs    - forma del motor (0 = V, 1 = en línea)
+# am    - transmisión (0 = automática, 1 = manual)
+# gear  - número de marchas
+# carb  - número de carburadores
+
 # -----------------------------------------------------------------------------
 # 1. plot(): dispersión de puntos
 # -----------------------------------------------------------------------------
+# type = "p"  puntos (default)
+# type = "l"  línea
+# type = "b"  puntos y línea, con espacio alrededor del punto ("both")
+# type = "c"  como "b" pero sin los puntos, solo el hueco
+# type = "o"  puntos y línea superpuestos, sin espacio ("overplotted")
+# type = "h"  líneas verticales desde el eje x a cada punto (tipo histograma)
+# type = "s"  escalón: sube/baja después de cada punto
+# type = "S"  escalón: sube/baja antes de cada punto
+# type = "n"  no dibuja nada, solo prepara ejes/marco
+
+
+# wt    - peso (miles de libras)
+# mpg   - millas por galón (rendimiento)
 
 plot(mtcars$wt, mtcars$mpg)
 
@@ -37,6 +63,8 @@ plot(meses, ventas_mensuales,
 # -----------------------------------------------------------------------------
 # 3. barplot(): barras
 # -----------------------------------------------------------------------------
+
+# cyl   - número de cilindros
 
 conteo_cyl <- table(mtcars$cyl)
 conteo_cyl
