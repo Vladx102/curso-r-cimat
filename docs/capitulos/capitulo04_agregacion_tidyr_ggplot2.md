@@ -7,7 +7,7 @@ Script de práctica: [`sesiones/sesion04_agregacion_tidyr_ggplot2.R`](../../sesi
 
 ## Objetivo
 
-Agregar datos por grupo con `group_by()` + `summarize()`, reformar tablas con tidyr, y construir las primeras visualizaciones con ggplot2.
+Agregar datos por grupo con `group_by()` + `summarize()`, reformar tablas con tidyr, y construir visualizaciones con ggplot2: geoms, *position adjustments*, escalas, coordenadas, facetas y temas.
 
 ```r
 library(tidyverse)
@@ -109,7 +109,95 @@ ggplot(datos, aes(x = class, y = hwy)) +
   coord_flip()
 ```
 
-La ventaja de este enfoque por capas es que puedes construir gráficos complejos sumando piezas simples, sin tener que aprender una función distinta para cada tipo de visualización.
+La ventaja de este enfoque por capas es que puedes construir gráficos complejos sumando piezas simples, sin tener que aprender una función distinta para cada tipo de visualización. Las siguientes cuatro secciones son justo eso: más piezas que se suman al mismo `ggplot(...) + geom_*()` base.
+
+## 4. Position adjustments: dodge, stack, fill
+
+Cuando mapeas una variable categórica a `fill` dentro de un `geom_bar()`, las barras de cada grupo se apilan por default. `position` controla cómo se acomodan entre sí:
+
+```r
+ggplot(datos, aes(x = class, fill = drv)) +
+  geom_bar()                      # position = "stack" (default): apiladas
+
+ggplot(datos, aes(x = class, fill = drv)) +
+  geom_bar(position = "dodge")    # lado a lado
+
+ggplot(datos, aes(x = class, fill = drv)) +
+  geom_bar(position = "fill")     # normalizado a proporciones (0 a 1)
+```
+
+`"fill"` es particularmente útil para comparar proporciones entre categorías cuando los totales por grupo son muy distintos — ya usaste este mismo argumento como `position = "dodge"` en el Ejemplo de este capítulo.
+
+## 5. Escalas: color y relleno manuales
+
+Toda `aes()` que mapea una variable a una propiedad visual (`color`, `fill`, `shape`...) tiene una escala por default; una función `scale_*_*()` la reemplaza. El patrón del nombre es `scale_<aesthetic>_<tipo>()`:
+
+```r
+ggplot(datos, aes(x = displ, y = hwy, color = drv)) +
+  geom_point() +
+  scale_color_manual(values = c("4" = "steelblue", "f" = "darkorange", "r" = "firebrick"))
+```
+
+`scale_color_manual()` te deja elegir tú los colores exactos; para paletas ya diseñadas (más difíciles de armar bien a mano) existe `scale_fill_brewer()`, entre otras:
+
+```r
+ggplot(datos, aes(x = class, fill = drv)) +
+  geom_bar(position = "dodge") +
+  scale_fill_brewer(palette = "Set2")
+```
+
+## 6. Coordenadas: zoom con coord_cartesian()
+
+`coord_flip()`, que ya usaste arriba, es un **sistema de coordenadas**: cambia cómo se dibuja el gráfico, no los datos. `coord_cartesian()` es otro — sirve para hacer zoom sin descartar las observaciones fuera del rango visible, a diferencia de filtrar los datos o usar `xlim()`/`ylim()` (que sí los descarta antes de calcular, por ejemplo, la línea de `geom_smooth()`):
+
+```r
+ggplot(datos, aes(x = displ, y = hwy)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  coord_cartesian(xlim = c(2, 5))
+```
+
+La línea de tendencia se sigue calculando con **todos** los puntos; `coord_cartesian()` solo recorta la ventana visible.
+
+## 7. Facetas: facet_wrap() vs. facet_grid()
+
+Ya usaste `facet_wrap()` para dividir en paneles según una variable. `facet_grid()` hace lo mismo pero cruzando **dos** variables, una por filas y otra por columnas:
+
+```r
+ggplot(datos, aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_grid(drv ~ cyl)              # filas = drv, columnas = cyl
+```
+
+El argumento `scales` deja que cada panel tenga su propio rango de eje en vez de compartir uno fijo — útil cuando los grupos tienen escalas muy distintas entre sí:
+
+```r
+ggplot(datos, aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_wrap(~ class, scales = "free_y")   # cada panel con su propio rango en y
+```
+
+## 8. Temas y etiquetas con labs()
+
+Un **tema** (`theme_*()`) cambia la apariencia general del gráfico (fondo, líneas de cuadrícula, tipografía) sin tocar los datos ni las geometrías. Ya usaste `theme_minimal()`; otros comunes son `theme_bw()`, `theme_classic()` y `theme_light()`:
+
+```r
+ggplot(datos, aes(x = displ, y = hwy)) +
+  geom_point() +
+  theme_bw()
+```
+
+`labs()` centraliza títulos y etiquetas (incluida la leyenda, referenciándola por el nombre de la estética), y `theme(legend.position = ...)` reubica la leyenda:
+
+```r
+ggplot(datos, aes(x = displ, y = hwy, color = class)) +
+  geom_point() +
+  labs(
+    title = "Motor vs. rendimiento", x = "Desplazamiento",
+    y = "Millas por galón", color = "Clase"
+  ) +
+  theme(legend.position = "bottom")
+```
 
 ## Ejercicios
 
@@ -117,6 +205,10 @@ La ventaja de este enfoque por capas es que puedes construir gráficos complejos
 2. Crea una columna nueva `eficiente` (`TRUE` si `hwy > 30`) y grafica un boxplot de `displ` separado por esa nueva variable.
 3. Usa `pivot_wider()` sobre `datos %>% count(class, drv)` para obtener una tabla con clases como filas y tipos de tracción (`drv`) como columnas.
 4. **Reto:** reproduce con ggplot2 un gráfico de dispersión de `cty` vs. `hwy`, coloreado por `class`, con una línea de tendencia por clase (`geom_smooth(method = "lm")` dentro de `aes(color = class)`).
+5. Grafica un `geom_bar()` de `class` coloreado por `drv` con `position = "fill"` para ver la proporción de tracción dentro de cada clase.
+6. **Reto:** reproduce el gráfico de `displ` vs. `hwy` coloreado por `drv`, pero elige tú los tres colores con `scale_color_manual()`.
+7. Usa `facet_grid()` para separar `displ` vs. `hwy` en filas por `drv`.
+8. Cambia el tema del gráfico anterior a `theme_bw()` y agrégale un título con `labs()`.
 
 ## Ejemplo: préstamos de la biblioteca por género y estado
 
@@ -162,10 +254,10 @@ ggplot(resumen_genero_estado, aes(x = genero, y = n, fill = estado)) +
 
 `position = "dodge"` es lo que separa las barras de cada `estado` en vez de apilarlas — el equivalente en ggplot2 de un gráfico de barras agrupado.
 
-5. Usando `datos` (mpg), agrupa por `manufacturer` y `drv`, calcula el promedio de `cty` por grupo, y grafica un gráfico de barras agrupado (`geom_col(position = "dodge")`) coloreado por `drv`.
-6. **Reto:** usa `pivot_longer()` sobre `mpg` para poner `cty` y `hwy` en una sola columna `tipo_millas` con su valor en `millas`, y grafica un boxplot de `millas` por `tipo_millas`, coloreado por esa misma variable.
-7. Importa [`data/ventas.csv`](../../data/ventas.csv), agrupa por `categoria` y calcula el monto total y el promedio. Grafica un `geom_col()` del monto total por categoría.
-8. Une `prestamos` con `libros` (`left_join()` por `isbn`) y calcula, por género, la duración promedio del préstamo en días (`fecha_devolucion - fecha_prestamo`, solo para los ya devueltos). ¿Qué género se presta por más tiempo?
+9. Usando `datos` (mpg), agrupa por `manufacturer` y `drv`, calcula el promedio de `cty` por grupo, y grafica un gráfico de barras agrupado (`geom_col(position = "dodge")`) coloreado por `drv`.
+10. **Reto:** usa `pivot_longer()` sobre `mpg` para poner `cty` y `hwy` en una sola columna `tipo_millas` con su valor en `millas`, y grafica un boxplot de `millas` por `tipo_millas`, coloreado por esa misma variable.
+11. Importa [`data/ventas.csv`](../../data/ventas.csv), agrupa por `categoria` y calcula el monto total y el promedio. Grafica un `geom_col()` del monto total por categoría.
+12. Une `prestamos` con `libros` (`left_join()` por `isbn`) y calcula, por género, la duración promedio del préstamo en días (`fecha_devolucion - fecha_prestamo`, solo para los ya devueltos). ¿Qué género se presta por más tiempo?
 
 ---
 

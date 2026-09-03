@@ -38,6 +38,7 @@
 # wt    - peso (miles de libras)
 # mpg   - millas por galón (rendimiento)
 
+
 plot(mtcars$wt, mtcars$mpg)
 
 plot(mtcars$wt, mtcars$mpg,
@@ -46,6 +47,8 @@ plot(mtcars$wt, mtcars$mpg,
   pch = 19, col = "steelblue"
 )
 
+
+plot
 # -----------------------------------------------------------------------------
 # 2. plot(): líneas
 # -----------------------------------------------------------------------------
@@ -56,7 +59,7 @@ meses <- 1:12
 plot(meses, ventas_mensuales, type = "l")
 
 plot(meses, ventas_mensuales,
-  type = "b", col = "darkgreen", pch = 16,
+  type = "o", col = "darkgreen", pch = 16,
   main = "Ventas mensuales", xlab = "Mes", ylab = "Ventas (miles)"
 )
 
@@ -89,6 +92,8 @@ hist(mtcars$mpg,
 # 5. boxplot(): cajas
 # -----------------------------------------------------------------------------
 
+# mpg   - millas por galón (rendimiento)
+
 boxplot(mtcars$mpg)
 
 # Interfaz de fórmula y ~ x: la misma sintaxis que usarás con lm() más adelante
@@ -105,16 +110,16 @@ boxplot(mpg ~ cyl,
 par(mfrow = c(1, 2))
 hist(mtcars$mpg, col = "lightblue", main = "Histograma")
 boxplot(mtcars$mpg, col = "lightyellow", main = "Boxplot")
-par(mfrow = c(1, 1))    # regresar a un panel por gráfico
+
 
 # =============================================================================
 # EJERCICIO
 # =============================================================================
 
 # Usando el dataset incluido `mtcars`:
-#   a) haz un boxplot de hp separado por am (0 = automático, 1 = manual)
+#   a) haz un boxplot de hp separado por "am" (0 = automático, 1 = manual)
 #   b) haz un barplot con el conteo de autos por número de marchas (gear)
-#   c) haz un histograma de disp con 15 breaks
+#   c) haz un histograma de "disp" con 15 breaks
 
 # =============================================================================
 # EJEMPLO: temperatura diaria de una ciudad
