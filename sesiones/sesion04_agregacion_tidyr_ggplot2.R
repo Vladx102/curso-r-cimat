@@ -11,6 +11,17 @@
 library(tidyverse)
 datos <- as_tibble(mpg)
 
+# mpg: consumo de 38 modelos de auto (1999-2008), un renglón por versión
+# manufacturer - marca            model  - modelo
+# displ        - desplazamiento del motor (litros)
+# year         - año del modelo   cyl    - número de cilindros
+# trans        - tipo de transmisión (auto/manual, # de marchas)
+# drv          - tracción (4 = 4x4, f = delantera, r = trasera)
+# cty          - millas por galón en ciudad
+# hwy          - millas por galón en carretera
+# fl           - tipo de combustible
+# class        - tipo de vehículo (compacto, suv, pickup...)
+
 # -----------------------------------------------------------------------------
 # 1. group_by() + summarize(): el equivalente de un group-by/aggregate
 # -----------------------------------------------------------------------------

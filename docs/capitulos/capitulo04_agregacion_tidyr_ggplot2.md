@@ -14,6 +14,18 @@ library(tidyverse)
 datos <- as_tibble(mpg)
 ```
 
+`mpg` trae el consumo de 38 modelos de auto (1999-2008), un renglón por versión. Estas son sus columnas — vale la pena tenerlas a la mano, porque el resto del capítulo las usa constantemente:
+
+- **manufacturer** / **model**: marca y modelo
+- **displ**: desplazamiento del motor, en litros
+- **year**: año del modelo
+- **cyl**: número de cilindros
+- **trans**: tipo de transmisión (automática/manual, número de marchas)
+- **drv**: tracción (`4` = 4x4, `f` = delantera, `r` = trasera)
+- **cty** / **hwy**: millas por galón en ciudad / en carretera
+- **fl**: tipo de combustible
+- **class**: tipo de vehículo (compacto, suv, pickup...)
+
 ## 1. group_by() + summarize()
 
 Este es el equivalente en R de un `GROUP BY` de SQL o un `groupby().agg()` de pandas: agrupas filas por una o más columnas y luego resumes cada grupo con una función de agregación.
