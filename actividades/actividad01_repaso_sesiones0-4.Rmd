@@ -1,0 +1,72 @@
+---
+title: "Actividad de repaso — Sesiones 0 a 4"
+author: "Tu nombre"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+**Duración: 1 hora · Individual, sin apoyo del instructor.**
+
+Cubre: vectores (sesiones 0-1), importación y dplyr (sesión 3), tidyr y ggplot2 (sesión 4).
+
+Dataset: [`data/ventas.csv`](../data/ventas.csv) (ya lo usaste en las sesiones 3 y 4).
+
+Completa cada chunk con tu código y al final da *Knit* para generar el reporte.
+
+```{r setup}
+library(tidyverse)
+```
+
+## Parte 1 — Fundamentos 
+
+**1.** Crea un vector `precios` con 6 precios (numérico, tú los inventas). Calcula su media, su desviación estándar, y cuántos son mayores a la media (con comparación vectorizada, sin `for`).
+
+```{r ej1}
+
+```
+
+## Parte 2 — Importación y dplyr 
+
+**2.** Importa `data/ventas.csv` con `read_csv()`.
+
+```{r ej2}
+
+```
+
+**3.** Filtra las ventas de una región de tu elección con `monto > 100`.
+
+```{r ej3}
+
+```
+
+**4.** Sobre el resultado de importar (todas las ventas, no el filtro del punto 3), crea una columna `monto_con_descuento` con un descuento del 15% sobre `monto` (usa `mutate()`).
+
+```{r ej4}
+
+```
+
+**5.** Agrupa por `categoria` y calcula: número de ventas, monto total y monto promedio. Ordena de mayor a menor monto total.
+
+```{r ej5}
+
+```
+
+## Parte 3 — tidyr y ggplot2 
+
+**6.** Agrupa por `categoria` y `region` (dos variables) y cuenta el número de ventas de cada combinación. Usa `pivot_wider()` para poner las regiones como columnas.
+
+```{r ej6}
+
+```
+
+**7.** Con el resumen de `categoria` + `region` (monto total, no conteo), grafica un `geom_col()` del monto total por `categoria`, coloreado por `region`, con `position = "dodge"`.
+
+```{r ej7}
+
+```
+
+**8.** Repite el gráfico del punto 7 pero en vez de `position = "dodge"`, usa `facet_wrap(~ region)` y cambia el tema a `theme_bw()`.
+
+```{r ej8}
+
+```

@@ -38,6 +38,9 @@ curso-r-cimat/
 │   ├── libros.csv           # catálogo de una biblioteca (sesiones 3 y 4)
 │   └── prestamos.csv        # préstamos de libros, relacionada con libros.csv
 │                            # por isbn -- para practicar left_join() (sesiones 3 y 4)
+├── actividades/             # actividades de repaso/checkpoint, independientes
+│   │                        # de las sesiones (una por actividad)
+│   └── actividad01_repaso_sesiones0-4.R
 └── sesiones/                # scripts .R de práctica, uno por sesión
     ├── sesion00_fundamentos_r.R
     ├── sesion01_vectores_tipos.R
@@ -49,7 +52,7 @@ curso-r-cimat/
     └── sesion10_validacion_cierre.R
 ```
 
-Cada capítulo en `docs/capitulos/` explica la teoría en prosa con ejemplos de código; el script equivalente en `sesiones/` es la versión ejecutable, con el mismo código y una sección de ejercicios al final. `docs/capitulos_rmd/` tiene el mismo contenido teórico que `docs/capitulos/`, pero como `.Rmd`: si prefieres leer y correr el código a la vez (en vez de leer el `.md` y luego el script por separado), abre el `.Rmd` en RStudio y ve ejecutando los chunks conforme avanzas. `data/` tiene datasets reales (no solo los incluidos en R como `mpg`/`mtcars`) para practicar importación y análisis con `read_csv()`; se usan en las sesiones 3, 4 y 6, y quedan disponibles para tus propios ejercicios.
+Cada capítulo en `docs/capitulos/` explica la teoría en prosa con ejemplos de código; el script equivalente en `sesiones/` es la versión ejecutable, con el mismo código y una sección de ejercicios al final. `docs/capitulos_rmd/` tiene el mismo contenido teórico que `docs/capitulos/`, pero como `.Rmd`: si prefieres leer y correr el código a la vez (en vez de leer el `.md` y luego el script por separado), abre el `.Rmd` en RStudio y ve ejecutando los chunks conforme avanzas. `data/` tiene datasets reales (no solo los incluidos en R como `mpg`/`mtcars`) para practicar importación y análisis con `read_csv()`; se usan en las sesiones 3, 4 y 6, y quedan disponibles para tus propios ejercicios. `actividades/` tiene ejercicios integradores de repaso (por ejemplo, un checkpoint individual de 1 hora que cubre varias sesiones a la vez), separados de la práctica por sesión de `sesiones/`.
 
 ## Temario
 
