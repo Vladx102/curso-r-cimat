@@ -10,7 +10,7 @@ Script de práctica: [`sesiones/sesion02_funciones_apply.R`](../../sesiones/sesi
 
 ## Objetivo
 
-Manejar `NA` correctamente, dominar las estructuras de control de R (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`), escribir funciones propias (incluyendo `return()`, funciones anónimas, ámbito de variables y recursión), y usar la familia `apply` como puente entre loops y vectorización.
+Manejar `NA` correctamente, dominar las estructuras de control de R (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`), escribir funciones propias (incluyendo `return()`, funciones anónimas, ámbito de variables y recursión), y usar la familia `apply` completa (`sapply`, `lapply`, `vapply`, `tapply`, `mapply`) como puente entre loops y vectorización.
 
 ## 1. NA: el valor faltante
 
@@ -157,8 +157,70 @@ A diferencia de un vector (homogéneo), una lista puede contener elementos de di
 
 ```{r chunk-12}
 persona <- list(nombre = "Ana", edad = 27, notas = c(9, 8, 10))
-persona$nombre
-persona[["notas"]]
+```
+
+Aquí `nombre` es texto, `edad` es un número y `notas` es un vector — los tres conviven en la misma lista sin problema.
+
+### $, [[ ]] y [ ]: tres formas de indexar
+
+Esta es la parte que más confunde al principio, porque cada una regresa algo distinto:
+
+```{r chunk-12b}
+persona$nombre        # "Ana" -- el contenido, por nombre
+persona[["nombre"]]   # "Ana" -- el contenido, equivalente a $
+persona["nombre"]     # una LISTA con un elemento llamado "nombre"
+```
+
+`$` y `[[ ]]` extraen el contenido real del elemento. `[ ]` con corchete simple, en cambio, siempre regresa **otra lista**, aunque solo tenga un elemento — el mismo patrón que ya viste en vectores, donde `[ ]` selecciona un subconjunto sin "bajar de nivel", mientras que `[[ ]]` sí extrae el valor de adentro.
+
+La regla práctica: usa `[[ ]]` o `$` cuando quieras trabajar con el valor en sí; usa `[ ]` cuando quieras quedarte con un subconjunto de la lista, todavía como lista.
+
+`$` solo funciona con nombres literales; si el nombre está en una variable, necesitas `[[ ]]`:
+
+```{r chunk-12c}
+campo <- "edad"
+persona[[campo]]   # funciona
+# persona$campo    # NO funciona -- busca un elemento llamado "campo", que no existe
+```
+
+### Modificar una lista
+
+```{r chunk-12d}
+persona$telefono <- "555-1234"     # agrega un elemento nuevo
+persona$edad <- 28                  # modifica uno existente
+persona$telefono <- NULL            # asignar NULL BORRA el elemento
+```
+
+### Listas anidadas
+
+Una lista puede contener otras listas, y se accede encadenando `$` o `[[ ]]`:
+
+```{r chunk-12e}
+curso <- list(
+  nombre = "Modelación Estadística",
+  alumnos = list(
+    ana = list(edad = 27, promedio = 9.1),
+    luis = list(edad = 25, promedio = 8.4)
+  )
+)
+curso$alumnos$ana$promedio    # 9.1
+curso[["alumnos"]][["luis"]][["edad"]]   # 25, mismo resultado con [[ ]]
+```
+
+### unlist(): aplanar una lista
+
+Convierte una lista (si sus elementos son "aplanables", típicamente vectores atómicos) en un solo vector, coercionando al tipo más general si hace falta:
+
+```{r chunk-12f}
+unlist(list(a = 1, b = 2, c = 3))    # vector numérico con nombres
+unlist(list(1, "dos", 3))             # todo se vuelve character
+```
+
+### Listas vs. vectores vs. data frames
+
+Un **vector** es homogéneo (todo del mismo tipo) y de una sola dimensión. Una **lista** es heterogénea y de una sola dimensión (aunque sus elementos pueden tener cualquier tamaño). Un **data frame** es, por debajo, una lista de vectores de **igual longitud** — por eso `df$columna` funciona igual que `lista$elemento`: un data frame es literalmente una lista con una restricción extra (todas las columnas del mismo largo) y una forma de imprimirse como tabla.
+
+```{r chunk-12g}
 str(persona)     # tu mejor amigo para inspeccionar cualquier objeto
 ```
 
@@ -183,6 +245,35 @@ También funciona sobre un data frame, columna por columna: un data frame es, po
 ```{r chunk-14}
 sapply(list(mpg = mtcars$mpg, hp = mtcars$hp, wt = mtcars$wt), mean)
 ```
+
+Dos miembros más de la familia cubren casos que `sapply()`/`lapply()`/`vapply()` no resuelven directamente: aplicar una función **por grupo**, y aplicar una función recorriendo **varios** vectores a la vez.
+
+`tapply(X, INDEX, FUN)` aplica `FUN` a `X`, pero agrupado según `INDEX` — es el equivalente en base R de `group_by()` + `summarize()` de dplyr, que verás en la sesión 3:
+
+```{r chunk-15}
+notas <- c(85, 90, 78, 92, 60, 75)
+grupo <- c("A", "A", "B", "B", "C", "C")
+tapply(notas, grupo, mean)
+```
+
+`mapply(FUN, ...)` es la versión "multivariada" de `sapply()`: en vez de recorrer un solo vector, recorre **varios** en paralelo, pasándole a `FUN` un elemento de cada uno en cada llamada:
+
+```{r chunk-16}
+precios <- c(100, 250, 80)
+cantidades <- c(2, 1, 3)
+mapply(function(precio, cantidad) precio * cantidad, precios, cantidades)
+```
+
+Con esto ya viste toda la familia. Un resumen rápido para tenerlo a la mano:
+
+| Función | Entrada | Salida |
+|---|---|---|
+| `sapply()` | vector/lista | simplifica si puede (vector/matriz), si no una lista |
+| `lapply()` | vector/lista | siempre una lista |
+| `vapply()` | vector/lista | como `sapply()`, pero exige el tipo de salida (más seguro) |
+| `tapply()` | vector + grupo | un resultado por grupo |
+| `mapply()` | varios vectores | recorre todos en paralelo |
+| `apply()` | matriz/data.frame | por fila o columna (lo verás en la sesión 2c) |
 
 ## Ejemplo: procesar varios grupos con una función propia
 
@@ -242,8 +333,12 @@ Nota el uso de `!is.na(...) && ...` en la condición del `if`: es exactamente el
 6. Escribe una función `es_par(x)` que regrese `TRUE`/`FALSE` usando `return()` dentro de un `if`/`else` (en vez de dejar el retorno implícito).
 7. Reescribe el ejercicio 6 como función anónima con `\(x) ...` y úsala directamente dentro de un `sapply()` sobre el vector `1:10`.
 8. Escribe una función recursiva `fibonacci(n)` que regrese el n-ésimo número de Fibonacci (`fibonacci(1) = 1`, `fibonacci(2) = 1`, `fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)`). Compara el resultado con tu solución iterativa del ejercicio 4.
-9. Escribe tu propia función `resumen_ventas(x)` que reciba un vector de montos de venta (con algunos `NA`) y regrese un vector con nombres: `n_na`, `promedio`, y una bandera `meta_cumplida` (`1` si el promedio `>= 500`, `0` si no, `NA` si más de la mitad del vector son `NA`). Pruébala con `sapply()` sobre una lista `ventas_por_dia` con al menos 3 vectores.
-10. **Reto:** modifica tu función `resumen_ventas()` para que, en vez de un vector con nombres, regrese una **lista** con un elemento extra `posiciones_na` que sea el vector de posiciones (`which()`) donde hay `NA` en ese vector.
+9. Usando `notas` y `grupo` (o tus propios vectores), calcula con `tapply()` la desviación estándar por grupo, además del promedio que ya viste.
+10. Usa `mapply()` para combinar un vector de nombres y un vector de edades (tú los inventas) en un vector de textos tipo `"Ana tiene 27 años"`, con una función anónima.
+11. Escribe tu propia función `resumen_ventas(x)` que reciba un vector de montos de venta (con algunos `NA`) y regrese un vector con nombres: `n_na`, `promedio`, y una bandera `meta_cumplida` (`1` si el promedio `>= 500`, `0` si no, `NA` si más de la mitad del vector son `NA`). Pruébala con `sapply()` sobre una lista `ventas_por_dia` con al menos 3 vectores.
+12. **Reto:** modifica tu función `resumen_ventas()` para que, en vez de un vector con nombres, regrese una **lista** con un elemento extra `posiciones_na` que sea el vector de posiciones (`which()`) donde hay `NA` en ese vector.
+13. Crea una lista `libro` con título, autor, año y un vector de calificaciones. Accede al autor con `$` y a las calificaciones con `[[ ]]`. Cambia el año, agrega un campo `genero`, y luego bórralo (asignando `NULL`).
+14. **Reto:** crea una lista anidada con al menos dos estudiantes, cada uno con nombre y un vector de calificaciones por materia. Usa `unlist()` sobre las calificaciones de un estudiante para calcular su promedio con `mean()`.
 
 ---
 

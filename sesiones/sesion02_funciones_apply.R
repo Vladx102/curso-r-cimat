@@ -7,8 +7,8 @@
 #   Manejar NA, dominar las estructuras de control de R (for, if/else,
 #   while, repeat, break/next, switch), escribir funciones propias
 #   (incluyendo return(), funciones anónimas, ámbito de variables y
-#   recursión), y usar la familia apply como puente entre loops y
-#   vectorización.
+#   recursión), y usar la familia apply completa (sapply, lapply, vapply,
+#   tapply, mapply) como puente entre loops y vectorización.
 
 v <- c(2, 4, 6, 8, 10)   # retomamos el vector de la sesión 1
 
@@ -147,8 +147,31 @@ factorial_recursivo(5)   # 5 * 4 * 3 * 2 * 1 = 120
 # -----------------------------------------------------------------------------
 
 persona <- list(nombre = "Ana", edad = 27, notas = c(9, 8, 10))
-persona$nombre
-persona[["notas"]]
+
+# $ y [[ ]] extraen el CONTENIDO; [ ] regresa otra lista (subconjunto)
+persona$nombre        # "Ana"
+persona[["nombre"]]   # "Ana", igual que $
+persona["nombre"]     # lista con un elemento -- no "baja de nivel"
+
+# $ solo acepta nombres literales; [[ ]] acepta una variable con el nombre
+campo <- "edad"
+persona[[campo]]
+
+# Modificar: agregar, cambiar, o borrar (con NULL) un elemento
+persona$telefono <- "555-1234"
+persona$edad <- 28
+persona$telefono <- NULL
+
+# Listas anidadas: se accede encadenando $ o [[ ]]
+curso <- list(
+  nombre = "Modelación Estadística",
+  alumnos = list(ana = list(promedio = 9.1), luis = list(promedio = 8.4))
+)
+curso$alumnos$ana$promedio
+
+# unlist(): aplana una lista a un solo vector (coerciona el tipo si hace falta)
+unlist(list(a = 1, b = 2, c = 3))
+
 str(persona)     # str() es tu mejor amigo para inspeccionar cualquier objeto
 
 # -----------------------------------------------------------------------------
@@ -163,6 +186,24 @@ vapply(lista_vectores, mean, numeric(1))  # como sapply, pero con tipo esperado 
 
 # También funciona sobre un data frame, columna por columna:
 sapply(list(mpg = mtcars$mpg, hp = mtcars$hp, wt = mtcars$wt), mean)
+
+# tapply(): aplica una función POR GRUPO (equivalente a group_by()+summarize())
+notas <- c(85, 90, 78, 92, 60, 75)
+grupo <- c("A", "A", "B", "B", "C", "C")
+tapply(notas, grupo, mean)
+
+# mapply(): versión "multivariada" de sapply() -- recorre VARIOS vectores a la vez
+precios <- c(100, 250, 80)
+cantidades <- c(2, 1, 3)
+mapply(function(precio, cantidad) precio * cantidad, precios, cantidades)
+
+# Resumen de la familia apply:
+#   sapply()  - vector/lista, simplifica el resultado si puede
+#   lapply()  - vector/lista, siempre regresa lista
+#   vapply()  - como sapply, pero exige el tipo de salida (más seguro)
+#   tapply()  - aplica por GRUPO
+#   mapply()  - aplica recorriendo VARIOS vectores en paralelo
+#   apply()   - por fila/columna de una matriz/data.frame (sesión 2c)
 
 # =============================================================================
 # EJERCICIOS
@@ -194,6 +235,13 @@ sapply(list(mpg = mtcars$mpg, hp = mtcars$hp, wt = mtcars$wt), mean)
 #    número de Fibonacci (fibonacci(1) = 1, fibonacci(2) = 1,
 #    fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)). Compara el resultado
 #    con tu solución iterativa del ejercicio 4.
+
+# 9. Usando `notas` y `grupo` (o tus propios vectores), calcula con tapply()
+#    la desviación estándar por grupo, además del promedio que ya vimos.
+
+# 10. Usa mapply() para combinar un vector de nombres y un vector de edades
+#     (tú los inventas) en un vector de textos tipo "Ana tiene 27 años",
+#     con una función anónima.
 
 # =============================================================================
 # EJEMPLO: procesar varios grupos con una función propia
@@ -233,13 +281,23 @@ for (nombre_grupo in colnames(resultado)) {
 }
 total_aprueban
 
-# 9. Escribe tu propia función `resumen_ventas(x)` que reciba un vector de
+# 11. Escribe tu propia función `resumen_ventas(x)` que reciba un vector de
 #    montos de venta (con algunos NA) y regrese un vector con nombres:
 #    n_na, promedio, y una bandera meta_cumplida (1 si el promedio >= 500,
 #    0 si no, NA si más de la mitad del vector son NA). Pruébala con
 #    sapply() sobre una lista `ventas_por_dia` con al menos 3 vectores.
 
-# 10. (Reto) Modifica tu función `resumen_ventas()` para que, en vez de un
+# 12. (Reto) Modifica tu función `resumen_ventas()` para que, en vez de un
 #     vector con nombres, regrese una LISTA con un elemento extra
 #     "posiciones_na" que sea el vector de posiciones (which()) donde hay
 #     NA en ese vector.
+
+# 13. Crea una lista `libro` con título, autor, año y un vector de
+#     calificaciones. Accede al autor con $ y a las calificaciones con
+#     [[ ]]. Cambia el año, agrega un campo `genero`, y luego bórralo
+#     (asignando NULL).
+
+# 14. (Reto) Crea una lista anidada con al menos dos estudiantes, cada uno
+#     con nombre y un vector de calificaciones por materia. Usa unlist()
+#     sobre las calificaciones de un estudiante para calcular su promedio
+#     con mean().
