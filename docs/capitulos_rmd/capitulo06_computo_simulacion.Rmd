@@ -47,6 +47,36 @@ ppois(5, lambda = 3)                 # P(X <= 5) con X ~ Poisson(3)
 
 Una vez que memorizas este patrón, trabajar con cualquier distribución nueva en R es cuestión de saber su nombre (`gamma`, `beta`, `weibull`...), no de aprender una API distinta.
 
+**¿Dónde caen los valores simulados?** Es fácil perder de vista qué representa cada número que sale de `rnorm()` — graficar la densidad teórica y marcar encima la muestra simulada lo deja claro de un vistazo:
+
+```{r chunk-01b}
+set.seed(2026)
+muestra_normal <- rnorm(30, mean = 100, sd = 15)
+
+ggplot(tibble(x = muestra_normal), aes(x = x)) +
+  stat_function(fun = dnorm, args = list(mean = 100, sd = 15), color = "steelblue", linewidth = 1) +
+  geom_rug(color = "firebrick", linewidth = 0.8) +
+  labs(title = "Muestra simulada (rnorm) sobre la densidad normal teórica",
+       x = "x", y = "densidad") +
+  theme_minimal()
+```
+
+`geom_rug()` dibuja una marca pequeña en el eje x por cada valor de la muestra — así ves exactamente dónde "cayeron" tus números simulados respecto a la curva de densidad, sin saturar el gráfico con puntos.
+
+`pnorm()` y `qnorm()` también se entienden mejor visualmente: `pnorm(z)` es el área bajo la curva a la izquierda de `z`, y `qnorm(p)` es la frontera de esa área para una probabilidad `p` — son funciones inversas una de la otra.
+
+```{r chunk-01c}
+ggplot(tibble(x = c(-4, 4)), aes(x)) +
+  stat_function(fun = dnorm) +
+  stat_function(fun = dnorm, xlim = c(-4, 1.96), geom = "area", fill = "steelblue", alpha = 0.4) +
+  geom_vline(xintercept = qnorm(0.975), linetype = "dashed", color = "firebrick") +
+  labs(title = "pnorm(1.96): área acumulada a la izquierda de 1.96",
+       x = "z", y = "densidad") +
+  theme_minimal()
+```
+
+El área sombreada es exactamente `pnorm(1.96)` ≈ 0.975, y la línea punteada está en `qnorm(0.975)` ≈ 1.96 — la misma frontera, vista desde los dos lados.
+
 ## 2. Números aleatorios y reproducibilidad
 
 `set.seed()` fija el generador de números pseudoaleatorios de R, lo que garantiza reproducibilidad total: cualquiera que corra tu script con la misma semilla obtiene exactamente los mismos "números aleatorios".
@@ -244,6 +274,7 @@ t.test(tiempo ~ grupo, data = experimento)
 8. Simula dos muestras normales `grupo_control` y `grupo_tratamiento` (n = 30 cada una) con una diferencia de medias pequeña (p. ej. 50 vs. 52) y usa `t.test()` para ver si la diferencia es significativa. Repite con una diferencia más grande (50 vs. 60): ¿cambia el valor p como esperabas?
 9. **Reto:** usando tus muestras simuladas del ejercicio 8, repite la simulación 500 veces (con `replicate()`) y calcula en qué proporción de las repeticiones el `t.test()` detecta una diferencia significativa (`p < 0.05`) — esto es, informalmente, el "poder" de la prueba.
 10. Usando `data/clima.csv` (`read_csv("../../data/clima.csv")`), calcula la temperatura promedio y el IQR de precipitación por ciudad (dplyr). ¿La diferencia de temperatura del `t.test()` de arriba es consistente con esos promedios?
+11. Repite la visualización de "dónde caen los valores simulados" (sección 1) pero para una muestra `runif(30, min = 0, max = 10)` sobre su densidad teórica (`dunif()`).
 
 ---
 

@@ -38,6 +38,26 @@ rnorm(5, mean = 100, sd = 15)        # 5 valores aleatorios N(100, 15^2)
 dbinom(3, size = 10, prob = 0.5)     # P(X = 3) con X ~ Binomial(10, 0.5)
 ppois(5, lambda = 3)                 # P(X <= 5) con X ~ Poisson(3)
 
+# ¿Dónde caen los valores simulados? Densidad teórica + la muestra encima
+set.seed(2026)
+muestra_normal <- rnorm(30, mean = 100, sd = 15)
+
+ggplot(tibble(x = muestra_normal), aes(x = x)) +
+  stat_function(fun = dnorm, args = list(mean = 100, sd = 15), color = "steelblue", linewidth = 1) +
+  geom_rug(color = "firebrick", linewidth = 0.8) +
+  labs(title = "Muestra simulada (rnorm) sobre la densidad normal teórica",
+       x = "x", y = "densidad") +
+  theme_minimal()
+
+# pnorm() como área acumulada bajo la curva; qnorm() es la frontera de esa área
+ggplot(tibble(x = c(-4, 4)), aes(x)) +
+  stat_function(fun = dnorm) +
+  stat_function(fun = dnorm, xlim = c(-4, 1.96), geom = "area", fill = "steelblue", alpha = 0.4) +
+  geom_vline(xintercept = qnorm(0.975), linetype = "dashed", color = "firebrick") +
+  labs(title = "pnorm(1.96): área acumulada a la izquierda de 1.96",
+       x = "z", y = "densidad") +
+  theme_minimal()
+
 # -----------------------------------------------------------------------------
 # 2. Números aleatorios y reproducibilidad
 # -----------------------------------------------------------------------------
@@ -234,3 +254,7 @@ t.test(tiempo ~ grupo, data = experimento)
 # 10. Usando data/clima.csv, calcula la temperatura promedio y el IQR de
 #     precipitación por ciudad (dplyr). ¿La diferencia de temperatura del
 #     t.test() de arriba es consistente con esos promedios?
+
+# 11. Repite la visualización de "dónde caen los valores simulados" (sección
+#     1) pero para una muestra runif(30, min = 0, max = 10) sobre su
+#     densidad teórica (dunif()).
