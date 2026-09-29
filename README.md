@@ -2,7 +2,7 @@
 
 Material de un curso intensivo de R para alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes, previo al curso de Modelación Estadística. Está pensado para estudiantes que ya saben programar en algún otro lenguaje, así que va directo a los idiomas propios de R (vectorización, tidyverse, modelación) sin detenerse en conceptos generales de programación — con varias sesiones adicionales de fundamentos (aritmética, matrices, data frames base, gráficos base) para quien las necesite como referencia o repaso.
 
-**14 sesiones de 2 horas · 28 horas totales.**
+**15 sesiones de 2 horas · 30 horas totales.**
 
 El temario completo está en [`docs/silabo.md`](docs/silabo.md). Antes de la sesión 0, sigue la [guía de instalación](docs/instalacion.md).
 
@@ -68,6 +68,7 @@ Cada capítulo en `docs/capitulos/` explica la teoría en prosa con ejemplos de 
 | 4 | Agregación, tidyr y ggplot2 | [capitulo04](docs/capitulos/capitulo04_agregacion_tidyr_ggplot2.md) | [capitulo04.Rmd](docs/capitulos_rmd/capitulo04_agregacion_tidyr_ggplot2.Rmd) | [sesion04](sesiones/sesion04_agregacion_tidyr_ggplot2.R) |
 | 5 | Proyectos reproducibles (Quarto/R Markdown) | [capitulo05](docs/capitulos/capitulo05_proyectos_reproducibles.md) | [capitulo05.Rmd](docs/capitulos_rmd/capitulo05_proyectos_reproducibles.Rmd) | [sesion05](sesiones/sesion05_proyectos_reproducibles.R) |
 | 6 | Cómputo estadístico y simulación (Monte Carlo) | [capitulo06](docs/capitulos/capitulo06_computo_simulacion.md) | [capitulo06.Rmd](docs/capitulos_rmd/capitulo06_computo_simulacion.Rmd) | [sesion06](sesiones/sesion06_computo_simulacion.R) |
+| 6b | Bootstrap | [capitulo06b](docs/capitulos/capitulo06b_bootstrap.md) | [capitulo06b.Rmd](docs/capitulos_rmd/capitulo06b_bootstrap.Rmd) | [sesion06b](sesiones/sesion06b_bootstrap.R) |
 | 7 | Regresión lineal (`lm`) | [capitulo07](docs/capitulos/capitulo07_regresion_lineal.md) | [capitulo07.Rmd](docs/capitulos_rmd/capitulo07_regresion_lineal.Rmd) | [sesion07](sesiones/sesion07_regresion_lineal.R) |
 | 8 | Diagnóstico de supuestos y ANOVA | [capitulo08](docs/capitulos/capitulo08_diagnostico_anova.md) | [capitulo08.Rmd](docs/capitulos_rmd/capitulo08_diagnostico_anova.Rmd) | [sesion08](sesiones/sesion08_diagnostico_anova.R) |
 | 9 | Modelos lineales generalizados (`glm`) | [capitulo09](docs/capitulos/capitulo09_glm.md) | [capitulo09.Rmd](docs/capitulos_rmd/capitulo09_glm.Rmd) | [sesion09](sesiones/sesion09_glm.R) |

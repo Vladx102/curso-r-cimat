@@ -3,7 +3,7 @@
 **Sesión 6 · Día 3, tarde · 2 horas**
 Script de práctica: [`sesiones/sesion06_computo_simulacion.R`](../../sesiones/sesion06_computo_simulacion.R)
 
-[← Capítulo 5](capitulo05_proyectos_reproducibles.md) · [Índice](../../README.md) · [Capítulo 7 →](capitulo07_regresion_lineal.md)
+[← Capítulo 5](capitulo05_proyectos_reproducibles.md) · [Índice](../../README.md) · [Capítulo 6b →](capitulo06b_bootstrap.md)
 
 ## Objetivo
 
@@ -244,4 +244,4 @@ t.test(tiempo ~ grupo, data = experimento)
 
 ---
 
-[← Capítulo 5](capitulo05_proyectos_reproducibles.md) · [Índice](../../README.md) · [Capítulo 7 →](capitulo07_regresion_lineal.md)
+[← Capítulo 5](capitulo05_proyectos_reproducibles.md) · [Índice](../../README.md) · [Capítulo 6b →](capitulo06b_bootstrap.md)

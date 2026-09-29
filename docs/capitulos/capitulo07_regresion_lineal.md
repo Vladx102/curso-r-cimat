@@ -3,7 +3,7 @@
 **Sesión 7 · Día 4, mañana · 2 horas**
 Script de práctica: [`sesiones/sesion07_regresion_lineal.R`](../../sesiones/sesion07_regresion_lineal.R)
 
-[← Capítulo 6](capitulo06_computo_simulacion.md) · [Índice](../../README.md) · [Capítulo 8 →](capitulo08_diagnostico_anova.md)
+[← Capítulo 6b](capitulo06b_bootstrap.md) · [Índice](../../README.md) · [Capítulo 8 →](capitulo08_diagnostico_anova.md)
 
 ## Objetivo
 
@@ -111,4 +111,4 @@ autos_hipoteticos %>%
 
 ---
 
-[← Capítulo 6](capitulo06_computo_simulacion.md) · [Índice](../../README.md) · [Capítulo 8 →](capitulo08_diagnostico_anova.md)
+[← Capítulo 6b](capitulo06b_bootstrap.md) · [Índice](../../README.md) · [Capítulo 8 →](capitulo08_diagnostico_anova.md)

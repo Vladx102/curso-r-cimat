@@ -2,7 +2,7 @@
 
 Curso de nivelación — Maestría en Ciencias, CIMAT Aguascalientes
 
-*Duración: 14 sesiones · 2 horas cada una (28 horas totales)*
+*Duración: 15 sesiones · 2 horas cada una (30 horas totales)*
 
 > El desarrollo teórico de cada sesión está en [`capitulos/`](capitulos/capitulo00_fundamentos_r.md); el código ejecutable equivalente está en [`sesiones/`](../sesiones). Antes de la sesión 0, sigue la [guía de instalación](instalacion.md).
 
@@ -24,7 +24,7 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 
 ## Metodología
 
-- 14 sesiones de 2 horas: exposición breve de conceptos + práctica guiada en RStudio/Posit. Pensado originalmente como 2 sesiones por día (mañana y tarde), pero la cadencia la puede ajustar quien imparta el curso.
+- 15 sesiones de 2 horas: exposición breve de conceptos + práctica guiada en RStudio/Posit. Pensado originalmente como 2 sesiones por día (mañana y tarde), pero la cadencia la puede ajustar quien imparta el curso.
 - Aprendizaje por comparación con otros lenguajes ("esto es como X, pero...").
 - Ejercicios cortos al final de cada sesión (algunos con solución incluida) y un mini-proyecto integrador en la última sesión.
 - Todo el material se organiza por sesión en [`sesiones/`](../sesiones) (código) y [`capitulos/`](capitulos) (teoría en prosa).
@@ -35,7 +35,7 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 |---|---|---|
 | 0 | Fundamentos de R | Operaciones aritméticas · Variables y tipos de datos · Primer contacto con vectores · Operadores de comparación y lógicos (`&`, `\|`, `&&`, `\|\|`, `xor`, `any`, `all`) · Ayuda y documentación (`?`, `help()`) · Instalar y cargar librerías (`install.packages`, `library`, CRAN) · Ejercicio con solución |
 | 1 | Vectores y tipos de datos | Todo es función (operadores) · `typeof()` y tipos atómicos (integer vs. double, complex) · Vectores: no hay escalares, coerción · Indexación: `v[-1]`, `which()` · Vectorización vs. loops |
-| 2 | Funciones y familia apply | Manejo de NA · Estructuras de control (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`) · Funciones propias (default, `...`, `return()`, anónimas, ámbito, recursión) · Listas y familia apply (`sapply`, `lapply`, `vapply`) |
+| 2 | Funciones y familia apply | Manejo de NA · Estructuras de control (`for`, `if`/`else`, `while`, `repeat`, `break`/`next`, `switch`) · Funciones propias (default, `...`, `return()`, anónimas, ámbito, recursión) · Listas y familia apply completa (`sapply`, `lapply`, `vapply`, `tapply`, `mapply`) |
 | 2b | Matrices | Creación y operaciones con matrices · Filas y columnas (`rbind`, `cbind`, `rowSums`...) · Selección de elementos · Categorías con `factor()` · Ejercicio con solución |
 | 2c | Data Frames en base R | Crear un `data.frame` · Datasets de ejemplo incluidos en R · Selección y ordenación (`order()`) · Exportar/importar CSV · Tratamiento de valores nulos (`is.na()`, `na.omit()`, imputación) · Operaciones por fila y columna (`apply()`) |
 | 2d | Gráficos con R base | `plot()`: puntos y líneas · `barplot()`: barras · `hist()`: distribución · `boxplot()`: cajas y la interfaz de fórmula `y ~ x` · paneles múltiples con `par(mfrow = ...)` |
@@ -43,6 +43,7 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 | 4 | Agregación, tidyr y ggplot2 | `group_by()` + `summarize()` · tidyr: `pivot_longer`/`wider`, joins · ggplot2: gramática de gráficos, geoms, *position adjustments* (dodge/stack/fill), escalas de color, `coord_cartesian()`, `facet_wrap`/`facet_grid`, temas y `labs()` |
 | 5 | Proyectos reproducibles | Organización de proyectos y buenas prácticas · Quarto/R Markdown · Documentar y reutilizar funciones propias |
 | 6 | Cómputo estadístico y simulación | Distribuciones en R: familias d/p/q/r · Números aleatorios y semillas (`set.seed`) · Simulación Monte Carlo: ley de grandes números y TLC · Generar datasets ficticios (fechas, categorías, IDs) · Estadística descriptiva (`quantile`, `IQR`, `cor`, `cov`, `skimr::skim()`) · Introducción a inferencia con `t.test()` |
+| 6b | Bootstrap | Remuestreo con reemplazo (`sample(..., replace = TRUE)`) · Bootstrap manual con `replicate()` · Intervalos de confianza bootstrap (método percentil) · Bootstrap para estadísticos sin fórmula cerrada (mediana, correlación) · Remuestreo por filas · Comparación con `t.test()` |
 | 7 | Regresión lineal | Fórmulas en R (`y ~ x`) · `lm()`: ajuste, `summary()` y coeficientes · Factores, niveles de referencia y contrastes |
 | 8 | Diagnóstico y ANOVA | Interacciones entre predictores · Diagnóstico de supuestos: residuos, `plot.lm()`, colinealidad · ANOVA y modelos anidados |
 | 9 | Modelos lineales generalizados | `glm()`: regresión logística y de Poisson · Selección de modelos: AIC/BIC, `step()` |
