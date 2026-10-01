@@ -97,6 +97,50 @@ tibble(medias) %>%
   labs(title = "CLT: distribución de medias muestrales de Exp(1)", x = "media muestral") +
   theme_minimal()
 
+# ¿Qué pasa cuando n crece? Repetimos la simulación para varios tamaños de muestra.
+set.seed(1)
+tamanos <- c(1, 2, 5, 10, 30, 100)
+
+medias_por_n <- tibble(
+  n     = rep(tamanos, each = n_repeticiones),
+  media = unlist(lapply(tamanos, function(k) replicate(n_repeticiones, mean(rexp(k, rate = 1)))))
+)
+
+# Escala original: la forma pierde asimetría y se concentra alrededor de la media real (1)
+ggplot(medias_por_n, aes(media)) +
+  geom_histogram(binwidth = 0.1, fill = "steelblue", alpha = 0.7) +
+  geom_vline(xintercept = 1, color = "red", linetype = "dashed") +
+  facet_wrap(~ n, labeller = label_both, scales = "free_y") +   # label_both: título "n: 30"
+  coord_cartesian(xlim = c(0, 4)) +
+  labs(title = "TLC: medias muestrales de Exp(1) al crecer n", x = "media muestral", y = "frecuencia") +
+  theme_minimal()
+
+# Estandarizadas, z = (media - mu) / (sigma / sqrt(n)): se acercan a la N(0, 1) (curva roja)
+medias_por_n %>%
+  mutate(z = (media - 1) / (1 / sqrt(n))) %>%      # Exp(1): mu = 1, sigma = 1
+  ggplot(aes(z)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 40, fill = "steelblue", alpha = 0.7) +
+  stat_function(fun = dnorm, color = "red", linewidth = 1) +
+  facet_wrap(~ n, labeller = label_both) +
+  coord_cartesian(xlim = c(-3, 5)) +
+  labs(title = "TLC: medias estandarizadas vs. normal estándar", x = "z", y = "densidad") +
+  theme_minimal()
+
+# Mismo fenómeno con una población discreta: el promedio de n lanzamientos de un dado
+set.seed(1)
+tamanos_dado <- c(1, 2, 10, 30)
+
+medias_dado <- tibble(
+  n     = rep(tamanos_dado, each = n_repeticiones),
+  media = unlist(lapply(tamanos_dado, function(k) replicate(n_repeticiones, mean(sample(1:6, k, replace = TRUE)))))
+)
+
+ggplot(medias_dado, aes(media)) +
+  geom_histogram(binwidth = 0.1, fill = "darkorange", alpha = 0.8) +
+  facet_wrap(~ n, labeller = label_both, scales = "free_y") +
+  labs(title = "TLC con un dado: promedio de n lanzamientos", x = "promedio de las caras", y = "frecuencia") +
+  theme_minimal()
+
 # -----------------------------------------------------------------------------
 # 4. Generar datos ficticios para practicar
 # -----------------------------------------------------------------------------
