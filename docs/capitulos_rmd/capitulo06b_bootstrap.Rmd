@@ -98,7 +98,9 @@ Este patrón — remuestrear índices de fila con `sample(1:n, ..., replace = TR
 3. Importa `data/clima.csv` (`read_csv("../../data/clima.csv")`) y compara el intervalo de confianza bootstrap para la media de `precipitacion_mm` contra el de `t.test()`. ¿Son parecidos? (Pista: precipitación suele ser una variable asimétrica.)
 4. **Reto:** simula dos muestras normales `grupo1` y `grupo2` (como en la sesión 6) y calcula un intervalo de confianza bootstrap para la diferencia de medias (`mean(grupo1) - mean(grupo2)`), remuestreando cada grupo por separado dentro de un solo `replicate()`. Compáralo con el intervalo de `t.test(grupo1, grupo2)`.
 
-## Ejemplo: bootstrap sobre datos reales — diferencia de temperatura
+## Ejemplos
+
+### Ejemplo 1: diferencia de temperatura entre ciudades
 
 Cierra el círculo con el `t.test(temperatura_c ~ ciudad)` de la sesión 6, pero ahora con un intervalo de confianza bootstrap para la misma diferencia.
 
@@ -132,8 +134,100 @@ Y lo comparamos contra el intervalo de confianza clásico que ya calculaste en l
 t.test(temperatura_c ~ ciudad, data = clima)$conf.int
 ```
 
+### Ejemplo 2: ver la distribución bootstrap — mediana del monto de venta
+
+Un intervalo son solo dos números; el histograma de la distribución bootstrap muestra de dónde salen. Aquí se calcula la mediana del `monto` en `ventas.csv` para 2000 remuestras:
+
+```{r chunk-11}
+ventas <- read_csv("../../data/ventas.csv")
+
+set.seed(2026)
+medianas_monto <- replicate(B, median(sample(ventas$monto, replace = TRUE)))
+ic_mediana <- quantile(medianas_monto, probs = c(0.025, 0.975))
+ic_mediana
+```
+
+Y se grafica marcando la mediana observada (línea sólida) y los límites del intervalo (líneas punteadas):
+
+```{r chunk-12}
+tibble(mediana = medianas_monto) %>%
+  ggplot(aes(mediana)) +
+  geom_histogram(bins = 40, fill = "steelblue", alpha = 0.7) +
+  geom_vline(xintercept = median(ventas$monto), color = "red") +            # mediana observada
+  geom_vline(xintercept = ic_mediana, color = "red", linetype = "dashed") + # límites del IC
+  labs(title = "Distribución bootstrap de la mediana del monto",
+       x = "mediana de la remuestra", y = "frecuencia") +
+  theme_minimal()
+```
+
+El 95% de las medianas remuestreadas cae entre las dos líneas punteadas — eso *es* el intervalo percentil. El histograma no es una campana suave: la mediana de una remuestra solo puede tomar valores que ya están en los datos (o el promedio de dos de ellos), por eso aparecen picos.
+
+### Ejemplo 3: una proporción — préstamos sin devolver
+
+Una proporción es la media de un vector lógico (`TRUE` cuenta como 1 y `FALSE` como 0), así que el procedimiento es el mismo que para la media. En `prestamos.csv`, un préstamo sin devolver tiene `NA` en `fecha_devolucion`:
+
+```{r chunk-13}
+prestamos <- read_csv("../../data/prestamos.csv")
+
+sin_devolver <- is.na(prestamos$fecha_devolucion)   # TRUE/FALSE por préstamo
+mean(sin_devolver)                                  # proporción observada
+
+set.seed(2026)
+prop_boot <- replicate(B, mean(sample(sin_devolver, replace = TRUE)))
+quantile(prop_boot, probs = c(0.025, 0.975))
+```
+
+### Ejemplo 4: estadístico propio con una muestra chica — coeficiente de variación
+
+El coeficiente de variación (`sd / media`) mide la dispersión relativa y no tiene una fórmula sencilla para su intervalo de confianza. Con bootstrap basta escribir la función y usarla dentro de `replicate()`:
+
+```{r chunk-14}
+empleados <- read_csv("../../data/empleados.csv")
+
+coef_variacion <- function(v) sd(v) / mean(v)
+coef_variacion(empleados$salario)
+
+set.seed(2026)
+cv_boot <- replicate(B, coef_variacion(sample(empleados$salario, replace = TRUE)))
+quantile(cv_boot, probs = c(0.025, 0.975))
+```
+
+`empleados.csv` solo tiene 25 filas, y eso se nota en lo ancho del intervalo: el bootstrap no inventa información, solo usa la que hay en la muestra. Con muestras muy chicas el intervalo es ancho y además menos confiable.
+
+### Ejemplo 5: ¿cuántas remuestras `B`?
+
+Como el bootstrap es aleatorio, dos corridas con semillas distintas dan intervalos ligeramente distintos. Para ver cuánto cambian, se repite 20 veces el cálculo del límite inferior del IC de la media de `mtcars$mpg` para cada valor de `B`:
+
+```{r chunk-15}
+limite_inferior <- function(b) {
+  quantile(replicate(b, mean(sample(x, replace = TRUE))), probs = 0.025)
+}
+
+set.seed(2026)
+estabilidad <- tibble(
+  remuestras = rep(c(50, 200, 1000, 5000), each = 20),   # 20 repeticiones por cada B
+  limite     = sapply(remuestras, limite_inferior)
+)
+
+ggplot(estabilidad, aes(factor(remuestras), limite)) +
+  geom_jitter(width = 0.1, color = "steelblue", alpha = 0.7) +
+  labs(title = "Límite inferior del IC en 20 repeticiones, según B",
+       x = "B (número de remuestras)", y = "límite inferior (2.5%)") +
+  theme_minimal()
+```
+
+Con `B = 50` el límite cambia bastante entre repeticiones; con `B = 1000` o más casi no se mueve. Por eso se usan miles de remuestras: aumentar `B` no hace el intervalo más angosto (eso depende del tamaño de la muestra), solo lo hace más estable.
+
+## Ejercicios (continuación)
+
 5. Usando el mismo patrón de "remuestrear filas + función propia", calcula un intervalo de confianza bootstrap para la diferencia de precipitación promedio entre las dos ciudades de `clima.csv`.
 6. **Reto:** escribe una función `bootstrap_ic(x, FUN, B = 2000, conf = 0.95)` que reciba un vector, una función (`mean`, `median`, `sd`...) y regrese el intervalo de confianza bootstrap para ese estadístico. Pruébala con al menos dos funciones distintas sobre `mtcars$qsec`.
+7. Los tiempos de espera (en minutos) de 20 clientes en una ventanilla fueron `espera <- c(3, 5, 4, 7, 2, 6, 4, 5, 3, 8, 4, 6, 5, 3, 7, 4, 5, 42, 6, 4)`. Calcula un intervalo de confianza bootstrap para la media y otro para la mediana. ¿Cuál es más ancho? ¿Qué valor de los datos lo explica?
+8. Con `setosa <- iris$Sepal.Length[iris$Species == "setosa"]`, calcula un intervalo de confianza bootstrap para la mediana y grafica el histograma de la distribución bootstrap, marcando con líneas verticales la mediana observada y los dos límites del intervalo.
+9. En `mtcars`, `am == 1` indica transmisión manual. Calcula un intervalo de confianza bootstrap para la proporción de autos manuales.
+10. Importa `data/libros.csv` (`read_csv("../../data/libros.csv")`) y calcula un intervalo de confianza bootstrap para el percentil 90 de `num_paginas` (`quantile(v, 0.9)`).
+11. Corre `set.seed(10)`, luego `muestra_chica <- rexp(15, rate = 1 / 20)` y `muestra_grande <- rexp(150, rate = 1 / 20)` (en ese orden, para que todos tengan los mismos datos). Calcula el intervalo de confianza bootstrap para la media de cada una y compara sus anchos con `diff()`. ¿Qué pasa al tener más datos?
+12. **Reto:** calcula la distribución bootstrap del máximo de `mtcars$mpg` y revísala con `table()`. ¿Por qué toma tan pocos valores distintos? ¿Es confiable un intervalo de confianza construido así?
 
 ---
 
