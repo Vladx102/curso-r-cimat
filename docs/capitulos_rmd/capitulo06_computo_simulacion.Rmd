@@ -47,6 +47,83 @@ ppois(5, lambda = 3)                 # P(X <= 5) con X ~ Poisson(3)
 
 Una vez que memorizas este patrón, trabajar con cualquier distribución nueva en R es cuestión de saber su nombre (`gamma`, `beta`, `weibull`...), no de aprender una API distinta.
 
+### Distribución discreta: masa, acumulada y cuantil
+
+Sea `X ~ Binomial(10, 0.5)`, el número de águilas en 10 volados. En una distribución discreta, `d` es la **función de masa**: regresa directamente la probabilidad `P(X = k)`.
+
+```{r chunk-02b}
+dbinom(3, size = 10, prob = 0.5)             # P(X = 3)
+dbinom(0:10, size = 10, prob = 0.5)          # toda la función de masa, k = 0, ..., 10
+sum(dbinom(0:10, size = 10, prob = 0.5))     # suma 1
+```
+
+`p` es la **función acumulada**, `P(X <= k)`: la suma de la masa desde 0 hasta `k`. A partir de ella se obtiene cualquier otra probabilidad restando.
+
+```{r chunk-02c}
+pbinom(3, size = 10, prob = 0.5)             # P(X <= 3)
+sum(dbinom(0:3, size = 10, prob = 0.5))      # lo mismo: la acumulada es la suma de la masa
+
+1 - pbinom(3, size = 10, prob = 0.5)                    # P(X > 3)
+pbinom(3, size = 10, prob = 0.5, lower.tail = FALSE)    # lo mismo, sin restar
+pbinom(5, 10, 0.5) - pbinom(1, 10, 0.5)                 # P(2 <= X <= 5): se resta P(X <= 1), no P(X <= 2)
+```
+
+En las discretas hay que cuidar el borde: `P(2 <= X <= 5)` incluye al 2, así que se resta `P(X <= 1)`.
+
+`q` es el **cuantil**, la inversa de la acumulada: el valor más chico de `k` cuya probabilidad acumulada alcanza `p`.
+
+```{r chunk-02d}
+qbinom(0.5, size = 10, prob = 0.5)           # mediana: el k más chico con P(X <= k) >= 0.5
+```
+
+Las dos funciones se ven mejor en gráfica. La masa es una barra por cada valor posible; la acumulada es una escalera que sube en cada `k` hasta llegar a 1:
+
+```{r chunk-02e}
+dist_binomial <- tibble(
+  k         = 0:10,
+  masa      = dbinom(k, size = 10, prob = 0.5),
+  acumulada = pbinom(k, size = 10, prob = 0.5)
+)
+
+ggplot(dist_binomial, aes(k, masa)) +
+  geom_col(fill = "steelblue") +
+  scale_x_continuous(breaks = 0:10) +
+  labs(title = "Función de masa: Binomial(10, 0.5)", y = "P(X = k)") +
+  theme_minimal()
+
+ggplot(dist_binomial, aes(k, acumulada)) +
+  geom_step() +                        # escalón: la acumulada salta en cada k
+  geom_point() +
+  scale_x_continuous(breaks = 0:10) +
+  labs(title = "Función acumulada: Binomial(10, 0.5)", y = "P(X <= k)") +
+  theme_minimal()
+```
+
+Para cualquier otra discreta cambia solo el nombre y sus parámetros: `dpois()`/`ppois()`/`qpois()`, `dgeom()`/`pgeom()`/`qgeom()`, etc.
+
+### Distribución continua: densidad, acumulada y cuantil
+
+Sea `X ~ Normal(100, 15)`. En una distribución continua `d` es la **densidad**: la altura de la curva, no una probabilidad (`P(X = k)` es siempre 0). Las probabilidades son áreas bajo la curva y se calculan con la acumulada `p`.
+
+```{r chunk-02f}
+dnorm(100, mean = 100, sd = 15)              # altura de la curva en 100 (no es probabilidad)
+
+pnorm(115, mean = 100, sd = 15)              # P(X <= 115)
+1 - pnorm(115, mean = 100, sd = 15)          # P(X > 115)
+pnorm(115, 100, 15) - pnorm(85, 100, 15)     # P(85 < X < 115)
+
+qnorm(0.90, mean = 100, sd = 15)             # percentil 90
+pnorm(qnorm(0.90, 100, 15), 100, 15)         # q y p son inversas: regresa 0.90
+```
+
+| Quiero | Discreta | Continua |
+|---|---|---|
+| `P(X = k)` | `dbinom(k, ...)` | siempre 0 |
+| `P(X <= k)` | `pbinom(k, ...)` | `pnorm(k, ...)` |
+| `P(X > k)` | `1 - pbinom(k, ...)` | `1 - pnorm(k, ...)` |
+| `P(a <= X <= b)` | `pbinom(b, ...) - pbinom(a - 1, ...)` | `pnorm(b, ...) - pnorm(a, ...)` |
+| valor con acumulada `p` | `qbinom(p, ...)` | `qnorm(p, ...)` |
+
 **¿Dónde caen los valores simulados?** Es fácil perder de vista qué representa cada número que sale de `rnorm()` — graficar la densidad teórica y marcar encima la muestra simulada lo deja claro de un vistazo:
 
 ```{r chunk-01b}

@@ -38,6 +38,53 @@ rnorm(5, mean = 100, sd = 15)        # 5 valores aleatorios N(100, 15^2)
 dbinom(3, size = 10, prob = 0.5)     # P(X = 3) con X ~ Binomial(10, 0.5)
 ppois(5, lambda = 3)                 # P(X <= 5) con X ~ Poisson(3)
 
+# Discreta, X ~ Binomial(10, 0.5): número de águilas en 10 volados
+# d = función de masa P(X = k)
+dbinom(3, size = 10, prob = 0.5)             # P(X = 3)
+dbinom(0:10, size = 10, prob = 0.5)          # toda la función de masa, k = 0, ..., 10
+sum(dbinom(0:10, size = 10, prob = 0.5))     # suma 1
+
+# p = función acumulada P(X <= k); de ella salen las demás probabilidades
+pbinom(3, size = 10, prob = 0.5)             # P(X <= 3)
+sum(dbinom(0:3, size = 10, prob = 0.5))      # lo mismo: la acumulada es la suma de la masa
+
+1 - pbinom(3, size = 10, prob = 0.5)                    # P(X > 3)
+pbinom(3, size = 10, prob = 0.5, lower.tail = FALSE)    # lo mismo, sin restar
+pbinom(5, 10, 0.5) - pbinom(1, 10, 0.5)                 # P(2 <= X <= 5): se resta P(X <= 1), no P(X <= 2)
+
+# q = cuantil
+qbinom(0.5, size = 10, prob = 0.5)           # mediana: el k más chico con P(X <= k) >= 0.5
+
+# La masa y la acumulada en gráfica
+dist_binomial <- tibble(
+  k         = 0:10,
+  masa      = dbinom(k, size = 10, prob = 0.5),
+  acumulada = pbinom(k, size = 10, prob = 0.5)
+)
+
+ggplot(dist_binomial, aes(k, masa)) +
+  geom_col(fill = "steelblue") +
+  scale_x_continuous(breaks = 0:10) +
+  labs(title = "Función de masa: Binomial(10, 0.5)", y = "P(X = k)") +
+  theme_minimal()
+
+ggplot(dist_binomial, aes(k, acumulada)) +
+  geom_step() +                        # escalón: la acumulada salta en cada k
+  geom_point() +
+  scale_x_continuous(breaks = 0:10) +
+  labs(title = "Función acumulada: Binomial(10, 0.5)", y = "P(X <= k)") +
+  theme_minimal()
+
+# Continua, X ~ Normal(100, 15): d es una altura; las probabilidades salen de p
+dnorm(100, mean = 100, sd = 15)              # altura de la curva en 100 (no es probabilidad)
+
+pnorm(115, mean = 100, sd = 15)              # P(X <= 115)
+1 - pnorm(115, mean = 100, sd = 15)          # P(X > 115)
+pnorm(115, 100, 15) - pnorm(85, 100, 15)     # P(85 < X < 115)
+
+qnorm(0.90, mean = 100, sd = 15)             # percentil 90
+pnorm(qnorm(0.90, 100, 15), 100, 15)         # q y p son inversas: regresa 0.90
+
 # ¿Dónde caen los valores simulados? Densidad teórica + la muestra encima
 set.seed(2026)
 muestra_normal <- rnorm(30, mean = 100, sd = 15)
