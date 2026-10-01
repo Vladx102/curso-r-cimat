@@ -175,6 +175,62 @@ ggplot(medias_dado, aes(media)) +
   theme_minimal()
 ```
 
+**Otras distribuciones.** El TLC no depende de la población de partida (basta con que tenga varianza finita). Para probarlo con varias, conviene una función que repita la simulación para cualquier generador `r<dist>()`:
+
+```r
+simular_medias <- function(nombre, rdist, tamanos = c(1, 5, 30, 100)) {
+  tibble(
+    distribucion = nombre,
+    n            = rep(tamanos, each = n_repeticiones),
+    media        = unlist(lapply(tamanos, function(k) replicate(n_repeticiones, mean(rdist(k)))))
+  )
+}
+```
+
+*Continuas.* Tres formas muy distintas entre sí: una Beta(0.5, 0.5) en forma de U, una Chi-cuadrada(1) muy asimétrica y una Lognormal(0, 1) de cola pesada. Cada fila es una distribución y cada columna un tamaño de muestra; la curva roja es la `N(0, 1)`.
+
+```r
+set.seed(1)
+medias_continuas <- bind_rows(      # bind_rows(): apila tablas con las mismas columnas
+  simular_medias("Beta(0.5, 0.5): forma de U",   function(k) rbeta(k, 0.5, 0.5)),
+  simular_medias("Chi-cuadrada(1): asimétrica",  function(k) rchisq(k, df = 1)),
+  simular_medias("Lognormal(0, 1): cola pesada", function(k) rlnorm(k))
+)
+
+medias_continuas %>%
+  group_by(distribucion, n) %>%
+  mutate(z = (media - mean(media)) / sd(media)) %>%     # estandariza dentro de cada panel
+  ggplot(aes(z)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.25, fill = "steelblue", alpha = 0.7) +
+  stat_function(fun = dnorm, color = "red", linewidth = 0.8) +
+  facet_grid(distribucion ~ n, labeller = labeller(n = label_both)) +
+  coord_cartesian(xlim = c(-3, 5)) +
+  labs(title = "TLC con distribuciones continuas: medias estandarizadas vs. N(0, 1)", x = "z", y = "densidad") +
+  theme_minimal()
+```
+
+La Beta, que es simétrica, ya se ve normal con `n = 5`; la Chi-cuadrada necesita alrededor de `n = 30`; y la Lognormal, por su cola pesada, sigue ligeramente asimétrica incluso con `n = 100`. El TLC garantiza la convergencia, pero qué tan grande debe ser `n` depende de qué tan asimétrica es la población.
+
+*Discretas.* Una Poisson(0.5) y una Geométrica(0.3), ambas concentradas cerca de 0. Aquí se grafica la **suma** de las `n` observaciones en vez de la media: tienen exactamente la misma forma (`media = suma / n`), pero la suma toma valores enteros y se puede dibujar con una barra por valor.
+
+```r
+set.seed(1)
+medias_discretas <- bind_rows(
+  simular_medias("Poisson(0.5)",    function(k) rpois(k, lambda = 0.5)),
+  simular_medias("Geométrica(0.3)", function(k) rgeom(k, prob = 0.3))
+)
+
+medias_discretas %>%
+  mutate(suma = round(media * n)) %>%
+  ggplot(aes(suma)) +
+  geom_bar(fill = "darkorange", alpha = 0.8) +
+  facet_wrap(~ distribucion + n, scales = "free", ncol = 4, labeller = labeller(n = label_both)) +
+  labs(title = "TLC con distribuciones discretas: suma de n observaciones", x = "suma (= n * media)", y = "frecuencia") +
+  theme_minimal()
+```
+
+Con `n = 1` se ve la distribución original; con `n = 30` y `n = 100` las barras ya dibujan una campana, aunque la variable siga siendo discreta.
+
 El Teorema del Límite Central se entiende mucho mejor simulándolo, viendo el histograma converger a una campana, que memorizando su enunciado formal.
 
 ## 4. Generar datos ficticios para practicar

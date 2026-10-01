@@ -141,6 +141,49 @@ ggplot(medias_dado, aes(media)) +
   labs(title = "TLC con un dado: promedio de n lanzamientos", x = "promedio de las caras", y = "frecuencia") +
   theme_minimal()
 
+# Otras distribuciones: una función que repite la simulación para cualquier r<dist>()
+simular_medias <- function(nombre, rdist, tamanos = c(1, 5, 30, 100)) {
+  tibble(
+    distribucion = nombre,
+    n            = rep(tamanos, each = n_repeticiones),
+    media        = unlist(lapply(tamanos, function(k) replicate(n_repeticiones, mean(rdist(k)))))
+  )
+}
+
+# Continuas: sin importar la forma original, las medias estandarizadas se acercan a la N(0, 1)
+set.seed(1)
+medias_continuas <- bind_rows(      # bind_rows(): apila tablas con las mismas columnas
+  simular_medias("Beta(0.5, 0.5): forma de U",   function(k) rbeta(k, 0.5, 0.5)),
+  simular_medias("Chi-cuadrada(1): asimétrica",  function(k) rchisq(k, df = 1)),
+  simular_medias("Lognormal(0, 1): cola pesada", function(k) rlnorm(k))
+)
+
+medias_continuas %>%
+  group_by(distribucion, n) %>%
+  mutate(z = (media - mean(media)) / sd(media)) %>%     # estandariza dentro de cada panel
+  ggplot(aes(z)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.25, fill = "steelblue", alpha = 0.7) +
+  stat_function(fun = dnorm, color = "red", linewidth = 0.8) +
+  facet_grid(distribucion ~ n, labeller = labeller(n = label_both)) +
+  coord_cartesian(xlim = c(-3, 5)) +
+  labs(title = "TLC con distribuciones continuas: medias estandarizadas vs. N(0, 1)", x = "z", y = "densidad") +
+  theme_minimal()
+
+# Discretas: se grafica la suma (entera) en vez de la media; tienen la misma forma (media = suma / n)
+set.seed(1)
+medias_discretas <- bind_rows(
+  simular_medias("Poisson(0.5)",    function(k) rpois(k, lambda = 0.5)),
+  simular_medias("Geométrica(0.3)", function(k) rgeom(k, prob = 0.3))
+)
+
+medias_discretas %>%
+  mutate(suma = round(media * n)) %>%
+  ggplot(aes(suma)) +
+  geom_bar(fill = "darkorange", alpha = 0.8) +
+  facet_wrap(~ distribucion + n, scales = "free", ncol = 4, labeller = labeller(n = label_both)) +
+  labs(title = "TLC con distribuciones discretas: suma de n observaciones", x = "suma (= n * media)", y = "frecuencia") +
+  theme_minimal()
+
 # -----------------------------------------------------------------------------
 # 4. Generar datos ficticios para practicar
 # -----------------------------------------------------------------------------
