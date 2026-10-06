@@ -40,7 +40,8 @@ curso-r-cimat/
 │                            # por isbn -- para practicar left_join() (sesiones 3 y 4)
 ├── actividades/             # actividades de repaso/checkpoint, independientes
 │   │                        # de las sesiones (una por actividad)
-│   └── actividad01_repaso_sesiones0-4.R
+│   ├── actividad01_repaso_sesiones0-4.Rmd
+│   └── actividad02_distribuciones_discretas.Rmd   # sesión 6
 └── sesiones/                # scripts .R de práctica, uno por sesión
     ├── sesion00_fundamentos_r.R
     ├── sesion01_vectores_tipos.R

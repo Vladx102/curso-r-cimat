@@ -1,0 +1,162 @@
+---
+title: "Actividad — Distribuciones discretas (Sesión 6)"
+author: "Tu nombre"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+**Duración: 1 hora · Individual, sin apoyo del instructor.**
+
+Cubre: familia `d`/`p`/`q`/`r`, `set.seed()`, simulación con `sample()`/`replicate()`, estadística descriptiva (`quantile()`, `IQR()`) y Teorema del Límite Central (sesión 6).
+
+Completa cada chunk con tu código y al final da *Knit* para generar el reporte. Usa la semilla que se indica en cada ejercicio; los resultados simulados pueden variar un poco según cómo escribas la simulación.
+
+### Funciones disponibles
+
+Estas son las funciones que puedes necesitar a lo largo de la actividad. Decidir cuál usar en cada ejercicio es parte de la actividad.
+
+**Distribuciones** — para cada distribución existen cuatro funciones; `<dist>` es `binom` (argumentos `size`, `prob`), `pois` (`lambda`) o `geom` (`prob`):
+
+| Función | Qué regresa |
+|------------------------------------|------------------------------------|
+| `d<dist>(k, ...)` | función de masa: $P(X = k)$ |
+| `p<dist>(k, ...)` | función acumulada: $P(X \le k)$; con `lower.tail = FALSE` regresa $P(X > k)$ |
+| `q<dist>(p, ...)` | cuantil: el $k$ más chico con $P(X \le k) \ge p$ |
+| `r<dist>(n, ...)` | `n` valores aleatorios de la distribución |
+
+**Simulación:** `set.seed()`, `sample(x, size, replace, prob)`, `replicate(n, expresión)`.
+
+**Resúmenes:** `mean()`, `var()`, `sd()`, `quantile(x, probs)`, `IQR()`, `table()`. La media de una comparación, como `mean(x == 3)`, da la proporción de valores que la cumplen.
+
+**Tablas y gráficas:** `tibble()`, `count()`, `mutate()`, `ggplot()` con `geom_col()`, `geom_bar()`, `geom_point()`, `geom_histogram(aes(y = after_stat(density)))` y `stat_function()`.
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(tidyverse)
+```
+
+## Parte 1 — Binomial: un examen contestado al azar
+
+Un examen tiene 20 preguntas de opción múltiple con 4 opciones cada una. Un alumno contesta todas al azar, así que el número de aciertos es $X \sim \text{Binomial}(20,\ 0.25)$.
+
+**1.** Calcula:
+
+- 
+
+  (a) $P(X = 5)$
+
+- 
+
+  (b) $P(X \le 3)$
+
+- 
+
+  (c) La probabilidad de aprobar, es decir $P(X \ge 12)$
+
+- 
+
+  (d) $P(4 \le X \le 7)$ (cuida el borde)
+
+```{r ej1}
+
+```
+
+**2.** La media teórica de una binomial es $np$ y su varianza $np(1-p)$. Calcula ambas para este examen y también la mediana de $X$. Después arma una tabla con `k = 0:20`, la función de masa y la función acumulada de cada `k`, y grafica la función de masa como barras.
+
+```{r ej2}
+
+```
+
+**3.** Simula el examen de 5000 alumnos **sin** usar la función `r` de la binomial: cada pregunta es un acierto (1) con probabilidad 0.25 o un error (0) con probabilidad 0.75, y el resultado de un alumno es la suma de sus 20 preguntas. Usa `set.seed(2026)`. Compara la proporción simulada de alumnos con exactamente 5 aciertos contra el valor de $P(X = 5)$ del ejercicio 1.
+
+```{r ej3}
+
+```
+
+## Parte 2 — Poisson: llegadas a un cajero
+
+A un cajero automático llegan en promedio 4 clientes por hora. El número de llegadas en una hora es $Y \sim \text{Poisson}(4)$.
+
+**4.** Calcula:
+
+- 
+
+  (a) La probabilidad de que en una hora no llegue nadie.
+
+- 
+
+  (b) La probabilidad de que lleguen más de 6 clientes.
+
+- 
+
+  (c) $P(2 \le Y \le 5)$
+
+- 
+
+  (d) El número de clientes que no se supera en el 95% de las horas.
+
+```{r ej4}
+
+```
+
+**5.** Con `set.seed(2026)`, simula 1000 horas de llegadas.
+
+- 
+
+  (a) Calcula la proporción de horas simuladas con 0 llegadas y compárala con el inciso (a) del ejercicio 4.
+
+- 
+
+  (b) Calcula la media y la varianza de la simulación. En una Poisson las dos valen $\lambda$: ¿se cumple aproximadamente?
+
+- 
+
+  (c) Calcula los cuantiles 0.25, 0.5, 0.75 y 0.95 de la simulación y su rango intercuartílico. Compara esos cuantiles con los cuantiles teóricos de la Poisson(4).
+
+```{r ej5}
+
+```
+
+**6.** Grafica las 1000 horas simuladas como barras de frecuencia relativa (proporción de horas con 0, 1, 2, ... llegadas) y encima la función de masa teórica de la Poisson(4) como puntos rojos.
+
+```{r ej6}
+
+```
+
+## Parte 3 — Geométrica: tiros libres hasta encestar
+
+Un jugador encesta un tiro libre con probabilidad 0.2. Sea $W$ el número de **fallos antes del primer acierto**; las funciones `geom` de R usan exactamente esta definición, $W \sim \text{Geométrica}(0.2)$.
+
+**7.** Calcula:
+
+- 
+
+  (a) La probabilidad de encestar al primer intento ($W = 0$).
+
+- 
+
+  (b) La probabilidad de encestar a más tardar en el tercer intento ($W \le 2$).
+
+- 
+
+  (c) La probabilidad de necesitar más de 10 intentos en total.
+
+```{r ej7}
+
+```
+
+**8.** Con `set.seed(2026)`, simula 2000 valores de $W$. Compara la media simulada con la media teórica $(1 - p)/p$ y grafica la frecuencia de cada valor simulado. ¿Qué forma tiene la distribución?
+
+```{r ej8}
+
+```
+
+## Parte 4 — Teorema del Límite Central con una discreta
+
+**9.** El banco revisa el **promedio** de llegadas por hora en 30 horas al azar. Con `set.seed(2026)`, simula 3000 veces el promedio de 30 horas de llegadas Poisson(4). Grafica el histograma (en escala de densidad) de esos 3000 promedios con la curva normal $N(4,\ \sqrt{4/30})$ encima. ¿Por qué el promedio se ve normal si la Poisson es discreta?
+
+```{r ej9}
+
+```
