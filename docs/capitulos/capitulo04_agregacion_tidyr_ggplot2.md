@@ -3,7 +3,7 @@
 **Sesión 4 · Día 2, tarde · 2 horas**
 Script de práctica: [`sesiones/sesion04_agregacion_tidyr_ggplot2.R`](../../sesiones/sesion04_agregacion_tidyr_ggplot2.R)
 
-[← Capítulo 3](capitulo03_importacion_dplyr.md) · [Índice](../../README.md) · [Capítulo 5 →](capitulo05_proyectos_reproducibles.md)
+[← Capítulo 3](capitulo03_importacion_dplyr.md) · [Índice](../../README.md) · [Capítulo 4b →](capitulo04b_plotly.md)
 
 ## Objetivo
 
@@ -273,4 +273,4 @@ ggplot(resumen_genero_estado, aes(x = genero, y = n, fill = estado)) +
 
 ---
 
-[← Capítulo 3](capitulo03_importacion_dplyr.md) · [Índice](../../README.md) · [Capítulo 5 →](capitulo05_proyectos_reproducibles.md)
+[← Capítulo 3](capitulo03_importacion_dplyr.md) · [Índice](../../README.md) · [Capítulo 4b →](capitulo04b_plotly.md)

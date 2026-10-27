@@ -3,7 +3,7 @@
 **Sesión 5 · Día 3, mañana · 2 horas**
 Script de práctica: [`sesiones/sesion05_proyectos_reproducibles.R`](../../sesiones/sesion05_proyectos_reproducibles.R)
 
-[← Capítulo 4](capitulo04_agregacion_tidyr_ggplot2.md) · [Índice](../../README.md) · [Capítulo 6 →](capitulo06_computo_simulacion.md)
+[← Capítulo 4b](capitulo04b_plotly.md) · [Índice](../../README.md) · [Capítulo 6 →](capitulo06_computo_simulacion.md)
 
 ## Objetivo
 
@@ -129,4 +129,4 @@ reporte_calificaciones(c(95, 82, 67, 58, 71, NA))
 
 ---
 
-[← Capítulo 4](capitulo04_agregacion_tidyr_ggplot2.md) · [Índice](../../README.md) · [Capítulo 6 →](capitulo06_computo_simulacion.md)
+[← Capítulo 4b](capitulo04b_plotly.md) · [Índice](../../README.md) · [Capítulo 6 →](capitulo06_computo_simulacion.md)

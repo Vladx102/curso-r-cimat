@@ -2,7 +2,7 @@
 
 Curso de nivelación — Maestría en Ciencias, CIMAT Aguascalientes
 
-*Duración: 15 sesiones · 2 horas cada una (30 horas totales)*
+*Duración: 16 sesiones · 2 horas cada una (32 horas totales)*
 
 > El desarrollo teórico de cada sesión está en [`capitulos/`](capitulos/capitulo00_fundamentos_r.md); el código ejecutable equivalente está en [`sesiones/`](../sesiones). Antes de la sesión 0, sigue la [guía de instalación](instalacion.md).
 
@@ -24,7 +24,7 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 
 ## Metodología
 
-- 15 sesiones de 2 horas: exposición breve de conceptos + práctica guiada en RStudio/Posit. Pensado originalmente como 2 sesiones por día (mañana y tarde), pero la cadencia la puede ajustar quien imparta el curso.
+- 16 sesiones de 2 horas: exposición breve de conceptos + práctica guiada en RStudio/Posit. Pensado originalmente como 2 sesiones por día (mañana y tarde), pero la cadencia la puede ajustar quien imparta el curso.
 - Aprendizaje por comparación con otros lenguajes ("esto es como X, pero...").
 - Ejercicios cortos al final de cada sesión (algunos con solución incluida) y un mini-proyecto integrador en la última sesión.
 - Todo el material se organiza por sesión en [`sesiones/`](../sesiones) (código) y [`capitulos/`](capitulos) (teoría en prosa).
@@ -41,6 +41,7 @@ Alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes. Las sesiones 1
 | 2d | Gráficos con R base | `plot()`: puntos y líneas · `barplot()`: barras · `hist()`: distribución · `boxplot()`: cajas y la interfaz de fórmula `y ~ x` · paneles múltiples con `par(mfrow = ...)` |
 | 3 | Importación y verbos de dplyr | `data.frame` vs. `tibble`; importación con readr/readxl · El pipe `%>%` · dplyr: `filter`, `select`, `mutate`, `arrange` · Manejo de cadenas con stringr (`str_detect`, `str_replace`, `str_split`...) · Fechas con lubridate (`ymd`, `wday`, `floor_date`) |
 | 4 | Agregación, tidyr y ggplot2 | `group_by()` + `summarize()` · tidyr: `pivot_longer`/`wider`, joins · ggplot2: gramática de gráficos, geoms, *position adjustments* (dodge/stack/fill), escalas de color, `coord_cartesian()`, `facet_wrap`/`facet_grid`, temas y `labs()` |
+| 4b | Gráficos interactivos con plotly | `plot_ly()`: dispersión, barras, histograma, caja y líneas · Color, forma y etiquetas al pasar el mouse (`text`, `hoverinfo`) · `layout()`: títulos, ejes y leyenda · Capas (`add_markers()`, `add_lines()`), histogramas superpuestos y `subplot()` · Convertir gráficos de ggplot2 con `ggplotly()` |
 | 5 | Proyectos reproducibles | Organización de proyectos y buenas prácticas · Quarto/R Markdown · Documentar y reutilizar funciones propias |
 | 6 | Cómputo estadístico y simulación | Distribuciones en R: familias d/p/q/r · Números aleatorios y semillas (`set.seed`) · Simulación Monte Carlo: ley de grandes números y TLC · Generar datasets ficticios (fechas, categorías, IDs) · Estadística descriptiva (`quantile`, `IQR`, `cor`, `cov`, `skimr::skim()`) · Introducción a inferencia con `t.test()` |
 | 6b | Bootstrap | Remuestreo con reemplazo (`sample(..., replace = TRUE)`) · Bootstrap manual con `replicate()` · Intervalos de confianza bootstrap (método percentil) · Bootstrap para estadísticos sin fórmula cerrada (mediana, correlación) · Remuestreo por filas · Comparación con `t.test()` · Proporciones y estadísticos propios · Visualizar la distribución bootstrap · Elección del número de remuestras `B` |

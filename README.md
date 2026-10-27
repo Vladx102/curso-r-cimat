@@ -2,7 +2,7 @@
 
 Material de un curso intensivo de R para alumnos de nuevo ingreso a la maestría del CIMAT Aguascalientes, previo al curso de Modelación Estadística. Está pensado para estudiantes que ya saben programar en algún otro lenguaje, así que va directo a los idiomas propios de R (vectorización, tidyverse, modelación) sin detenerse en conceptos generales de programación — con varias sesiones adicionales de fundamentos (aritmética, matrices, data frames base, gráficos base) para quien las necesite como referencia o repaso.
 
-**15 sesiones de 2 horas · 30 horas totales.**
+**16 sesiones de 2 horas · 32 horas totales.**
 
 El temario completo está en [`docs/silabo.md`](docs/silabo.md). Antes de la sesión 0, sigue la [guía de instalación](docs/instalacion.md).
 
@@ -53,7 +53,7 @@ curso-r-cimat/
     └── sesion10_validacion_cierre.R
 ```
 
-Cada capítulo en `docs/capitulos/` explica la teoría en prosa con ejemplos de código; el script equivalente en `sesiones/` es la versión ejecutable, con el mismo código y una sección de ejercicios al final. `docs/capitulos_rmd/` tiene el mismo contenido teórico que `docs/capitulos/`, pero como `.Rmd`: si prefieres leer y correr el código a la vez (en vez de leer el `.md` y luego el script por separado), abre el `.Rmd` en RStudio y ve ejecutando los chunks conforme avanzas. `data/` tiene datasets reales (no solo los incluidos en R como `mpg`/`mtcars`) para practicar importación y análisis con `read_csv()`; se usan en las sesiones 3, 4 y 6, y quedan disponibles para tus propios ejercicios. `actividades/` tiene ejercicios integradores de repaso (por ejemplo, un checkpoint individual de 1 hora que cubre varias sesiones a la vez), separados de la práctica por sesión de `sesiones/`.
+Cada capítulo en `docs/capitulos/` explica la teoría en prosa con ejemplos de código; el script equivalente en `sesiones/` es la versión ejecutable, con el mismo código y una sección de ejercicios al final. `docs/capitulos_rmd/` tiene el mismo contenido teórico que `docs/capitulos/`, pero como `.Rmd`: si prefieres leer y correr el código a la vez (en vez de leer el `.md` y luego el script por separado), abre el `.Rmd` en RStudio y ve ejecutando los chunks conforme avanzas. `data/` tiene datasets reales (no solo los incluidos en R como `mpg`/`mtcars`) para practicar importación y análisis con `read_csv()`; se usan en las sesiones 3, 4, 4b y 6, y quedan disponibles para tus propios ejercicios. `actividades/` tiene ejercicios integradores de repaso (por ejemplo, un checkpoint individual de 1 hora que cubre varias sesiones a la vez), separados de la práctica por sesión de `sesiones/`.
 
 ## Temario
 
@@ -67,6 +67,7 @@ Cada capítulo en `docs/capitulos/` explica la teoría en prosa con ejemplos de 
 | 2d | Gráficos con R base | [capitulo02d](docs/capitulos/capitulo02d_graficos_base.md) | [capitulo02d.Rmd](docs/capitulos_rmd/capitulo02d_graficos_base.Rmd) | [sesion02d](sesiones/sesion02d_graficos_base.R) |
 | 3 | Importación de datos y verbos de dplyr | [capitulo03](docs/capitulos/capitulo03_importacion_dplyr.md) | [capitulo03.Rmd](docs/capitulos_rmd/capitulo03_importacion_dplyr.Rmd) | [sesion03](sesiones/sesion03_importacion_dplyr.R) |
 | 4 | Agregación, tidyr y ggplot2 | [capitulo04](docs/capitulos/capitulo04_agregacion_tidyr_ggplot2.md) | [capitulo04.Rmd](docs/capitulos_rmd/capitulo04_agregacion_tidyr_ggplot2.Rmd) | [sesion04](sesiones/sesion04_agregacion_tidyr_ggplot2.R) |
+| 4b | Gráficos interactivos con plotly | [capitulo04b](docs/capitulos/capitulo04b_plotly.md) | [capitulo04b.Rmd](docs/capitulos_rmd/capitulo04b_plotly.Rmd) | [sesion04b](sesiones/sesion04b_plotly.R) |
 | 5 | Proyectos reproducibles (Quarto/R Markdown) | [capitulo05](docs/capitulos/capitulo05_proyectos_reproducibles.md) | [capitulo05.Rmd](docs/capitulos_rmd/capitulo05_proyectos_reproducibles.Rmd) | [sesion05](sesiones/sesion05_proyectos_reproducibles.R) |
 | 6 | Cómputo estadístico y simulación (Monte Carlo) | [capitulo06](docs/capitulos/capitulo06_computo_simulacion.md) | [capitulo06.Rmd](docs/capitulos_rmd/capitulo06_computo_simulacion.Rmd) | [sesion06](sesiones/sesion06_computo_simulacion.R) |
 | 6b | Bootstrap | [capitulo06b](docs/capitulos/capitulo06b_bootstrap.md) | [capitulo06b.Rmd](docs/capitulos_rmd/capitulo06b_bootstrap.Rmd) | [sesion06b](sesiones/sesion06b_bootstrap.R) |
