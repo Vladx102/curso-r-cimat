@@ -41,7 +41,8 @@ curso-r-cimat/
 ├── actividades/             # actividades de repaso/checkpoint, independientes
 │   │                        # de las sesiones (una por actividad)
 │   ├── actividad01_repaso_sesiones0-4.Rmd
-│   └── actividad02_distribuciones_discretas.Rmd   # sesión 6
+│   ├── actividad02_distribuciones_discretas.Rmd   # sesión 6
+│   └── actividad03_distribuciones_ggplot_plotly.Rmd   # sesiones 4, 4b y 6
 └── sesiones/                # scripts .R de práctica, uno por sesión
     ├── sesion00_fundamentos_r.R
     ├── sesion01_vectores_tipos.R

@@ -1,0 +1,165 @@
+---
+title: "Actividad — Distribuciones, ggplot2 y plotly"
+author: "Tu nombre"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+**Duración sugerida: 1 h 30 min · Individual.**
+
+Cubre: distribuciones discretas y continuas con la familia `d`/`p`/`q`/`r` y simulación (sesión 6), dplyr y tidyr (sesiones 3 y 4), ggplot2 (sesión 4) y plotly (sesión 4b).
+
+Completa cada chunk con tu código y al final da *Knit*. **Genera el reporte en HTML**: las gráficas de plotly no se pueden mostrar en PDF. Usa la semilla que indica cada ejercicio; los resultados simulados pueden variar un poco según cómo escribas la simulación.
+
+### Sugerencias de uso de cada librería
+
+| Librería | Úsala para | Funciones clave |
+|---|---|---|
+| R base (`stats`) | Probabilidades, cuantiles y simulación | `d<dist>()`, `p<dist>()`, `q<dist>()`, `r<dist>()`, `set.seed()`, `sample()`, `replicate()` |
+| dplyr / tidyr | Armar las tablas que vas a graficar: resumir por grupo, crear columnas, pasar de formato ancho a largo | `tibble()`, `mutate()`, `group_by()` + `summarize()`, `count()`, `filter()`, `pivot_longer()` |
+| ggplot2 | Gráficas estáticas para el reporte: comparar una simulación contra la distribución teórica, facetas, curvas encima de histogramas | `geom_col()`, `geom_histogram()`, `geom_line()`, `stat_function()`, `facet_wrap()`, `labs()` |
+| plotly | Explorar de forma interactiva: ver el valor exacto de cada barra o punto, hacer zoom, ocultar grupos desde la leyenda | `plot_ly()`, `add_lines()`, `add_markers()`, `layout()`, `subplot()`, y `ggplotly()` para convertir un gráfico de ggplot2 |
+
+Una regla práctica: **calcula** con R base, **organiza** con dplyr/tidyr, **presenta** con ggplot2 y **explora** con plotly. Si ya tienes el gráfico en ggplot2 y solo quieres que sea interactivo, `ggplotly()` es lo más rápido; si necesitas controlar las etiquetas o combinar capas con datos distintos, usa `plot_ly()` directamente.
+
+Cada ejercicio indica las funciones que vas a necesitar; los argumentos de cada una los tienes que decidir tú (usa `?funcion` para ver la ayuda).
+
+Distribuciones que vas a necesitar (nombre en R y argumentos):
+
+| Distribución | Nombre | Argumentos |
+|---|---|---|
+| Binomial | `binom` | `size`, `prob` |
+| Poisson | `pois` | `lambda` |
+| Exponencial | `exp` | `rate` (= 1 / media) |
+| Normal | `norm` | `mean`, `sd` |
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(tidyverse)
+library(plotly)
+```
+
+## Ejercicio 1 — Control de calidad (binomial)
+
+Una fábrica produce piezas en lotes de 50. Cada pieza sale defectuosa con probabilidad 0.04, independientemente de las demás. Un lote se **rechaza** si tiene más de 3 piezas defectuosas.
+
+- (a) Calcula la probabilidad de que un lote no tenga ninguna pieza defectuosa y la probabilidad de que un lote sea rechazado.
+- (b) Arma una tabla con `k = 0:10` defectuosas, la probabilidad de cada `k`, la probabilidad acumulada y una columna `estado` que diga `"aceptado"` o `"rechazado"`.
+- (c) Grafica la función de masa con barras coloreadas según `estado`, con título y nombres de ejes.
+- (d) Convierte la gráfica en interactiva de forma que, al pasar el mouse por una barra, se vean el número de defectuosas, su probabilidad y la probabilidad acumulada (redondeadas a 4 decimales).
+
+*Sugerencia: R base para las probabilidades, dplyr para la tabla, ggplot2 para la gráfica y plotly para la versión interactiva.*
+
+**Funciones:** R base: `dbinom()`, `pbinom()`, `paste0()`, `round()` · dplyr: `tibble()`, `if_else()` · ggplot2: `ggplot()`, `geom_col()`, `scale_x_continuous()`, `labs()` · plotly: `ggplotly()`.
+
+```{r ej1}
+
+```
+
+## Ejercicio 2 — ¿Qué tan buena es la aproximación de Poisson?
+
+Cuando $n$ es grande y $p$ es chica, una Binomial$(n, p)$ se parece a una Poisson con $\lambda = np$. Compara la Binomial(50, 0.04) del ejercicio 1 contra una Poisson(2).
+
+- (a) Arma una tabla con `k = 0:10` y dos columnas: la probabilidad binomial y la probabilidad Poisson de cada `k`. Agrega una columna con la diferencia absoluta entre ambas. ¿En qué `k` es mayor la diferencia?
+- (b) Pasa la tabla a formato largo (una columna `distribucion` y otra `probabilidad`) y grafica las dos funciones de masa con barras lado a lado.
+- (c) Haz la misma comparación como gráfica interactiva construida desde cero (sin convertir la de ggplot2), con barras agrupadas, títulos de ejes y la leyenda debajo de la gráfica.
+- (d) Repite el inciso (a) solo para la diferencia máxima, pero con Binomial(500, 0.004) contra Poisson(2). ¿La aproximación mejora o empeora? ¿Por qué?
+
+*Sugerencia: tidyr para el formato largo, ggplot2 para la comparación estática y plotly directo para la versión interactiva.*
+
+**Funciones:** R base: `dbinom()`, `dpois()`, `abs()`, `max()` · dplyr/tidyr: `tibble()`, `filter()`, `select()`, `pivot_longer()` · ggplot2: `ggplot()`, `geom_col()`, `labs()` · plotly: `plot_ly()`, `layout()`.
+
+```{r ej2}
+
+```
+
+## Ejercicio 3 — Llamadas a un call center (Poisson simulada)
+
+Un call center abre de 8 a 19 h. El número promedio de llamadas en cada hora es:
+
+```{r datos-ej3}
+tasas <- tibble(
+  hora   = 8:19,
+  lambda = c(4, 7, 12, 15, 14, 10, 9, 11, 13, 9, 6, 3)
+)
+```
+
+- (a) Con `set.seed(2026)`, simula 60 días de operación: para cada día y cada hora, un número de llamadas Poisson con la `lambda` de esa hora. Guarda el resultado en una tabla con columnas `dia`, `hora` y `llamadas`.
+- (b) Por hora, calcula el promedio simulado de llamadas y el percentil 95 simulado. Agrega el percentil 95 **teórico** de la Poisson de cada hora: es el número de operadores que se necesitarían para cubrir la demanda en el 95% de los días.
+- (c) Haz una gráfica interactiva con la hora en el eje x y tres capas: la `lambda` teórica como línea, el promedio simulado como puntos y el percentil 95 teórico como línea punteada (`line = list(dash = "dash")`). Ponle título, nombres a los ejes y etiquetas útiles al pasar el mouse.
+- (d) ¿En qué hora se necesitan más operadores? ¿Cuántos?
+
+*Sugerencia: R base para simular, dplyr para resumir por hora y plotly (`plot_ly()` + `add_lines()` / `add_markers()`) para la gráfica con varias capas.*
+
+**Funciones:** R base: `set.seed()`, `rep()`, `rpois()`, `quantile()`, `qpois()`, `paste0()` · dplyr: `tibble()`, `left_join()`, `mutate()`, `group_by()`, `summarize()`, `filter()` · plotly: `plot_ly()`, `add_lines()`, `add_markers()`, `layout()`.
+
+```{r ej3}
+
+```
+
+## Ejercicio 4 — Tiempo de espera (exponencial)
+
+El tiempo (en minutos) entre la llegada de dos clientes a una caja sigue una distribución exponencial con media 3 minutos, es decir, `rate = 1/3`.
+
+- (a) Calcula la probabilidad de esperar más de 5 minutos, la probabilidad de esperar entre 1 y 4 minutos y la mediana teórica del tiempo de espera.
+- (b) Con `set.seed(2026)`, simula 2000 tiempos de espera. Grafica su histograma en escala de densidad con la densidad teórica encima y una línea vertical en la mediana teórica.
+- (c) **Falta de memoria.** Con la simulación, estima $P(T > 5 \mid T > 2)$: entre los tiempos mayores a 2, ¿qué proporción es mayor a 5? Compáralo con $P(T > 3)$ teórica. ¿Qué significa este resultado para un cliente que ya lleva 2 minutos esperando?
+
+*Sugerencia: R base para las probabilidades y la simulación, ggplot2 (`geom_histogram()` + `stat_function()`) para la gráfica.*
+
+**Funciones:** R base: `pexp()`, `qexp()`, `dexp()`, `set.seed()`, `rexp()`, `mean()` · ggplot2: `ggplot()`, `geom_histogram()`, `stat_function()`, `geom_vline()`, `labs()`.
+
+```{r ej4}
+
+```
+
+## Ejercicio 5 — Estaturas de dos grupos (normal)
+
+En una población, la estatura (cm) de los hombres sigue una $N(170, 8)$ y la de las mujeres una $N(158, 7)$.
+
+- (a) Calcula, para cada grupo, la proporción de personas que miden más de 175 cm y el percentil 90 de la estatura.
+- (b) Con `set.seed(2026)`, simula 500 estaturas de cada grupo y guárdalas en una sola tabla con columnas `grupo` y `estatura`. Calcula por grupo la media, la desviación estándar y la proporción simulada mayor a 175 cm, y compáralas con los valores teóricos.
+- (c) Grafica los dos histogramas en escala de densidad, uno por panel, cada uno con su curva normal teórica encima. (Pista: puedes calcular las curvas en una tabla aparte con una rejilla de valores `x` y dibujarlas con `geom_line()`.)
+- (d) Convierte a interactiva una gráfica de caja de la estatura por grupo, con los puntos simulados encima.
+
+*Sugerencia: R base para probabilidades y simulación, dplyr para resumir, ggplot2 con `facet_wrap()` para los paneles y `ggplotly()` para la gráfica de caja.*
+
+**Funciones:** R base: `pnorm()`, `qnorm()`, `dnorm()`, `set.seed()`, `rnorm()`, `rep()`, `seq()` · dplyr: `tibble()`, `group_by()`, `summarize()`, `mutate()`, `if_else()` · ggplot2: `ggplot()`, `geom_histogram()`, `geom_line()`, `facet_wrap()`, `geom_boxplot()`, `geom_jitter()` · plotly: `ggplotly()`.
+
+```{r ej5}
+
+```
+
+## Ejercicio 6 — Ley de los grandes números con varias trayectorias
+
+En una oficina, cada día un empleado llega tarde con probabilidad 0.3.
+
+- (a) Con `set.seed(2026)`, simula 5 trayectorias independientes de 500 días cada una. En cada trayectoria calcula la proporción acumulada de días con retardo (después del día 1, del día 2, ..., del día 500). Guarda todo en una tabla con columnas `trayectoria`, `dia` y `proporcion`.
+- (b) Grafica las 5 trayectorias como líneas de distinto color, con una línea horizontal en 0.3. Hazla interactiva para poder aislar una trayectoria desde la leyenda.
+- (c) Para cada trayectoria, ¿qué tan lejos de 0.3 está la proporción en el día 10, en el día 100 y en el día 500? Presenta el resultado en una tabla. ¿Qué dice esto de la Ley de los grandes números?
+
+*Sugerencia: `replicate()` o una función propia para simular cada trayectoria, dplyr para la tabla y ggplot2 + `ggplotly()` (o `plot_ly()` directo) para la gráfica.*
+
+**Funciones:** R base: `set.seed()`, `sample()`, `cumsum()`, `function()`, `lapply()`, `abs()` · dplyr/tidyr: `tibble()`, `bind_rows()`, `filter()`, `mutate()`, `pivot_wider()` · ggplot2: `ggplot()`, `geom_line()`, `geom_hline()`, `labs()` · plotly: `ggplotly()`.
+
+```{r ej6}
+
+```
+
+## Ejercicio 7 — Integrador: días de lluvia por semana (datos reales)
+
+Usa `data/clima.csv` (desde este `.Rmd` la ruta es `read_csv("../data/clima.csv")`). Considera que un día es **lluvioso** si su precipitación es mayor a 2 mm.
+
+- (a) Para cada ciudad, estima la probabilidad $p$ de que un día sea lluvioso (la proporción de días lluviosos en el año).
+- (b) Si los días fueran independientes, el número de días lluviosos en una semana sería Binomial$(7, p)$. Con la $p$ de cada ciudad, calcula la probabilidad de que una semana tenga al menos 3 días lluviosos.
+- (c) Cuenta en los datos cuántos días lluviosos tuvo cada semana completa (lunes a domingo, solo semanas con 7 días). Pista: `floor_date(fecha, "week", week_start = 1)`.
+- (d) Grafica, para cada ciudad en su propio panel, la proporción **observada** de semanas con 0, 1, ..., 7 días lluviosos como barras, y la probabilidad **binomial** teórica como puntos. Después hazla interactiva.
+- (e) ¿El modelo binomial describe bien los datos en las dos ciudades? Si no, ¿qué supuesto del modelo podría estar fallando?
+
+*Sugerencia: dplyr y lubridate para preparar los datos, R base para la binomial, ggplot2 con `facet_wrap()` y `ggplotly()` para la gráfica final.*
+
+**Funciones:** R base: `mean()`, `sum()`, `pbinom()`, `dbinom()`, `rep()` · dplyr/lubridate: `read_csv()`, `mutate()`, `floor_date()`, `group_by()`, `summarize()`, `n()`, `filter()`, `count()`, `left_join()` · ggplot2: `ggplot()`, `geom_col()`, `geom_point()`, `facet_wrap()`, `labs()` · plotly: `ggplotly()`.
+
+```{r ej7}
+
+```
